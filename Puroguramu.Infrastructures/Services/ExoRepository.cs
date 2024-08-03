@@ -78,9 +78,20 @@ public class ExoRepository : IExoRepository
             exercise.Description = exerciseDto.Description;
             exercise.Template = exerciseDto.Template;
             exercise.Solution = exerciseDto.Solution;
-            exercise.Difficulty = (Difficulty)exercise.Difficulty;
+            exercise.Difficulty = MapDtoToDifficulty(exerciseDto.Difficulty);
 
             await _context.SaveChangesAsync();
         }
+    }
+
+    private Puroguramu.Infrastructures.Data.models.Difficulty MapDtoToDifficulty(Domains.DifficultyExo difficultyExo)
+    {
+        return difficultyExo switch
+        {
+            Domains.DifficultyExo.Easy => Puroguramu.Infrastructures.Data.models.Difficulty.Easy,
+            Domains.DifficultyExo.Medium => Puroguramu.Infrastructures.Data.models.Difficulty.Medium,
+            Domains.DifficultyExo.Hard => Puroguramu.Infrastructures.Data.models.Difficulty.Hard,
+            _ => throw new ArgumentOutOfRangeException(nameof(difficultyExo), "Unknown difficulty level")
+        };
     }
 }

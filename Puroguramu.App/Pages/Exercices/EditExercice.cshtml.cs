@@ -46,7 +46,7 @@ namespace Puroguramu.App.Pages.Exercices
 
         [BindProperty]
         [Required(ErrorMessage = "La difficulté est requise.")]
-        public DifficultyExo Difficulty { get; set; }
+        public DifficultyExo DifficultyExo { get; set; }
 
         public StudentDto Student { get; set; }
 
@@ -63,7 +63,7 @@ namespace Puroguramu.App.Pages.Exercices
             Description = exercise.Description;
             Template = exercise.Template;
             Solution = exercise.Solution;
-            Difficulty = exercise.Difficulty;
+            DifficultyExo = exercise.Difficulty;
 
             return Page();
         }
@@ -82,7 +82,7 @@ namespace Puroguramu.App.Pages.Exercices
                 Description = Description,
                 Template = Template,
                 Solution = Solution,
-                Difficulty = Difficulty
+                Difficulty = DifficultyExo
             };
 
             await _exoRepository.UpdateExerciseAsync(exercise);

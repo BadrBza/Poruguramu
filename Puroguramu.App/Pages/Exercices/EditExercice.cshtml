@@ -69,14 +69,14 @@ ViewData["Title"] = "Éditer un Exercice";
                 </div>
 
                 <div class="mb-5">
-                    <label asp-for="Difficulty" class="block mb-2 text-sm font-medium text-gray-300">Difficulté</label>
-                    <select asp-for="Difficulty"
+                    <label asp-for="DifficultyExo" class="block mb-2 text-sm font-medium text-gray-300">Difficulté</label>
+                    <select asp-for="DifficultyExo"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         <option value="Easy">Facile</option>
                         <option value="Medium">Moyen</option>
                         <option value="Hard">Difficile</option>
                     </select>
-                    <span asp-validation-for="Difficulty" class="text-red-500"></span>
+                    <span asp-validation-for="DifficultyExo" class="text-red-500"></span>
                 </div>
 
                 <div class="mb-5">

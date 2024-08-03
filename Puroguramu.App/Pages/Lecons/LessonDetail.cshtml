@@ -56,9 +56,9 @@
         {
         <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
             <h2 class="text-xl font-semibold">@exercise.Title</h2>
-            <p class="text-gray-400">État : @(exercise.IsPublished ? "Publié" : "Non publié")</p>
-            <p class="text-gray-400">Difficulté : @Model.StudentExerciseDto.Difficulty</p>
-            <a href="/Exercices/DoExercise?id=@exercise.Id" class="text-blue-500 hover:underline">Commencer cet
+            <p class="text-gray-400">Difficulté : @exercise.DifficultyExo</p>
+            <p class="text-gray-400">État : @exercise.Status</p>
+            <a href="/Exercices/DoExercise?id=@exercise.ExerciseId" class="text-blue-500 hover:underline">Commencer cet
                 exercice</a>
         </div>
         }

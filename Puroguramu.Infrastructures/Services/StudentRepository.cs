@@ -276,7 +276,7 @@ namespace Puroguramu.Infrastructures.Services
                     ExerciseId = nextExercise.Id,
                     Title = nextExercise.Title,
                     Status = Domains.ExerciseStatus.NotStarted,
-                    Difficulty = Domains.DifficultyExo.Easy,
+                    DifficultyExo = Domains.DifficultyExo.Easy,
                 };
             }
             else
