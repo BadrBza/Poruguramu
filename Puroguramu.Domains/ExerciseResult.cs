@@ -28,3 +28,10 @@ public enum TestStatus
     Failed = 1,
     Passed = 2,
 }
+
+public enum DifficultyExo
+{
+    Easy,
+    Medium,
+    Hard
+}
