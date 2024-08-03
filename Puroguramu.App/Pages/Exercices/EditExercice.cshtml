@@ -1,19 +1,110 @@
 ﻿@page
-@model Puroguramu.App.Pages.Exercices.EditExercice
-
+@model Puroguramu.App.Pages.Exercices.EditExerciceModel
 @{
-    Layout = null;
+ViewData["Title"] = "Éditer un Exercice";
 }
-
 <!DOCTYPE html>
-
-<html>
+<html lang="fr">
 <head>
-    <title></title>
+    <meta charset="UTF-8">
+    <title>Éditer un Exercice</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-<div>
-    
+<body class="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen flex flex-col justify-between">
+
+<nav class="bg-gray-800 text-gray-200 px-4 sm:px-6 py-4 shadow">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="/Dashboard/TeacherDashboard" class="flex items-center space-x-2">
+            <img src="/ressources/logo.png" alt="Logo" class="h-10 w-10">
+            <span class="font-bold text-lg">Puroguramu</span>
+        </a>
+        <div class="hidden md:flex items-center space-x-4">
+            <div class="relative">
+                <button id="profileButton" class="flex items-center space-x-2 focus:outline-none">
+                    <img
+                        src="@(Model.Student.ProfilePicture != null ? $"data:image;base64,{Convert.ToBase64String(Model.Student.ProfilePicture)}" : "/ressources/basic.jpg")"
+                        alt="Profile Picture" class="h-12 w-12 rounded-full border-4 border-blue-500 cursor-pointer">
+                    <span class="ml-2">@Model.Student.FirstName @Model.Student.LastName</span>
+                </button>
+                <div id="dropdown"
+                     class="hidden absolute right-0 mt-2 w-48 bg-gray-800 text-gray-200 rounded-md shadow-xl z-20">
+                    <a href="/Account/Profile" class="block px-4 py-2 text-gray-200 hover:bg-gray-700">Modifier le
+                        Profil</a>
+                    <a href="/Account/ChangePassword" class="block px-4 py-2 text-gray-200 hover:bg-gray-700">Changer le
+                        Mot de Passe</a>
+                </div>
+            </div>
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
+                  asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                <button id="logout" type="submit"
+                        class="px-5 py-2 bg-red-600 hover:bg-red-700 rounded-md shadow-lg font-medium text-white">
+                    Déconnexion
+                </button>
+            </form>
+        </div>
+    </div>
+</nav>
+<div class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+        <h1 class="text-2xl font-bold mb-4 text-white text-center">Éditer un Exercice</h1>
+        <div class="bg-gray-900 px-8 py-8 rounded shadow-md">
+            <form id="edit-exercice-form" method="post" class="max-w-sm mx-auto">
+                <div asp-validation-summary="ModelOnly" class="text-red-500 bg-red-100 p-4 rounded mb-4"></div>
+
+                <div class="mb-5">
+                    <label asp-for="Title" class="block mb-2 text-sm font-medium text-gray-300">Titre de
+                        l'exercice</label>
+                    <input asp-for="Title"
+                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"/>
+                    <span asp-validation-for="Title" class="text-red-500"></span>
+                </div>
+
+                <div class="mb-5">
+                    <label asp-for="Description" class="block mb-2 text-sm font-medium text-gray-300">Énoncé</label>
+                    <textarea asp-for="Description"
+                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                              rows="5"></textarea>
+                    <span asp-validation-for="Description" class="text-red-500"></span>
+                </div>
+
+                <div class="mb-5">
+                    <label asp-for="DifficultyExo" class="block mb-2 text-sm font-medium text-gray-300">Difficulté</label>
+                    <select asp-for="DifficultyExo"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="Easy">Facile</option>
+                        <option value="Medium">Moyen</option>
+                        <option value="Hard">Difficile</option>
+                    </select>
+                    <span asp-validation-for="DifficultyExo" class="text-red-500"></span>
+                </div>
+
+                <div class="mb-5">
+                    <label asp-for="Template" class="block mb-2 text-sm font-medium text-gray-300">Modèle</label>
+                    <textarea asp-for="Template"
+                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                              rows="5"></textarea>
+                    <span asp-validation-for="Template" class="text-red-500"></span>
+                </div>
+
+                <div class="mb-5">
+                    <label asp-for="Solution" class="block mb-2 text-sm font-medium text-gray-300">Solution</label>
+                    <textarea asp-for="Solution"
+                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                              rows="5"></textarea>
+                    <span asp-validation-for="Solution" class="text-red-500"></span>
+                </div>
+
+                <div>
+                    <button type="submit"
+                            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Enregistrer les modifications
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
 </body>
 </html>

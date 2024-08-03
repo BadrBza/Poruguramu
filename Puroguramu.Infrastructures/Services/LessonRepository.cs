@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Puroguramu.Domains;
@@ -15,10 +16,12 @@ namespace Puroguramu.Infrastructures.Services
     public class LessonRepository : ILessonRepository
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<Student> _userManager;
 
-        public LessonRepository(ApplicationDbContext context)
+        public LessonRepository(ApplicationDbContext context, UserManager<Student> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<int> GetLessonsCountAsync()
@@ -132,13 +135,7 @@ namespace Puroguramu.Infrastructures.Services
             return await _context.Lessons
                 .Where(lesson => lesson.IsPublished)
                 .OrderBy(lesson => lesson.Order)
-                .Select(lesson => new LessonDto
-                {
-                    Id = lesson.Id,
-                    Title = lesson.Title,
-                    IsPublished = lesson.IsPublished,
-                    Order = lesson.Order
-                })
+                .Select(lesson => new LessonDto { Id = lesson.Id, Title = lesson.Title, IsPublished = lesson.IsPublished, Order = lesson.Order })
                 .ToListAsync();
         }
 
@@ -198,11 +195,12 @@ namespace Puroguramu.Infrastructures.Services
                     }
                 }
             }
+
             if (lesson != null)
             {
                 return lesson.Exercises
                     .Count(e => e.StudentExercises
-                        .Any(se => se.Status == ExerciseStatus.Passed && se.Student!= null && se.Student.Matricule == studentMatricule));
+                        .Any(se => se.Status == ExerciseStatus.Passed && se.Student != null && se.Student.Matricule == studentMatricule));
             }
 
             return 0;
@@ -240,11 +238,13 @@ namespace Puroguramu.Infrastructures.Services
                 CompletedExercises = lesson.Exercises.Sum(exercise =>
                     exercise.StudentExercises.Count(se => se.Status == ExerciseStatus.Passed && studentIds.Contains(se.StudentId))),
                 TotalStudents = totalStudents,
-                StudentsWhoCompleted = lesson.Exercises.Any() ? lesson.Exercises
-                    .SelectMany(e => e.StudentExercises)
-                    .Where(se => se.Status == ExerciseStatus.Passed && studentIds.Contains(se.StudentId))
-                    .GroupBy(se => se.StudentId)
-                    .Count() : 0
+                StudentsWhoCompleted = lesson.Exercises.Any()
+                    ? lesson.Exercises
+                        .SelectMany(e => e.StudentExercises)
+                        .Where(se => se.Status == ExerciseStatus.Passed && studentIds.Contains(se.StudentId))
+                        .GroupBy(se => se.StudentId)
+                        .Count()
+                    : 0
             }).ToList();
         }
 
@@ -264,5 +264,60 @@ namespace Puroguramu.Infrastructures.Services
 
             return exercises;
         }
-    }
+
+
+        public async Task<List<StudentExerciseDto>> GetAllExercisesByLessonAsync(string studentID, Guid lessonId)
+        {
+            // Récupération de l'étudiant par son matricule
+            var student = await _userManager.Users
+                .Include(u => u.StudentExercises)
+                .ThenInclude(se => se.Exo)
+                .SingleOrDefaultAsync(u => u.Id == studentID);
+
+            if (student == null)
+            {
+                throw new InvalidOperationException("Student not found.");
+            }
+
+            if (student.StudentExercises == null)
+            {
+                student.StudentExercises = new List<StudentExercise>();
+            }
+
+            // Récupérer tous les exercices de la leçon donnée
+            var exercises = await _context.Exercises
+                .Where(e => e.LessonId == lessonId)
+                .OrderBy(e => e.Order)
+                .ToListAsync();
+
+            // Construire la liste des DTOs
+            var studentExercises = exercises.Select(exercise =>
+            {
+                var studentExercise = student.StudentExercises
+                    .FirstOrDefault(se => se.ExoId == exercise.Id);
+
+                return new StudentExerciseDto
+                {
+                    ExerciseId = exercise.Id,
+                    Title = exercise.Title,
+                    Status = studentExercise != null ? (Domains.ExerciseStatus)studentExercise.Status : Domains.ExerciseStatus.NotStarted,
+                    DifficultyExo = MapDifficultyToDto(exercise.Difficulty),
+                };
+            }).ToList();
+
+            return studentExercises;
+        }
+
+        private Domains.DifficultyExo MapDifficultyToDto(Puroguramu.Infrastructures.Data.models.Difficulty difficulty)
+        {
+            return difficulty switch
+            {
+                Puroguramu.Infrastructures.Data.models.Difficulty.Easy => Domains.DifficultyExo.Easy,
+                Puroguramu.Infrastructures.Data.models.Difficulty.Medium => Domains.DifficultyExo.Medium,
+                Puroguramu.Infrastructures.Data.models.Difficulty.Hard => Domains.DifficultyExo.Hard,
+                _ => throw new ArgumentOutOfRangeException(nameof(difficulty), "Unknown difficulty level")
+            };
+        }
+
+}
 }
