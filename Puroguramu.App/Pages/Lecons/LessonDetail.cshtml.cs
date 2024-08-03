@@ -22,24 +22,21 @@ namespace Puroguramu.App.Pages.Lecons
         }
 
         public LessonEditDto Lesson { get; set; }
-        public List<StudentExerciseDto> Exercises { get; set; }
+        public List<ExerciseDto> Exercises { get; set; }
         public StudentDto Student { get; set; }
+        public StudentExerciseDto StudentExerciseDto { get; set; }
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
-            // Récupérer les informations de l'étudiant
             Student = await _studentRepository.GetStudentProfileAsync(User);
-
-            // Récupérer la leçon par ID
             Lesson = await _lessonRepository.GetLessonByIdAsync(id);
+            StudentExerciseDto = await _studentRepository.GetNextExerciseAsync(Student.Matricule, Lesson.Id);
             if (Lesson == null)
             {
                 return NotFound();
             }
 
-            // Récupérer tous les exercices pour l'étudiant dans la leçon spécifiée
-            Exercises = await _lessonRepository.GetAllExercisesByLessonAsync(Student.Id, Lesson.Id);
-
+            Exercises = await _lessonRepository.GetExercisesByLessonIdAsync(id);
             return Page();
         }
     }

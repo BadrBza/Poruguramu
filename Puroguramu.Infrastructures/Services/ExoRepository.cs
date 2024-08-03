@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Puroguramu.Domains;
+using Puroguramu.Domains.modelsDomains;
 using Puroguramu.Domains.Repositories;
 using Puroguramu.Infrastructures.Data;
 using Puroguramu.Infrastructures.Data.models;
@@ -48,5 +50,37 @@ public class ExoRepository : IExoRepository
     public async Task<int> GetExercicesCountAsync()
     {
         return await _context.Exercises.CountAsync();
+    }
+
+    public async Task<ExerciseEditDto> GetExerciseByIdAsync(Guid id)
+    {
+        var exercise = await _context.Exercises.FindAsync(id);
+        if (exercise == null) return null;
+
+        return new ExerciseEditDto
+        {
+            Id = exercise.Id,
+            Title = exercise.Title,
+            Description = exercise.Description,
+            Template = exercise.Template,
+            Solution = exercise.Solution,
+            LessonId = exercise.LessonId,
+            Difficulty = (DifficultyExo)exercise.Difficulty
+        };
+    }
+
+    public async Task UpdateExerciseAsync(ExerciseEditDto exerciseDto)
+    {
+        var exercise = await _context.Exercises.FindAsync(exerciseDto.Id);
+        if (exercise != null)
+        {
+            exercise.Title = exerciseDto.Title;
+            exercise.Description = exerciseDto.Description;
+            exercise.Template = exerciseDto.Template;
+            exercise.Solution = exerciseDto.Solution;
+            exercise.Difficulty = (Difficulty)exercise.Difficulty;
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
