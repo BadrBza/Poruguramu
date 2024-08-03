@@ -61,7 +61,7 @@ Layout = null;
         {
         <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
             <h2 class="text-xl font-semibold">
-                <a href="/Lecons/LessonDetail?id=@lesson.Id" class="text-blue-500 hover:underline">
+                <a href="/Lecons/LessonDetail?id=@lesson.Id" class="text-white-500 hover:underline">
                     @lesson.Title
                 </a>
             </h2>
@@ -69,18 +69,24 @@ Layout = null;
                 réalisés</p>
 
             <!-- Lien vers le prochain exercice de cette leçon -->
-            @if (Model.NextExercisesByLesson.TryGetValue(lesson.Id, out var nextExercise))
-            {
-            @if (nextExercise.ExerciseId != Guid.Empty)
-            {
-            <a href="/Exercices/DoExercise?id=@nextExercise.ExerciseId" class="text-blue-500 hover:underline">Commencer
-                le prochain exercice : @nextExercise.Title</a>
-            }
-            else
-            {
-            <p class="text-green-500">@nextExercise.Title</p>
-            }
-            }
+           @if (Model.NextExercisesByLesson.TryGetValue(lesson.Id, out var nextExercise))
+           {
+               @if (nextExercise.ExerciseId != Guid.Empty)
+               {
+                   <a href="/Exercices/Exercice?id=@nextExercise.ExerciseId"
+                      class="inline-block px-4 py-2 bg-blue-500 text-white font-medium text-sm rounded-md shadow-sm hover:bg-blue-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200 ease-in-out mt-4">
+                       Commencer le prochain exercice : @nextExercise.Title
+                   </a>
+               }
+               else
+               {
+                   <p class="text-green-500 font-semibold text-sm mt-4">
+                       @nextExercise.Title
+                   </p>
+               }
+           }
+
+
         </div>
         }
     </div>
