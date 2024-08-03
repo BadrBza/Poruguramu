@@ -1,0 +1,121 @@
+﻿@page
+@model Puroguramu.App.Pages.Dashboard.TeacherDashboardModel
+@using Microsoft.AspNetCore.Identity
+@using Puroguramu.Domains.modelsDomains
+@using Puroguramu.Domains.Repositories
+@using Puroguramu.Infrastructures.Data.models
+@inject UserManager<Student> UserManager
+@inject IStudentRepository StudentRepository
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Tableau de Bord de l'Enseignant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+     <script src="~/js/dropdown.js"></script>
+</head>
+<body class="bg-gray-900 text-gray-200 flex flex-col min-h-screen">
+  
+<nav class="bg-gray-800 text-gray-200 px-4 sm:px-6 py-4 shadow">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="/Dashboard/TeacherDashboard" class="flex items-center space-x-2">
+            <img src="/ressources/logo.png" alt="Logo" class="h-10 w-10">
+            <span class="font-bold text-lg">Puroguramu</span>
+        </a>
+        <div class="hidden md:flex items-center space-x-4">
+            <div class="relative">
+                <button id="profileButton" class="flex items-center space-x-2 focus:outline-none">
+                    <img src="@(Model.Student.ProfilePicture != null ? $"data:image;base64,{Convert.ToBase64String(Model.Student.ProfilePicture)}" : "/ressources/basic.jpg")" alt="Profile Picture" class="h-12 w-12 rounded-full border-4 border-blue-500 cursor-pointer">
+                    <span class="ml-2">@Model.Student.FirstName @Model.Student.LastName</span>
+                </button>
+                <div id="dropdown" class="hidden absolute right-0 mt-2 w-48 bg-gray-800 text-gray-200 rounded-md shadow-xl z-20">
+                    <a href="/Account/Profile" class="block px-4 py-2 text-gray-200 hover:bg-gray-700">Modifier le Profil</a>
+                    <a href="/Account/ChangePassword" class="block px-4 py-2 text-gray-200 hover:bg-gray-700">Changer le Mot de Passe</a>
+                </div>
+            </div>
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                <button id="logout" type="submit" class="px-5 py-2 bg-red-600 hover:bg-red-700 rounded-md shadow-lg font-medium text-white">Déconnexion</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<!-- Zone principale de contenu -->
+<main class="flex-grow container mx-auto p-10 mt-30">
+    <div class="flex justify-between items-center">
+        <h1 class="text-3xl font-bold">Tableau de Bord de l'Enseignant</h1>
+        <a href="/Lecons/CreateLesson" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow">Créer une Leçon</a>
+    </div>
+    <div class="mt-6 space-y-6">
+        @foreach (var lesson in Model.Lessons.OrderBy(l => l.Order))
+        {
+            <div class="bg-gray-800 rounded-xl p-6 shadow-lg grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="md:col-span-3">
+                    <h2 class="text-xl font-semibold">@lesson.Title</h2>
+                    <p class="text-gray-400">
+                        Étudiants ayant terminé: @lesson.StudentsWhoCompleted/@lesson.TotalStudents
+                    </p>
+                </div>
+                <div class="flex flex-col space-y-2 md:space-y-0 md:flex-row md:justify-end items-center gap-2">
+                    <form method="post" asp-page-handler="EditLesson" class="inline">
+                        <input type="hidden" name="id" value="@lesson.Id" />
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow transition duration-300 ease-in-out">Éditer</button>
+                    </form>
+                    <form method="post" asp-page-handler="ToggleLesson" class="inline">
+                        <input type="hidden" name="id" value="@lesson.Id" />
+                        <input type="hidden" name="isPublished" value="@(lesson.IsPublished ? "false" : "true")" />
+                        <button type="submit" class="@(lesson.IsPublished ? "bg-gray-500 hover:bg-gray-700" : "bg-purple-500 hover:bg-purple-700") text-white font-bold py-2 px-4 rounded shadow transition duration-300 ease-in-out">@((lesson.IsPublished ? "Masquer" : "Publier"))</button>
+                    </form>
+                    <form method="post" asp-page-handler="DeleteLesson" class="inline">
+                        <input type="hidden" name="id" value="@lesson.Id" />
+                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow transition duration-300 ease-in-out">Supprimer</button>
+                    </form>
+                    <form method="post" asp-page-handler="MoveLesson" class="inline">
+                        <input type="hidden" name="id" value="@lesson.Id" />
+                        <input type="hidden" name="direction" value="up" />
+                        <button type="submit" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded shadow transition duration-300 ease-in-out">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a1 1 0 001-1V5.414l3.293 3.293a1 1 0 001.414-1.414l-5-5a1 1 0 00-1.414 0l-5 5a1 1 0 101.414 1.414L9 5.414V17a1 1 0 001 1z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </form>
+                    <form method="post" asp-page-handler="MoveLesson" class="inline">
+                        <input type="hidden" name="id" value="@lesson.Id" />
+                        <input type="hidden" name="direction" value="down" />
+                        <button type="submit" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded shadow transition duration-300 ease-in-out">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 2a1 1 0 00-1 1v11.586l-3.293-3.293a1 1 0 10-1.414 1.414l5 5a1 1 0 001.414 0l5-5a1 1 0 00-1.414-1.414L11 14.586V3a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</main>
+
+<!-- Pied de page -->
+<footer class="bg-gray-800 text-gray-400 px-6 py-4 shadow w-full mt-auto">
+    <div class="container mx-auto flex flex-wrap justify-between items-center">
+        <a href="/Index" class="flex items-center space-x-2">
+            <img src="/ressources/logo.png" alt="Logo" class="h-8">
+            <span class="text-lg font-semibold">Puroguramu</span>
+        </a>
+        <div class="flex items-center space-x-6 text-sm">
+            <a href="#" class="hover:text-white">À propos</a>
+            <a href="#" class="hover:text-white">Politique de confidentialité</a>
+            <a href="#" class="hover:text-white">Contact</a>
+        </div>
+    </div>
+    <div class="text-center text-xs text-gray-400 mt-2">
+        © 2023 Puroguramu™. Tous droits réservés.
+    </div>
+</footer>
+
+</body>
+</html>

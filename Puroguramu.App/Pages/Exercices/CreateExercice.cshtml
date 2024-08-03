@@ -1,0 +1,65 @@
+﻿@page
+@using Puroguramu.Domains
+@model Puroguramu.App.Pages.Exercices.CreateExerciceModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Créer un Exercice</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+</head>
+<body class="bg-gray-900 text-gray-200 flex flex-col min-h-screen">
+
+<nav class="bg-gray-800 text-gray-200 px-4 sm:px-6 py-4 shadow">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="/Dashboard/TeacherDashboard" class="flex items-center space-x-2">
+            <img src="/ressources/logo.png" alt="Logo" class="h-10 w-10">
+            <span class="font-bold text-lg">Puroguramu</span>
+        </a>
+    </div>
+</nav>
+
+<main class="flex-grow container mx-auto p-10">
+
+        <div class="sm:mx-auto sm:w-full sm:max-w-md">
+            <h1 class="text-2xl font-bold mb-6">Créer un Exercice</h1>
+            <div class="max-w-xl mx-auto bg-gray-800 p-8 rounded-xl shadow-lg">
+                <form id="create-exercice-form" method="post" class="max-w-sm mx-auto">
+                    <div asp-validation-summary="ModelOnly" class="text-red-500 bg-red-100 p-4 rounded mb-4"></div>
+                    <div class="mb-5">
+                        <label asp-for="Title" class="Title" class="block text-sm font-medium text-gray-300">Titre de
+                            l'exercice</label>
+                        <input asp-for="Title"
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"/>
+                        <span asp-validation-for="Title" class="text-red-500"></span>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <button type="submit"
+                                class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                            Créer l'exercice
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+</main>
+
+<footer class="bg-gray-800 text-gray-400 px-6 py-4 shadow w-full mt-auto">
+    <div class="container mx-auto text-center text-xs text-gray-400">
+        © 2023 Puroguramu™. Tous droits réservés.
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,58 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Puroguramu.Domains.modelsDomains;
+using Puroguramu.Domains.Repositories;
+
+namespace Puroguramu.App.Pages.Dashboard
+{
+    [Authorize(Roles = "Teacher")]
+    public class TeacherDashboardModel : PageModel
+    {
+        private readonly ILessonRepository _lessonRepository;
+        private readonly IStudentRepository _studentRepository;
+
+        public TeacherDashboardModel(ILessonRepository lessonRepository, IStudentRepository studentRepository)
+        {
+            _lessonRepository = lessonRepository;
+            _studentRepository = studentRepository;
+        }
+
+        public List<LessonDto> Lessons { get; set; }
+        public StudentDto Student { get; set; }
+
+        public async Task OnGetAsync()
+        {
+            Lessons = await _lessonRepository.GetLessonsWithStudentProgressAsync();
+            Student = await _studentRepository.GetStudentProfileAsync(User);
+        }
+
+        public async Task<IActionResult> OnPostToggleLessonAsync(Guid id, bool isPublished)
+        {
+            await _lessonRepository.ToggleLessonAsync(id);
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnPostDeleteLessonAsync(Guid id)
+        {
+            await _lessonRepository.DeleteLessonAsync(id);
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnPostMoveLessonAsync(Guid id, string direction)
+        {
+            bool moveUp = direction == "up";
+            await _lessonRepository.MoveLessonAsync(id, moveUp);
+            return RedirectToPage();
+        }
+
+        public IActionResult OnPostEditLesson(Guid id)
+        {
+            return RedirectToPage("/Lecons/EditLesson", new { id });
+        }
+    }
+}

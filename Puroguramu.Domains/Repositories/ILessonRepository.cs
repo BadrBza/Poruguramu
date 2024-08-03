@@ -1,0 +1,24 @@
+﻿using Puroguramu.Domains.modelsDomains;
+
+namespace Puroguramu.Domains.Repositories;
+
+public interface ILessonRepository
+{
+    Task<int> GetLessonsCountAsync();
+    Task CreateLessonAsync(LessonDto lessonDto);
+    Task<List<LessonDto>> GetAllLessonsAsync();
+    Task ToggleLessonAsync(Guid id);
+    Task DeleteLessonAsync(Guid id);
+    Task MoveLessonAsync(Guid id, bool moveUp);
+    Task<LessonEditDto> GetLessonByIdAsync(Guid id);
+    Task UpdateLessonAsync(LessonEditDto lessonDto);
+    Task<List<LessonDto>> GetPublishedLessonsAsync();
+
+    Task<List<LessonDto>> GetPublishedLessonsWithProgressAsync(string studentMatricule);
+    Task<int> GetTotalExercisesCountAsync(Guid lessonId);
+    Task<int> GetCompletedExercisesCountAsync(Guid lessonId, string studentMatricule);
+    Task<List<LessonDto>> GetLessonsWithStudentProgressAsync();
+    Task<List<ExerciseDto>> GetExercisesByLessonIdAsync(Guid lessonId);
+}
+
+

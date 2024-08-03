@@ -1,0 +1,128 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Puroguramu.Infrastructures.Data.models
+@using Puroguramu.Infrastructures.Services
+@model Puroguramu.App.Pages.Account.Profile
+@inject UserManager<Student> UserManager
+
+@{
+    Layout = null;
+    var user = await UserManager.GetUserAsync(User);
+    var roles = await UserManager.GetRolesAsync(user);
+    string dashboardLink = "/Index"; 
+
+    if (roles.Contains("Teacher"))
+    {
+        dashboardLink = "/Dashboard/TeacherDashboard";
+    }
+    else if (roles.Contains("Student"))
+    {
+        dashboardLink = "/Dashboard/StudentDashboard";
+    }
+}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier le Profil</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-gray-200 flex flex-col justify-between min-h-screen">
+
+    <!-- Navigation Bar -->
+    <nav class="bg-gray-800 text-gray-200 px-4 sm:px-6 py-4 shadow">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="@dashboardLink" class="flex items-center space-x-2">
+                <img src="/ressources/logo.png" alt="Logo" class="h-10 w-10">
+                <span class="font-bold text-lg">Puroguramu</span>
+            </a>
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="/Account/profile" class="flex items-center space-x-2">
+                    <img src="@(Model.Student.ProfilePicture != null ? $"data:image;base64,{Convert.ToBase64String(Model.Student.ProfilePicture)}" : "/ressources/basic.jpg")" alt="Profile Picture" class="h-12 w-12 rounded-full border-4 border-blue-500 cursor-pointer">
+                    <span class="ml-2">@Model.Student.FirstName @Model.Student.LastName</span>
+                </a>
+                <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                    <button id="logout" type="submit" class="px-5 py-2 bg-red-600 hover:bg-red-700 rounded-md shadow-lg font-medium text-white">Déconnexion</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area (Form Section) -->
+    <div class="flex-grow flex items-center justify-center p-4">
+        <div class="w-full max-w-lg p-5 bg-gray-800 rounded-xl shadow-xl">
+
+            <!-- Profile Update Form -->
+            <form method="POST" enctype="multipart/form-data">
+                <h2 class="text-2xl font-semibold text-center mb-4">Modifier votre Profil</h2>
+                <!-- Profile Image Preview -->
+                <div class="flex justify-center mb-6">
+                    <img src="@(Model.Student.ProfilePicture != null ? $"data:image;base64,{Convert.ToBase64String(Model.Student.ProfilePicture)}" : "/ressources/basic.jpg")" alt="Profile Picture" class="h-40 w-40 rounded-full border-4 border-blue-500 cursor-pointer">
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Student.Matricule" class="block text-sm font-medium text-gray-400"></label>
+                    <input asp-for="Student.Matricule" class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Votre matricule" readonly>
+                </div>
+                <div class="mb-4">
+                    <label asp-for="Student.FirstName" class="block text-sm font-medium text-gray-400"></label>
+                    <input asp-for="Student.FirstName" class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Entrez votre prénom">
+                    <span asp-validation-for="Student.FirstName" class="text-red-500"></span>
+                </div>
+                <div class="mb-4">
+                    <label asp-for="Student.LastName" class="block text-sm font-medium text-gray-400"></label>
+                    <input asp-for="Student.LastName" class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Entrez votre nom">
+                    <span asp-validation-for="Student.LastName" class="text-red-500"></span>
+                </div>
+                <div class="mb-4">
+                    <label asp-for="Student.Email" class="block text-sm font-medium text-gray-400"></label>
+                    <input asp-for="Student.Email" class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Entrez votre adresse électronique">
+                    <span asp-validation-for="Student.Email" class="text-red-500"></span>
+                </div>
+                <div class="mb-4">
+                    <label asp-for="Student.LabGroup" class="block text-sm font-medium text-gray-400"></label>
+                    <select asp-for="Student.LabGroup" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                        <option value="2i1">2i1</option>
+                        <option value="2i2">2i2</option>
+                        <option value="2i3">2i3</option>
+                        <option value="2i4">2i4</option>
+                    </select>
+                    <span asp-validation-for="Student.LabGroup" class="text-red-500"></span>
+                </div>
+                <div class="mb-6">
+                    <label asp-for="ProfilePictureFile" class="block text-sm font-medium text-gray-400"></label>
+                    <input asp-for="ProfilePictureFile" accept=".jpg, .jpeg, .png" class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:border-blue-500 cursor-pointer">
+                    <span asp-validation-for="ProfilePictureFile" class="text-red-500"></span>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="flex items-center justify-center">
+                    <button type="submit" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-md shadow-lg font-medium text-white">Enregistrer les modifications</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 px-6 py-4 shadow w-full mt-auto">
+        <div class="container mx-auto flex flex-wrap justify-between items-center">
+            <a href="/Index" class="flex items-center space-x-2">
+                <img src="/ressources/logo.png" alt="Logo" class="h-8">
+                <span class="text-lg font-semibold">Puroguramu</span>
+            </a>
+            <div class="flex items-center space-x-6 text-sm">
+                <a href="#" class="hover:text-white">About</a>
+                <a href="#" class="hover:text-white">Privacy Policy</a>
+                <a href="#" class="hover:text-white">Contact</a>
+            </div>
+        </div>
+        <div class="text-center text-xs text-gray-400 mt-2">
+            © 2023 Puroguramu™. All Rights Reserved.
+        </div>
+    </footer>
+
+</body>
+</html>

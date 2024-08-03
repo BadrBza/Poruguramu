@@ -1,0 +1,83 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Inscription Étudiant</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen flex flex-col justify-between">
+
+    <div class="min-h-screen  flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+        <div class="sm:mx-auto sm:w-full sm:max-w-md">
+            <h1 class="text-2xl font-bold mb-4 text-white text-center">Inscription</h1>
+            <div class="bg-gray-900 px-8 py-8 rounded shadow-md">
+                <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
+                    <hr class="mb-4 border-gray-700" />
+                    <div class="mb-5">
+                        <label asp-for="Input.ProfilePicture" class="block mb-2 text-sm font-medium text-gray-300"></label>
+                        <input asp-for="Input.ProfilePicture" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="file" />
+                        <span asp-validation-for="Input.ProfilePicture" class="text-red-500"></span>
+                    </div>
+                    <div class="mb-5">
+                        <label asp-for="Input.Matricule" class="block mb-2 text-sm font-medium text-gray-300"></label>
+                        <input asp-for="Input.Matricule" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="A123456" pattern="[A-Za-z]{1}[0-9]{6}" required />
+                        <span asp-validation-for="Input.Matricule" class="text-red-500"></span>
+                    </div>
+                    <div class="mb-5">
+                        <label asp-for="Input.FirstName" class="block mb-2 text-sm font-medium text-gray-300"></label>
+                        <input asp-for="Input.FirstName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Votre prénom" required />
+                        <span asp-validation-for="Input.FirstName" class="text-red-500"></span>
+                    </div>
+                    <div class="mb-5">
+                        <label asp-for="Input.LastName" class="block mb-2 text-sm font-medium text-gray-300"></label>
+                        <input asp-for="Input.LastName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Votre nom" required />
+                        <span asp-validation-for="Input.LastName" class="text-red-500"></span>
+                    </div>
+                    <div class="mb-5">
+                        <label asp-for="Input.Email" class="block mb-2 text-sm font-medium text-gray-300"></label>
+                        <input asp-for="Input.Email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="exemple@domaine.com" required />
+                        <span asp-validation-for="Input.Email" class="text-red-500"></span>
+                    </div>
+                    <div class="mb-5">
+                        <label asp-for="Input.Password" class="block mb-2 text-sm font-medium text-gray-300"></label>
+                        <input asp-for="Input.Password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="********" required />
+                        <span asp-validation-for="Input.Password" class="text-red-500"></span>
+                    </div>
+                    <div class="mb-5">
+                        <label asp-for="Input.ConfirmPassword" class="block mb-2 text-sm font-medium text-gray-300"></label>
+                        <input asp-for="Input.ConfirmPassword" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="********" required />
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-red-500"></span>
+                    </div>
+                    <div class="mb-5">
+                        <label asp-for="Input.LabGroup" class="block mb-2 text-sm font-medium text-gray-300"></label>
+                        <select asp-for="Input.LabGroup" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                            <option value="2i1">2i1</option>
+                            <option value="2i2">2i2</option>
+                            <option value="2i3">2i3</option>
+                            <option value="2i4">2i4</option>
+                        </select>
+                        <span asp-validation-for="Input.LabGroup" class="text-red-500"></span>
+                    </div>
+                    <div>
+                        <button id="register-submit" type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">S'inscrire</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

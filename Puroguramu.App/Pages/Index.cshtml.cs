@@ -1,61 +1,38 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Puroguramu.Domains;
+using Puroguramu.Domains.Repositories;
 
 namespace Puroguramu.App.Pages;
 
 public class IndexModel : PageModel
 {
-    private readonly IAssessExercise _assessor;
+    private readonly IStudentRepository _studentRepository;
+    private readonly ILessonRepository _lessonRepository;
+    private readonly IExoRepository _exoRepository;
 
-    private ExerciseResult? _result;
+    public int LessonsCount { get; set; }
+    public int StudentsCount { get; set; }
+    public int ExercicesCount { get; set; }
 
-    [BindProperty]
-    public string Proposal { get; set; } = string.Empty;
+    public IndexModel(IStudentRepository studentRepository, ILessonRepository lessonRepository, IExoRepository exoRepository)
+    {
+        _studentRepository = studentRepository;
+        _lessonRepository = lessonRepository;
+        _exoRepository = exoRepository;
+    }
 
-    public string ExerciseResultStatus
-        => _result?.Status switch
+    public async Task<IActionResult> OnGetAsync()
+    {
+        var redirectUrl = await _studentRepository.GetDashboardRedirectUrlAsync(User);
+        if (redirectUrl != null)
         {
-            ExerciseStatus.NotStarted => "Not Started",
-            ExerciseStatus.Started => "Started",
-            ExerciseStatus.Passed => "Succeeded",
-            ExerciseStatus.Failed => "Failed",
-            _ => "Unknown"
-        };
+            return Redirect(redirectUrl);
+        }
 
-    public IEnumerable<TestResultViewModel> TestResult
-        => _result
-            ?.TestResults
-            ?.Select(result => new TestResultViewModel(result)) ?? Array.Empty<TestResultViewModel>();
+        LessonsCount = await _lessonRepository.GetLessonsCountAsync();
+        StudentsCount = await _studentRepository.GetStudentsCountAsync();
+        ExercicesCount = await _exoRepository.GetExercicesCountAsync();
 
-    public IndexModel(IAssessExercise assessor)
-    {
-        _assessor = assessor;
+        return Page();
     }
-
-    public async Task OnGetAsync()
-    {
-        _result = await _assessor.StubForExercise(Guid.Empty);
-        Proposal = _result.Proposal;
-    }
-
-    public async Task OnPostAsync()
-    {
-        _result = await _assessor.Assess(Guid.Empty, Proposal);
-    }
-}
-
-public record TestResultViewModel(TestResult Result)
-{
-    public string Status
-        => Result.Status.ToString();
-
-    public string Label
-        => Result.Label;
-
-    public bool HasError
-        => Result.Status != TestStatus.Passed;
-
-    public string ErrorMessage
-        => Result.ErrorMessage;
 }

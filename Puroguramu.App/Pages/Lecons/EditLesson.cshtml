@@ -1,0 +1,103 @@
+﻿@page
+@model Puroguramu.App.Pages.Lecons.EditLesson
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Éditer une Leçon</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-gray-200 flex flex-col min-h-screen">
+
+    <!-- Navigation Bar -->
+    <nav class="bg-gray-800 text-gray-200 px-4 sm:px-6 py-4 shadow">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/Index" class="flex items-center space-x-2">
+                <img src="/ressources/logo.png" alt="Logo" class="h-10 w-10">
+                <span class="font-bold text-lg">Puroguramu</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow container mx-auto p-10 mt-20"> <!-- Increased top margin for spacing -->
+        <div class="max-w-4xl mx-auto bg-gray-800 p-8 rounded-xl shadow-lg">
+            <h1 class="text-2xl font-bold text-center mb-6">Éditer la Leçon</h1>
+            <form method="POST" class="space-y-6">
+                <!-- Hidden field for Lesson ID -->
+                <input type="hidden" name="Lesson.Id" value="@Model.Lesson.Id">
+
+                <div>
+                    <label for="title" class="block text-sm font-medium text-gray-300">Intitulé de la leçon</label>
+                    <input type="text" id="title" name="Lesson.Title" required
+                           class="mt-1 block w-full px-3 py-2 bg-gray-700 text-gray-300 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                           value="@Model.Lesson.Title">
+                </div>
+
+                <div>
+                    <label for="description" class="block text-sm font-medium text-gray-300">Description</label>
+                    <textarea id="description" name="Lesson.Description" rows="3" required
+                              class="mt-1 block w-full px-3 py-2 bg-gray-700 text-gray-300 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">@Model.Lesson.Description</textarea>
+                </div>
+
+                <!-- Add Exercise Button -->
+                <div class="flex justify-end mb-4">
+                    <a href="/Exercices/CreateExercice?lessonId=@Model.Lesson.Id" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                        Ajouter un Exercice
+                    </a>
+                </div>
+
+                <!-- Exercise List -->
+                <div class="space-y-4">
+                    @foreach (var exercise in Model.Exercises.OrderBy(e => e.Order))
+                    {
+                    <div class="flex justify-between items-center bg-gray-700 p-4 rounded">
+                        <div>
+                            <h3 class="text-lg font-medium text-white">Exercice : @exercise.Title</h3>
+                            <p class="text-gray-400">Status: @(exercise.IsPublished ? "Publié" : "Non publié")</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <a href="/Exercices/EditExercice?id=@exercise.Id" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">Éditer</a>
+                            <button type="button" class="bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded">Masquer/Publier</button>
+                            <button type="button" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">Supprimer</button>
+                        </div>
+                    </div>
+                    }
+                </div>
+
+                <div class="flex justify-center">
+                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Enregistrer les modifications</button>
+                </div>
+            </form>
+
+            <!-- Validation Summary -->
+            <div asp-validation-summary="ModelOnly" class="text-red-500"></div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 px-6 py-4 shadow w-full mt-auto">
+        <div class="container mx-auto flex flex-wrap justify-between items-center">
+            <a href="/Index" class="flex items-center space-x-2">
+                <img src="/ressources/logo.png" alt="Logo" class="h-8">
+                <span class="text-lg font-semibold">Puroguramu</span>
+            </a>
+            <div class="flex items-center space-x-6 text-sm">
+                <a href="#" class="hover:text-white">About</a>
+                <a href="#" class="hover:text-white">Privacy Policy</a>
+                <a href="#" class="hover:text-white">Contact</a>
+            </div>
+        </div>
+        <div class="text-center text-xs text-gray-400 mt-2">
+            © 2023 Puroguramu™. All Rights Reserved.
+        </div>
+    </footer>
+
+</body>
+</html>
