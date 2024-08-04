@@ -31,7 +31,7 @@ namespace Puroguramu.App.Pages.Dashboard
             Student = await _studentRepository.GetStudentProfileAsync(User);
         }
 
-        public async Task<IActionResult> OnPostToggleLessonAsync(Guid id, bool isPublished)
+        public async Task<IActionResult> OnPostToggleLessonAsync(Guid id)
         {
             await _lessonRepository.ToggleLessonAsync(id);
             return RedirectToPage();
