@@ -9,4 +9,7 @@ public interface IExoRepository
     Task<int> GetExercicesCountAsync();
     Task<ExerciseEditDto> GetExerciseByIdAsync(Guid id);
     Task UpdateExerciseAsync(ExerciseEditDto exerciseDto);
+    Task MoveExerciseAsync(Guid id, bool moveUp);
+    Task ToggleExerciseAsync(Guid id);
+    Task DeleteExerciseAsync(Guid id);
 }

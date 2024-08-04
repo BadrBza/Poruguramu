@@ -94,4 +94,40 @@ public class ExoRepository : IExoRepository
             _ => throw new ArgumentOutOfRangeException(nameof(difficultyExo), "Unknown difficulty level")
         };
     }
+
+    public async Task MoveExerciseAsync(Guid exerciseId, bool moveUp)
+    {
+        var exercise = await _context.Exercises.FindAsync(exerciseId);
+        if (exercise != null)
+        {
+            var targetOrder = moveUp ? exercise.Order - 1 : exercise.Order + 1;
+            var swapExercise = await _context.Exercises.FirstOrDefaultAsync(e => e.LessonId == exercise.LessonId && e.Order == targetOrder);
+            if (swapExercise != null)
+            {
+                swapExercise.Order = exercise.Order;
+                exercise.Order = targetOrder;
+                await _context.SaveChangesAsync();
+            }
+        }
+    }
+
+    public async Task ToggleExerciseAsync(Guid id)
+    {
+        var exercise = await _context.Exercises.FindAsync(id);
+        if (exercise != null)
+        {
+            exercise.IsPublished = !exercise.IsPublished;
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    public async Task DeleteExerciseAsync(Guid id)
+    {
+        var exercise = await _context.Exercises.FindAsync(id);
+        if (exercise != null)
+        {
+            _context.Exercises.Remove(exercise);
+            await _context.SaveChangesAsync();
+        }
+    }
 }
