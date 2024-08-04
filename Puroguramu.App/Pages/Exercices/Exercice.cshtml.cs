@@ -10,7 +10,8 @@ public class Exercice : PageModel
 
     private ExerciseResult? _result;
 
-    [BindProperty] public string Proposal { get; set; } = string.Empty;
+    [BindProperty]
+    public string Proposal { get; set; } = string.Empty;
 
     public string ExerciseTitle { get; set; }
     public string ExerciseStatut { get; set; }
