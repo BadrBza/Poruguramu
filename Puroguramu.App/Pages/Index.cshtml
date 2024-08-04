@@ -4,6 +4,9 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Puroguramu.App
 @using Puroguramu.App.Pages
+@{
+    Layout = "_Layout";
+}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -17,25 +20,6 @@
 </head>
 <body class="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen flex flex-col">
 
-<!-- Navigation Bar -->
-<nav class="bg-gray-800 text-gray-200 px-4 sm:px-6 py-4 shadow">
-    <div class="container mx-auto flex justify-between items-center">
-        <!-- Logo and branding -->
-        <div class="flex items-center space-x-2">
-            <a href="/Index" class="flex items-center space-x-2">
-                <img src="/ressources/logo.png" alt="Logo" class="h-10 w-10">
-                <span class="font-bold text-lg">Puroguramu</span>
-            </a>
-        </div>
-        <!-- Navigation Links -->
-        <div class="hidden md:flex items-center space-x-4">
-            <a asp-area="Identity" asp-page="/Account/Register"
-               class="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-3 py-2 transition-colors duration-200">Inscription</a>
-            <a asp-area="Identity" asp-page="/Account/Login"
-               class="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-3 py-2 transition-colors duration-200">Connexion</a>
-        </div>
-    </div>
-</nav>
 <!-- Main Content Area -->
 <div class="flex-grow container mx-auto flex flex-col items-center justify-center py-16 px-4 sm:px-6 lg:px-8">
     <div class="flex-grow container mx-auto flex flex-col items-center justify-center py-16 px-4 sm:px-6 lg:px-8">
@@ -67,25 +51,6 @@
     </div>
 
 </div>
-
-
-<!-- Footer -->
-<footer class="bg-gray-800 text-gray-400 px-6 py-4 shadow w-full mt-auto">
-    <div class="container mx-auto flex flex-wrap justify-between items-center">
-        <a href="/Index" class="flex items-center space-x-2">
-            <img src="/ressources/logo.png" alt="Logo" class="h-8">
-            <span class="text-lg font-semibold">Puroguramu</span>
-        </a>
-        <div class="flex items-center space-x-6 text-sm">
-            <a href="#" class="hover:text-white">About</a>
-            <a href="#" class="hover:text-white">Privacy Policy</a>
-            <a href="#" class="hover:text-white">Contact</a>
-        </div>
-    </div>
-    <div class="text-center text-xs text-gray-400 mt-2">
-        © 2023 Puroguramu™. All Rights Reserved.
-    </div>
-</footer>
 
 <script defer>
     document.addEventListener('DOMContentLoaded', (evt) => {

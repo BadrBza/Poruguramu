@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Puroguramu.Domains.modelsDomains;
 using Puroguramu.Domains.Repositories;
-using System;
-using System.Threading.Tasks;
 
 namespace Puroguramu.App.Pages.Lecons
 {
@@ -11,6 +9,7 @@ namespace Puroguramu.App.Pages.Lecons
     {
         private readonly ILessonRepository _lessonRepository;
         private readonly IExoRepository _exoRepository;
+
         public List<ExerciseDto> Exercises { get; set; } = new List<ExerciseDto>();
 
         [BindProperty]
@@ -24,18 +23,8 @@ namespace Puroguramu.App.Pages.Lecons
 
         public async Task OnGetAsync(Guid id)
         {
-            Console.WriteLine("OnGetAsync ID : " + id);
             Lesson = await _lessonRepository.GetLessonByIdAsync(id);
-            Console.WriteLine("Lesson ID = " + Lesson.Id);
             Exercises = await _lessonRepository.GetExercisesByLessonIdAsync(id);
-            if (Lesson == null)
-            {
-                Console.WriteLine("Leçon introuvable pour l'ID : " + id);
-            }
-            else
-            {
-                Console.WriteLine("Leçon chargée : " + Lesson.Id);
-            }
         }
 
 
@@ -43,28 +32,33 @@ namespace Puroguramu.App.Pages.Lecons
         {
             if (!ModelState.IsValid)
             {
-                return Page();
+                return Page(); // Returns to the same page if validation fails
             }
+
+            Console.WriteLine("OnPostAsync UpdateLessonAsync");
             await _lessonRepository.UpdateLessonAsync(Lesson);
             return RedirectToPage("/Dashboard/TeacherDashboard");
         }
 
         public async Task<IActionResult> OnPostMoveExerciseAsync(Guid id, string direction, string lessonId)
         {
-            try
-            {
-                bool moveUp = direction == "up";
-                await _exoRepository.MoveExerciseAsync(id, moveUp);
-                return RedirectToPage("/Lecons/EditLesson", new { id = lessonId });
-            }
-            catch (Exception ex)
-            {
-                // Logger l'erreur pour comprendre ce qui se passe
-                Console.WriteLine($"Erreur lors du déplacement de l'exercice: {ex.Message}");
-                Console.WriteLine(ex.StackTrace);
-                // Optionnel: rediriger vers une page d'erreur
-                return RedirectToPage("/Error");
-            }
+            Console.WriteLine("Entry OnPostMoveExerciseAsync");
+            var moveUp = direction == "up";
+            await _exoRepository.MoveExerciseAsync(id, moveUp);
+            return RedirectToPage("/Lecons/EditLesson", new { id = lessonId });
+        }
+
+        public async Task<IActionResult> OnPostToggleExerciseAsync(Guid id, string lessonId)
+        {
+            Console.WriteLine($"Entry OnPostToggleExerciseAsync with id: {id} and lessonId: {lessonId}");
+            await _exoRepository.ToggleExerciseAsync(id);
+            return RedirectToPage("/Lecons/EditLesson", new { id = lessonId });
+        }
+
+        public async Task<IActionResult> OnPostDeleteExerciseAsync(Guid id, string lessonId)
+        {
+            await _exoRepository.DeleteExerciseAsync(id);
+            return RedirectToPage("/Lecons/EditLesson", new { id = lessonId });
         }
     }
 }

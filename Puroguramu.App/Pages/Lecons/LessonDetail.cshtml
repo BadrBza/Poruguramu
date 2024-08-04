@@ -1,5 +1,8 @@
 ﻿@page
 @model Puroguramu.App.Pages.Lecons.LessonDetail
+@{
+    Layout = "_Layout";
+}
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -12,38 +15,6 @@
 </head>
 <body class="bg-gray-900 text-gray-200 flex flex-col min-h-screen">
 
-<nav class="bg-gray-800 text-gray-200 px-4 sm:px-6 py-4 shadow">
-    <div class="container mx-auto flex justify-between items-center">
-        <a href="/Dashboard/studentDashboard" class="flex items-center space-x-2">
-            <img src="/ressources/logo.png" alt="Logo" class="h-10 w-10">
-            <span class="font-bold text-lg">Puroguramu</span>
-        </a>
-        <div class="hidden md:flex items-center space-x-4">
-            <div class="relative">
-                <button id="profileButton" class="flex items-center space-x-2 focus:outline-none">
-                    <img
-                        src="@(Model.Student.ProfilePicture != null ? $"data:image;base64,{Convert.ToBase64String(Model.Student.ProfilePicture)}" : "/ressources/basic.jpg")"
-                        alt="Profile Picture" class="h-12 w-12 rounded-full border-4 border-blue-500 cursor-pointer">
-                    <span class="ml-2">@Model.Student.FirstName @Model.Student.LastName</span>
-                </button>
-                <div id="dropdown"
-                     class="hidden absolute right-0 mt-2 w-48 bg-gray-800 text-gray-200 rounded-md shadow-xl z-20">
-                    <a href="/Account/Profile" class="block px-4 py-2 text-gray-200 hover:bg-gray-700">Modifier le
-                        Profil</a>
-                    <a href="/Account/ChangePassword" class="block px-4 py-2 text-gray-200 hover:bg-gray-700">Changer le
-                        Mot de Passe</a>
-                </div>
-            </div>
-            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
-                  asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-                <button id="logout" type="submit"
-                        class="px-5 py-2 bg-red-600 hover:bg-red-700 rounded-md shadow-lg font-medium text-white">
-                    Déconnexion
-                </button>
-            </form>
-        </div>
-    </div>
-</nav>
 
 
 <div class="flex-grow container mx-auto p-10">
@@ -58,18 +29,13 @@
             <h2 class="text-xl font-semibold">@exercise.Title</h2>
             <p class="text-gray-400">Difficulté : @exercise.DifficultyExo</p>
             <p class="text-gray-400">État : @exercise.Status</p>
-            <a href="/Exercices/DoExercise?id=@exercise.ExerciseId" class="text-blue-500 hover:underline">Commencer cet
-                exercice</a>
+            <a href="/Exercices/Exercice?exerciseTitle=@exercise.Title&exerciseStatus=@exercise.Status"
+               class="inline-block px-4 py-2 bg-blue-500 text-white font-medium text-sm rounded-md shadow-sm hover:bg-blue-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200 ease-in-out mt-4">Commencer
+                cet exercice</a>
         </div>
         }
     </div>
 </div>
-
-<footer class="bg-gray-800 text-gray-400 px-6 py-4 shadow w-full mt-auto">
-    <div class="container mx-auto text-center text-xs text-gray-400">
-        © 2023 Puroguramu™. Tous droits réservés.
-    </div>
-</footer>
 
 </body>
 </html>

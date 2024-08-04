@@ -2,7 +2,7 @@
 @model Puroguramu.App.Pages.Lecons.EditLesson
 
 @{
-    Layout = null;
+    Layout = "_Layout"; 
 }
 
 <!DOCTYPE html>
@@ -15,76 +15,71 @@
 </head>
 <body class="bg-gray-900 text-gray-200 flex flex-col min-h-screen">
 
-    <!-- Navigation Bar -->
-    <nav class="bg-gray-800 text-gray-200 px-4 sm:px-6 py-4 shadow">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="/Index" class="flex items-center space-x-2">
-                <img src="/ressources/logo.png" alt="Logo" class="h-10 w-10">
-                <span class="font-bold text-lg">Puroguramu</span>
-            </a>
-        </div>
-    </nav>
-
     <!-- Main Content Area -->
     <main class="flex-grow container mx-auto p-10 mt-20"> <!-- Increased top margin for spacing -->
-        <div class="max-w-4xl mx-auto bg-gray-800 p-8 rounded-xl shadow-lg">
-            <h1 class="text-2xl font-bold text-center mb-6">Éditer la Leçon</h1>
-            <form method="POST" class="space-y-6">
-                <!-- Hidden field for Lesson ID -->
-                <input type="hidden" name="Lesson.Id" value="@Model.Lesson.Id">
-
-                <div>
+        <article class="max-w-4xl mx-auto bg-gray-800 p-8 rounded-xl shadow-lg">
+            <header>
+                <h1 class="text-2xl font-bold text-center mb-6">Éditer la Leçon</h1>
+            </header>
+            
+                <section>
                     <label for="title" class="block text-sm font-medium text-gray-300">Intitulé de la leçon</label>
                     <input type="text" id="title" name="Lesson.Title" required
                            class="mt-1 block w-full px-3 py-2 bg-gray-700 text-gray-300 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                            value="@Model.Lesson.Title">
-                </div>
+                </section>
 
-                <div>
+                <section>
                     <label for="description" class="block text-sm font-medium text-gray-300">Description</label>
                     <textarea id="description" name="Lesson.Description" rows="3" required
                               class="mt-1 block w-full px-3 py-2 bg-gray-700 text-gray-300 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">@Model.Lesson.Description</textarea>
-                </div>
+                </section>
 
-                <!-- Add Exercise Button -->
-                <div class="flex justify-end mb-4">
-                    <a href="/Exercices/CreateExercice?lessonId=@Model.Lesson.Id" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
-                        Ajouter un Exercice
-                    </a>
-                </div>
+                <section>
+                    <div class="flex justify-end mb-4 mt-4">
+                        <a href="/Exercices/CreateExercice?lessonId=@Model.Lesson.Id"
+                           class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                            Ajouter un Exercice
+                        </a>
+                    </div>
+                </section>
 
-                <!-- Exercise List -->
-                <div class="space-y-4">
+                <section class="space-y-4">
                     @foreach (var exercise in Model.Exercises.OrderBy(e => e.Order))
                     {
                     <div class="flex justify-between items-center bg-gray-700 p-4 rounded">
-                        <div>
-                            <h3 class="text-lg font-medium text-white">Exercice : @exercise.Title</h3>
+                        <header>
+                            <h2 class="text-lg font-medium text-white">Exercice : @exercise.Title</h2>
                             <p class="text-gray-400">Status: @(exercise.IsPublished ? "Publié" : "Non publié")</p>
-                        </div>
-                        <div class="flex space-x-2">
+                        </header>
+                        <nav class="flex space-x-2">
                             <a href="/Exercices/EditExercice?id=@exercise.Id&lessonId=@Model.Lesson.Id"
                                class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">Éditer</a>
+
                             <form method="post" asp-page-handler="ToggleExercise" class="inline">
                                 <input type="hidden" name="id" value="@exercise.Id"/>
+                                <input type="hidden" name="lessonId" value="@Model.Lesson.Id"/>
                                 <button type="submit"
                                         class="@(exercise.IsPublished ? "bg-purple-500 hover:bg-purple-600" : "bg-gray-500 hover:bg-gray-700") text-white px-3 py-1 rounded">
                                     @((exercise.IsPublished ? "Masquer" : "Publier"))
                                 </button>
                             </form>
+
+
                             <form method="post" asp-page-handler="DeleteExercise" class="inline">
                                 <input type="hidden" name="id" value="@exercise.Id"/>
+                                <input type="hidden" name="lessonId" value="@Model.Lesson.Id"/>
                                 <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">
                                     Supprimer
                                 </button>
                             </form>
+                            
                             <form method="post" asp-page-handler="MoveExercise" class="inline">
                                 <input type="hidden" name="id" value="@exercise.Id"/>
                                 <input type="hidden" name="direction" value="up"/>
                                 <input type="hidden" name="lessonId" value="@Model.Lesson.Id"/>
                                 <button type="submit"
                                         class="bg-gray-500 hover:bg-gray-700 text-white px-3 py-1 rounded">
-                                    <!-- SVG Icone pour monter -->
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20"
                                          fill="currentColor">
                                         <path fill-rule="evenodd"
@@ -93,6 +88,7 @@
                                     </svg>
                                 </button>
                             </form>
+
                             <form method="post" asp-page-handler="MoveExercise" class="inline">
                                 <input type="hidden" name="id" value="@exercise.Id"/>
                                 <input type="hidden" name="direction" value="down"/>
@@ -107,38 +103,28 @@
                                     </svg>
                                 </button>
                             </form>
-                        </div>
+                        </nav>
                     </div>
                     }
-                </div>
-
-                <div class="flex justify-center">
-                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Enregistrer les modifications</button>
-                </div>
+                </section>
+            <form method="POST" class="space-y-6">
+                <!-- Hidden field for Lesson ID -->
+                <input type="hidden" name="Lesson.Id" value="@Model.Lesson.Id">
+                <section class="flex justify-center mt-10">
+                    <button type="submit"
+                            class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Enregistrer
+                        les modifications
+                    </button>
+                </section>
             </form>
 
-            <!-- Validation Summary -->
-            <div asp-validation-summary="ModelOnly" class="text-red-500"></div>
-        </div>
+            <footer>
+                <!-- Validation Summary -->
+                <div asp-validation-summary="ModelOnly" class="text-red-500"></div>
+            </footer>
+        </article>
     </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-gray-400 px-6 py-4 shadow w-full mt-auto">
-        <div class="container mx-auto flex flex-wrap justify-between items-center">
-            <a href="/Index" class="flex items-center space-x-2">
-                <img src="/ressources/logo.png" alt="Logo" class="h-8">
-                <span class="text-lg font-semibold">Puroguramu</span>
-            </a>
-            <div class="flex items-center space-x-6 text-sm">
-                <a href="#" class="hover:text-white">About</a>
-                <a href="#" class="hover:text-white">Privacy Policy</a>
-                <a href="#" class="hover:text-white">Contact</a>
-            </div>
-        </div>
-        <div class="text-center text-xs text-gray-400 mt-2">
-            © 2023 Puroguramu™. All Rights Reserved.
-        </div>
-    </footer>
+    
 
 </body>
 </html>

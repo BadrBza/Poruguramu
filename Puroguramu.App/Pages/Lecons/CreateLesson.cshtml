@@ -2,7 +2,7 @@
 @model Puroguramu.App.Pages.Lecons.CreateLessonModel
 
 @{
-    Layout = null;
+    Layout = "_Layout"; 
 }
 
 <!DOCTYPE html>
@@ -14,16 +14,6 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-900 text-gray-200 flex flex-col min-h-screen">
-
-    <!-- Navigation Bar -->
-    <nav class="bg-gray-800 text-gray-200 px-4 sm:px-6 py-4 shadow">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="/Index" class="flex items-center space-x-2">
-                <img src="/ressources/logo.png" alt="Logo" class="h-10 w-10">
-                <span class="font-bold text-lg">Puroguramu</span>
-            </a>
-        </div>
-    </nav>
 
     <!-- Main Content Area -->
     <main class="flex-grow container mx-auto p-10 mt-40"> <!-- Increased the margin-top here (mt-12) for more space -->
@@ -50,24 +40,6 @@
             </form>
         </div>
     </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-gray-400 px-6 py-4 shadow w-full mt-auto">
-        <div class="container mx-auto flex flex-wrap justify-between items-center">
-            <a href="Index" class="flex items-center space-x-2">
-                <img src="/ressources/logo.png" alt="Logo" class="h-8">
-                <span class="text-lg font-semibold">Puroguramu</span>
-            </a>
-            <div class="flex items-center space-x-6 text-sm">
-                <a href="#" class="hover:text-white">About</a>
-                <a href="#" class="hover:text-white">Privacy Policy</a>
-                <a href="#" class="hover:text-white">Contact</a>
-            </div>
-        </div>
-        <div class="text-center text-xs text-gray-400 mt-2">
-            © 2023 Puroguramu™. All Rights Reserved.
-        </div>
-    </footer>
 
 </body>
 </html>

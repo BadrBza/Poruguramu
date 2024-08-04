@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Puroguramu.Infrastructures.Data.models
+@inject SignInManager<Student> SignInManager
+@inject UserManager<Student> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -16,28 +22,105 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/Identity/css/site.css" asp-append-version="true" />
     </environment>
+    <style>
+        .nav-link {
+            position: relative;
+            display: inline-block;
+            /*padding-bottom: 4px;*/
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #FFFFFF; /* White underline */
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        .nav-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+    </style>
 </head>
 <body>
     <header>
+        <!-- Navigation Bar -->
         <nav class="bg-gray-800 text-gray-200 px-4 sm:px-6 py-4 shadow">
             <div class="container mx-auto flex justify-between items-center">
-                <!-- Logo and branding -->
-                <div class="flex items-center space-x-2">
-                    <a href="/Index" class="flex items-center space-x-2">
+                <div class="flex items-center space-x-6">
+                    <a href="/" class="flex items-center space-x-2 hover:text-white">
                         <img src="/ressources/logo.png" alt="Logo" class="h-10 w-10">
                         <span class="font-bold text-lg">Puroguramu</span>
                     </a>
+                    <!-- Navigation links based on role -->
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                    var user = await UserManager.GetUserAsync(User);
+                    var roles = await UserManager.GetRolesAsync(user);
+                    @if (roles.Contains("Teacher"))
+                    {
+                    <a href="/Dashboard/TeacherDashboard"
+                       class="p-1 nav-link text-white hover:text-white">Dashboard</a>
+                    <a href="/Lecons/CreateLesson"
+                       class="p-1 nav-link text-white hover:text-white">Créer une Leçon</a>
+                    }
+                    else if (roles.Contains("Student"))
+                    {
+                    <a href="/Dashboard/studentDashboard" class="p-1 nav-link text-white hover:text-white">Dashboard</a>
+                    }
+                    }
                 </div>
-                <!-- Navigation Links -->
-                @await Html.PartialAsync("_LoginPartial")
+
+                <div class="flex items-center space-x-4">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                    var user = await UserManager.GetUserAsync(User);
+                    <div class="relative">
+                        <button id="profileButton" class="flex items-center space-x-2 focus:outline-none">
+                            <img
+                                src="@(user.ProfilePicture != null ? $"data:image;base64,{Convert.ToBase64String(user.ProfilePicture)}" : "/ressources/basic.jpg")"
+                                alt="Profile Picture"
+                                class="h-12 w-12 rounded-full border-4 border-blue-500 cursor-pointer">
+                            <span class="ml-2">@user.FirstName @user.LastName</span>
+                        </button>
+                        <div id="dropdown"
+                             class="hidden absolute right-0 mt-2 w-48 bg-gray-800 text-gray-200 rounded-md shadow-xl z-20">
+                            <a href="/Account/Profile" class="block px-4 py-2 text-gray-200 hover:text-white nav-link">Modifier
+                                le Profil</a>
+                            <a href="/Account/ChangePassword" class="block px-4 py-2 text-gray-200 hover:text-white nav-link">Changer
+                                le Mot de Passe</a>
+                        </div>
+                    </div>
+
+                    <form id="logoutForm" class="inline" asp-area="Identity" asp-page="/Account/Logout"
+                          asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                        <button id="logout" type="submit"
+                                class="px-5 py-2 bg-red-600 hover:bg-red-700 rounded-md shadow-lg font-medium text-white">
+                            Déconnexion
+                        </button>
+                    </form>
+                    }
+                    else
+                    {
+                    <a href="/Identity/Account/Login"
+                       class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow-lg font-medium">Connexion</a>
+                    <a href="/Identity/Account/Register"
+                       class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow-lg font-medium">Inscription</a>
+                    }
+                </div>
             </div>
         </nav>
     </header>
 
-    <div class="container">
-        <main role="main" class="pb-1">
-            @RenderBody()
-        </main>
+    <!-- Main Content Area -->
+    <div class="container mx-auto flex-grow">
+        @RenderBody()
     </div>
 
     <!-- Footer -->

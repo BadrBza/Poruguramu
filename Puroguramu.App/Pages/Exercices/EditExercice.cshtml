@@ -2,6 +2,7 @@
 @model Puroguramu.App.Pages.Exercices.EditExerciceModel
 @{
 ViewData["Title"] = "Éditer un Exercice";
+Layout = "_Layout"; 
 }
 <!DOCTYPE html>
 <html lang="fr">
@@ -13,38 +14,6 @@ ViewData["Title"] = "Éditer un Exercice";
 </head>
 <body class="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen flex flex-col justify-between">
 
-<nav class="bg-gray-800 text-gray-200 px-4 sm:px-6 py-4 shadow">
-    <div class="container mx-auto flex justify-between items-center">
-        <a href="/Dashboard/TeacherDashboard" class="flex items-center space-x-2">
-            <img src="/ressources/logo.png" alt="Logo" class="h-10 w-10">
-            <span class="font-bold text-lg">Puroguramu</span>
-        </a>
-        <div class="hidden md:flex items-center space-x-4">
-            <div class="relative">
-                <button id="profileButton" class="flex items-center space-x-2 focus:outline-none">
-                    <img
-                        src="@(Model.Student.ProfilePicture != null ? $"data:image;base64,{Convert.ToBase64String(Model.Student.ProfilePicture)}" : "/ressources/basic.jpg")"
-                        alt="Profile Picture" class="h-12 w-12 rounded-full border-4 border-blue-500 cursor-pointer">
-                    <span class="ml-2">@Model.Student.FirstName @Model.Student.LastName</span>
-                </button>
-                <div id="dropdown"
-                     class="hidden absolute right-0 mt-2 w-48 bg-gray-800 text-gray-200 rounded-md shadow-xl z-20">
-                    <a href="/Account/Profile" class="block px-4 py-2 text-gray-200 hover:bg-gray-700">Modifier le
-                        Profil</a>
-                    <a href="/Account/ChangePassword" class="block px-4 py-2 text-gray-200 hover:bg-gray-700">Changer le
-                        Mot de Passe</a>
-                </div>
-            </div>
-            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
-                  asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-                <button id="logout" type="submit"
-                        class="px-5 py-2 bg-red-600 hover:bg-red-700 rounded-md shadow-lg font-medium text-white">
-                    Déconnexion
-                </button>
-            </form>
-        </div>
-    </div>
-</nav>
 <div class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <h1 class="text-2xl font-bold mb-4 text-white text-center">Éditer un Exercice</h1>
