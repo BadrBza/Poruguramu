@@ -29,8 +29,9 @@
             <h2 class="text-xl font-semibold">@exercise.Title</h2>
             <p class="text-gray-400">Difficulté : @exercise.DifficultyExo</p>
             <p class="text-gray-400">État : @exercise.Status</p>
-            <a href="/Exercices/DoExercise?id=@exercise.ExerciseId" class="text-blue-500 hover:underline">Commencer cet
-                exercice</a>
+            <a href="/Exercices/Exercice?exerciseTitle=@exercise.Title&exerciseStatus=@exercise.Status"
+               class="inline-block px-4 py-2 bg-blue-500 text-white font-medium text-sm rounded-md shadow-sm hover:bg-blue-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200 ease-in-out mt-4">Commencer
+                cet exercice</a>
         </div>
         }
     </div>
