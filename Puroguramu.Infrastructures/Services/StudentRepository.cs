@@ -275,7 +275,7 @@ namespace Puroguramu.Infrastructures.Services
                 {
                     ExerciseId = nextExercise.Id,
                     Title = nextExercise.Title,
-                    Status = Domains.ExerciseStatus.NotStarted,
+                    Statuts = Domains.ExerciseStatuts.NotStarted,
                     DifficultyExo = Domains.DifficultyExo.Easy,
                 };
             }
@@ -286,7 +286,7 @@ namespace Puroguramu.Infrastructures.Services
                 {
                     ExerciseId = Guid.Empty, // ou tout autre identifiant qui indique qu'il n'y a plus d'exercices
                     Title = "Tout les exercices de cette leçon ont été réalisé.",
-                    Status = Domains.ExerciseStatus.Passed,
+                    Statuts = Domains.ExerciseStatuts.Passed,
                 };
             }
         }

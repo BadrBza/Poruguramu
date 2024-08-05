@@ -25,6 +25,9 @@ namespace Puroguramu.App.Pages.Lecons
         public List<StudentExerciseDto> Exercises { get; set; }
         public StudentDto Student { get; set; }
 
+        public Exercice Exercice { get; set; }
+
+
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
             // Récupérer les informations de l'étudiant

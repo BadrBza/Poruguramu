@@ -300,7 +300,7 @@ namespace Puroguramu.Infrastructures.Services
                 {
                     ExerciseId = exercise.Id,
                     Title = exercise.Title,
-                    Status = studentExercise != null ? (Domains.ExerciseStatus)studentExercise.Status : Domains.ExerciseStatus.NotStarted,
+                    Statuts = studentExercise != null ? (Domains.ExerciseStatuts)studentExercise.Status : Domains.ExerciseStatuts.NotStarted,
                     DifficultyExo = MapDifficultyToDto(exercise.Difficulty),
                 };
             }).ToList();
