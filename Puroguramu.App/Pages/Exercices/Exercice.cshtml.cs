@@ -58,6 +58,10 @@ namespace Puroguramu.App.Pages
 
         public async Task<IActionResult> OnPostAsync(Guid exerciseId)
         {
+            var exercise = _exercisesRepository.GetExercise(exerciseId);
+            ExerciseTitle = exercise.Title;
+            ExerciseStatut = exercise.Difficulty.ToString();
+            DescriptionExo = exercise.Description;
 
             Student = await _studentRepository.GetStudentProfileAsync(User);
             Proposal = await _exercisesRepository.GetStudentProposalAsync(exerciseId, Student.Id);
