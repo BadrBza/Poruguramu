@@ -308,6 +308,9 @@ namespace Puroguramu.Infrastructures.Services
             return studentExercises;
         }
 
+
+
+
         private Domains.DifficultyExo MapDifficultyToDto(Puroguramu.Infrastructures.Data.models.Difficulty difficulty)
         {
             return difficulty switch
@@ -318,6 +321,8 @@ namespace Puroguramu.Infrastructures.Services
                 _ => throw new ArgumentOutOfRangeException(nameof(difficulty), "Unknown difficulty level")
             };
         }
+
+
 
 }
 }

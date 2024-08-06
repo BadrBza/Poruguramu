@@ -11,6 +11,8 @@ public class Exo
     public Guid LessonId { get; set; }
     public Lesson Lesson { get; set; }
     public string Template { get; set; }
+
+    public string Stub { get; set; }
     public string Solution { get; set; }
     public List<StudentExercise> StudentExercises { get; set; } = new List<StudentExercise>();
 }

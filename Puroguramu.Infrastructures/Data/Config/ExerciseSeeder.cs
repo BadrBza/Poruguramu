@@ -25,19 +25,59 @@ public static class ExerciseSeeder
                     Order = 1,
                     LessonId = lessons[0].Id,
                     Template = "public class Exercise { }",
+                    Stub = @"public class Exercice
+{
+  // Tapez votre code ici
+}",
                     Solution = "public class Exercise { /* Solution goes here */ }"
                 },
                 new Exo
                 {
                     Id = Guid.NewGuid(),
-                    Title = "Advanced C# Features",
-                    Description = "Explore advanced features of C#.",
-                    Difficulty = Difficulty.Hard,
+                    Title = "Math Power C#",
+                    Description = "Créez une fonction Power C# prenant en paramètre une base b de type float et un exposant e de type int. Power(b, e) retourne le float b",
+                    Difficulty = Difficulty.Medium,
                     IsPublished = true,
                     Order = 2,
                     LessonId = lessons[1].Id,
-                    Template = "public class Exercise { }",
-                    Solution = "public class Exercise { /* Solution goes here */ }"
+                    Template = @"// code-insertion-point
+
+public class Test
+{
+    public static TestResult Ensure(float b, int exponent, float expected)
+    {
+      TestStatus status = TestStatus.Passed;
+      float actual = float.NaN;
+      try
+      {
+         actual = Exercice.Power(b, exponent);
+         if(Math.Abs(actual - expected) > 0.00001f)
+         {
+             status = TestStatus.Failed;
+         }
+      }
+      catch(Exception ex)
+      {
+         status = TestStatus.Inconclusive;
+      }
+
+      return new TestResult(
+        string.Format(""Power of {0} by {1} should be {2}"", b, exponent, expected),
+        status,
+        status == TestStatus.Passed ? string.Empty : string.Format(""Expected {0}. Got {1}."", expected, actual)
+      );
+    }
+}
+
+return new TestResult[] {
+  Test.Ensure(2, 4, 16.0f),
+  Test.Ensure(2, -4, 1.0f/16.0f)
+};",
+                    Stub = @"public class Exercice
+{
+  // Tapez votre code ici
+}",
+                    Solution = "public static float Power(float b, int e)\n{\n    return (float)Math.Pow(b, e);\n}\n"
                 },
                 new Exo
                 {
@@ -49,6 +89,10 @@ public static class ExerciseSeeder
                     Order = 3,
                     LessonId = lessons[2].Id,
                     Template = "public class Exercise { }",
+                    Stub = @"public class Exercice
+{
+  // Tapez votre code ici
+}",
                     Solution = "public class Exercise { /* Solution goes here */ }"
                 },
                 new Exo
@@ -61,6 +105,10 @@ public static class ExerciseSeeder
                     Order = 4,
                     LessonId = lessons[2].Id,
                     Template = "public class Exercise { }",
+                    Stub = @"public class Exercice
+{
+  // Tapez votre code ici
+}",
                     Solution = "public class Exercise { /* Solution goes here */ }"
                 },
                 new Exo
@@ -72,7 +120,10 @@ public static class ExerciseSeeder
                     IsPublished = true,
                     Order = 5,
                     LessonId = lessons[2].Id,
-                    Template = "public class Exercise { }",
+                    Template = "public class Exercise { }", Stub = @"public class Exercice
+{
+  // Tapez votre code ici
+}",
                     Solution = "public class Exercise { /* Solution goes here */ }"
                 },
             };
