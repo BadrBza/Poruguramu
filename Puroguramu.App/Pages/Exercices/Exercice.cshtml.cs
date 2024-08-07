@@ -69,7 +69,7 @@ namespace Puroguramu.App.Pages
 
 
             _result = await _assessor.Assess(exerciseId, Proposal);
-            var e = _result.Statuts;
+
             await _exercisesRepository.SaveStudentProposalAsync(exerciseId, Student.Id, Proposal);
 
             return Page();

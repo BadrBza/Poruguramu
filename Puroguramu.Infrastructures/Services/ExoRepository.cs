@@ -78,6 +78,7 @@ public class ExoRepository : IExoRepository
             exercise.Title = exerciseDto.Title;
             exercise.Description = exerciseDto.Description;
             exercise.Template = exerciseDto.Template;
+            exercise.Stub = exerciseDto.Stub;
             exercise.Solution = exerciseDto.Solution;
             exercise.Difficulty = MapDtoToDifficulty(exerciseDto.Difficulty);
 
