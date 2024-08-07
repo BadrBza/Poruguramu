@@ -24,12 +24,12 @@ public static class ExerciseSeeder
                     IsPublished = true,
                     Order = 1,
                     LessonId = lessons[0].Id,
-                    Template = "public class Exercise { }",
+                    Template = "// code-insertion-point\n\npublic class Test\n{\n    public static TestResult Ensure(float b, int exponent, float expected)\n    {\n      TestStatus status = TestStatus.Passed;\n      float actual = float.NaN;\n      try\n      {\n         actual = Exercice.Power(b, exponent);\n         if(Math.Abs(actual - expected) > 0.00001f)\n         {\n             status = TestStatus.Failed;\n         }\n      }\n      catch(Exception ex)\n      {\n         status = TestStatus.Inconclusive;\n      }\n\n      return new TestResult(\n        string.Format(\"Power of {0} by {1} should be {2}\", b, exponent, expected),\n        status,\n        status == TestStatus.Passed ? string.Empty : string.Format(\"Expected {0}. Got {1}.\", expected, actual)\n      );\n    }\n}\n\nreturn new TestResult[] {\n  Test.Ensure(2, 4, 16.0f),\n  Test.Ensure(2, -4, 1.0f/16.0f)\n};",
                     Stub = @"public class Exercice
 {
   // Tapez votre code ici
 }",
-                    Solution = "public class Exercise { /* Solution goes here */ }"
+                    Solution = "public class Exercice {\n    public static float Power(float b, int e)\n    {\n        return (float)Math.Pow(b, e);\n    }\n}"
                 },
                 new Exo
                 {

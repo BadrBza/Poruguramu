@@ -26,5 +26,7 @@ namespace Puroguramu.Domains.Repositories
 
         Task<bool> ChangePasswordAsync(ClaimsPrincipal user, string currentPassword, string newPassword);
         Task<StudentExerciseDto> GetNextExerciseAsync(string studentMatricule, Guid lessonId);
+        Task<StudentExerciseDto> GetStudentExerciseByIdAsync(string userId, Guid exerciseId);
+        Task UpdateStudentExerciseStatusAsync(StudentExerciseDto studentExercise);
     }
 }
