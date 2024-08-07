@@ -15,34 +15,33 @@
 
 <div class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <h1 class="text-2xl font-bold mb-4 text-white text-center">Connexion</h1>
-        <div class="bg-gray-900 px-8 py-8 rounded shadow-md">
+        <div class="bg-gray-800 px-8 py-10 rounded-xl shadow-lg"> <!-- Darker background and more rounded corners -->
             @if (!string.IsNullOrEmpty(Model.ErrorMessage))
             {
-                <div cclass="bg-green-500 text-white p-4 rounded mb-4">
+                <div class="bg-red-600 text-white p-4 rounded-lg mb-4"> <!-- Corrected typo and updated colors -->
                     @Model.ErrorMessage
                 </div>
             }
             <form id="account" method="post" class="max-w-sm mx-auto">
-                <h2 class="text-xl font-bold mb-2 text-white">Connectez-vous à votre compte</h2>
-                <hr class="mb-4 border-gray-700" />
-                <div asp-validation-summary="ModelOnly" class="text-red-500 bg-red-100 p-4 rounded mb-4"></div>
-                <div class="mb-5">
+                <h2 class="text-xl font-semibold mb-4 text-white">Connectez-vous à votre compte</h2> <!-- Increased margin and weight -->
+                <hr class="mb-6 border-gray-700" /> <!-- Increased margin -->
+                <div asp-validation-summary="ModelOnly" class="text-red-500 bg-red-100 p-4 rounded-lg mb-6"></div> <!-- Rounded corners and larger margin -->
+                <div class="mb-6"> <!-- Increased margin -->
                     <label asp-for="Input.Matricule" class="block mb-2 text-sm font-medium text-gray-300">Matricule</label>
-                    <input asp-for="Input.Matricule" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" autocomplete="username" aria-required="true" />
-                    <span asp-validation-for="Input.Matricule" class="text-red-500"></span>
+                    <input asp-for="Input.Matricule" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 placeholder-gray-400" autocomplete="username" aria-required="true" /> <!-- Updated input styles for consistency -->
+                    <span asp-validation-for="Input.Matricule" class="text-red-500 mt-2 block"></span> <!-- Block display for better error alignment -->
                 </div>
-                <div class="mb-5">
+                <div class="mb-6">
                     <label asp-for="Input.Password" class="block mb-2 text-sm font-medium text-gray-300">Mot de passe</label>
-                    <input asp-for="Input.Password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" autocomplete="current-password" aria-required="true" />
-                    <span asp-validation-for="Input.Password" class="text-red-500"></span>
+                    <input asp-for="Input.Password" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 placeholder-gray-400" autocomplete="current-password" aria-required="true" />
+                    <span asp-validation-for="Input.Password" class="text-red-500 mt-2 block"></span>
                 </div>
                 <div>
-                    <button id="login-submit" type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Connexion</button>
+                    <button id="login-submit" type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-transform transform hover:scale-105">Connexion</button> <!-- Added hover scale effect -->
                 </div>
-                <div class="mt-4 text-center">
+                <div class="mt-6 text-center">
                     <p class="text-gray-400">
-                        <a id="forgot-password" asp-page="./ForgotPassword" class="underline">Mot de passe oublié ?</a>
+                        <a id="forgot-password" asp-page="./ForgotPassword" class="underline hover:text-white">Mot de passe oublié ?</a> <!-- Added hover effect -->
                     </p>
                 </div>
             </form>

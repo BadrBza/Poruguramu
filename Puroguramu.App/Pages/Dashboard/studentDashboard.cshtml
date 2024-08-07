@@ -6,58 +6,41 @@
     Layout = "_Layout"; 
 }
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Modifier le Profil</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="~/js/dropdown.js"></script>
-</head>
-<body class="bg-gray-900 text-gray-200 flex flex-col justify-between min-h-screen">
-
 
 <div class="flex-grow container mx-auto p-10">
-    <h1 class="text-2xl font-bold mb-6">Tableau de Bord de l'Étudiant</h1>
+    <h1 class="text-3xl font-bold mb-8 text-gray-100">Tableau de Bord de l'Étudiant</h1>
 
-    <!-- Liste des leçons publiées -->
-    <div class="space-y-4">
+    <div class="space-y-6">
         @foreach (var lesson in Model.PublishedLessons)
         {
-        <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
-            <h2 class="text-xl font-semibold">
-                <a href="/Lecons/LessonDetail?id=@lesson.Id" class="text-white-500 hover:underline">
+        <div class="bg-gray-800 rounded-2xl p-8 shadow-xl transform hover:-translate-y-1 transition duration-300 ease-in-out">
+            <h2 class="text-2xl font-bold text-gray-100 mb-2">
+                <a href="/Lecons/LessonDetail?id=@lesson.Id" class="hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out">
                     @lesson.Title
                 </a>
             </h2>
-            <p class="text-gray-400">Progression : @lesson.CompletedExercises/@lesson.TotalExercises exercices
-                réalisés</p>
+            <p class="text-gray-400 text-sm">Progression : @lesson.CompletedExercises/@lesson.TotalExercises exercices réalisés</p>
 
             <!-- Lien vers le prochain exercice de cette leçon -->
-           @if (Model.NextExercisesByLesson.TryGetValue(lesson.Id, out var nextExercise))
-           {
-               @if (nextExercise.ExerciseId != Guid.Empty)
-               {
-                   <a href="/Exercices/Exercice/@nextExercise.ExerciseId"
-                      class="inline-block px-4 py-2 bg-blue-500 text-white font-medium text-sm rounded-md shadow-sm hover:bg-blue-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200 ease-in-out mt-4">
-                       Commencer le prochain exercice : @nextExercise.Title
-                   </a>
-               }
-               else
-               {
-                   <p class="text-green-500 font-semibold text-sm mt-4">
-                       @nextExercise.Title
-                   </p>
-               }
-           }
-
-
+            @if (Model.NextExercisesByLesson.TryGetValue(lesson.Id, out var nextExercise))
+            {
+                @if (nextExercise.ExerciseId != Guid.Empty)
+                {
+                    <a href="/Exercices/Exercice/@nextExercise.ExerciseId"
+                        class="inline-block mt-4 px-5 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-semibold text-sm rounded-lg shadow-md transform hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-200 ease-in-out">
+                        Commencer le prochain exercice : @nextExercise.Title
+                    </a>
+                }
+                else
+                {
+                    <p class="text-green-400 font-medium text-sm mt-4">
+                        @nextExercise.Title
+                    </p>
+                }
+            }
         </div>
         }
     </div>
 </div>
 
 
-</body>
-</html>
