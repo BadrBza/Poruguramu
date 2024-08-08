@@ -15,6 +15,7 @@ namespace Puroguramu.App.Pages
         private readonly IAssessExercise _assessor;
         private readonly IExercisesRepository _exercisesRepository;
         private readonly IStudentRepository _studentRepository;
+        private readonly ILessonRepository _lessonRepository;
 
         public ExerciseResult? _result { get; set; }
         public string ExerciseTitle { get; set; }
@@ -27,11 +28,12 @@ namespace Puroguramu.App.Pages
         public IEnumerable<TestResultViewModel> TestResult
             => _result?.TestResults?.Select(result => new TestResultViewModel(result)) ?? Array.Empty<TestResultViewModel>();
 
-        public Exercice(IAssessExercise assessor, IExercisesRepository exercisesRepository, IStudentRepository studentRepository)
+        public Exercice(IAssessExercise assessor, IExercisesRepository exercisesRepository, IStudentRepository studentRepository, ILessonRepository lessonRepository)
         {
             _assessor = assessor;
             _exercisesRepository = exercisesRepository;
             _studentRepository = studentRepository;
+            _lessonRepository = lessonRepository;
         }
 
         public async Task OnGetAsync(Guid exerciseId)
@@ -119,7 +121,7 @@ namespace Puroguramu.App.Pages
 
             Console.WriteLine("statut exo StudentExercice = " + studentExercise.Statuts);
 
-
+            await _lessonRepository.GetCompletedExercisesCountAsync(exercise.LessonId, Student.Id);
             await _exercisesRepository.SaveStudentProposalAsync(exerciseId, Student.Id, Proposal);
             await _studentRepository.UpdateStudentExerciseStatusAsync(studentExercise);
             return Page();

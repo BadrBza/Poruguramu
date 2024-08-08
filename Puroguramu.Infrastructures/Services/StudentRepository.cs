@@ -390,8 +390,8 @@ namespace Puroguramu.Infrastructures.Services
             {
                 ExerciseStatus.NotStarted => ExerciseStatuts.NotStarted,
                 ExerciseStatus.Passed => ExerciseStatuts.Passed,
-                ExerciseStatus.Abandoned => ExerciseStatuts.Failed,
-                ExerciseStatus.InProgress => ExerciseStatuts.Started,
+                ExerciseStatus.Failed => ExerciseStatuts.Failed,
+                ExerciseStatus.Started => ExerciseStatuts.Started,
                 _ => throw new ArgumentOutOfRangeException(nameof(status), "Unknown status")
             };
         }

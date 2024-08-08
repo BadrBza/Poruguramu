@@ -176,7 +176,7 @@ namespace Puroguramu.Infrastructures.Services
         }
 
         // Méthode pour obtenir le nombre d'exercices terminés par leçon
-        public async Task<int> GetCompletedExercisesCountAsync(Guid lessonId, string studentMatricule)
+        public async Task<int> GetCompletedExercisesCountAsync(Guid lessonId, string studentId)
         {
             var lesson = await _context.Lessons
                 .Include(l => l.Exercises)
@@ -185,22 +185,9 @@ namespace Puroguramu.Infrastructures.Services
 
             if (lesson != null)
             {
-                Console.WriteLine($"Lesson {lesson.Id} - {lesson.Title} loaded with {lesson.Exercises.Count} exercises.");
-                foreach (var exercise in lesson.Exercises)
-                {
-                    Console.WriteLine($"Exercise {exercise.Id} has {exercise.StudentExercises?.Count ?? 0} student exercises.");
-                    foreach (var se in exercise.StudentExercises ?? new List<StudentExercise>())
-                    {
-                        Console.WriteLine($"Student Exercise: {se.Id}, Student: {se.Student?.Matricule}, Status: {se.Status}");
-                    }
-                }
-            }
-
-            if (lesson != null)
-            {
                 return lesson.Exercises
                     .Count(e => e.StudentExercises
-                        .Any(se => se.Status == ExerciseStatus.Passed && se.Student != null && se.Student.Matricule == studentMatricule));
+                        .Any(se => se.Status == ExerciseStatus.Passed && se.StudentId == studentId));
             }
 
             return 0;
