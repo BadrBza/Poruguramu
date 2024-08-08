@@ -4,17 +4,17 @@ public record ExerciseResult(Exercise Subject, string Proposal, IEnumerable<Test
 {
     public IEnumerable<TestResult> TestResults { get; } = TestResults ?? Array.Empty<TestResult>();
 
-    public ExerciseStatus Status
+    public ExerciseStatuts Statuts
         => !TestResults.Any()
-            ? ExerciseStatus.NotStarted
+            ? ExerciseStatuts.NotStarted
             : TestResults.Any(test => test.Status != TestStatus.Passed)
-                ? ExerciseStatus.Started
-                : ExerciseStatus.Passed;
+                ? ExerciseStatuts.Started
+                : ExerciseStatuts.Passed;
 }
 
 public record TestResult(string Label, TestStatus Status, string ErrorMessage = "");
 
-public enum ExerciseStatus
+public enum ExerciseStatuts
 {
     Failed=0,
     NotStarted=1,

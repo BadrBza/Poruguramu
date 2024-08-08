@@ -20,31 +20,28 @@
 </head>
 <body class="bg-gray-900 text-gray-200 flex flex-col min-h-screen">
 
-<main class="flex-grow container mx-auto p-10">
+<main class="flex-grow container mx-auto flex items-center justify-center p-10">
+    <div class="sm:w-full sm:max-w-md">
+        <h1 class="text-2xl font-bold mb-6 text-center">Créer un Exercice</h1>
+        <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
+            <form id="create-exercice-form" method="post" class="max-w-sm mx-auto">
+                <div asp-validation-summary="ModelOnly" class="text-red-500 bg-red-100 p-4 rounded mb-4"></div>
+                <div class="mb-5">
+                    <label asp-for="Title" class="block text-lg font-semibold text-gray-300 mb-2">Titre de l'exercice</label> <!-- Increased font size and weight -->
+                    <input asp-for="Title"
+                           class="bg-gray-700 text-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 transition duration-300 ease-in-out border-none"/>
+                    <span asp-validation-for="Title" class="text-red-500"></span>
+                </div>
 
-        <div class="sm:mx-auto sm:w-full sm:max-w-md">
-            <h1 class="text-2xl font-bold mb-6">Créer un Exercice</h1>
-            <div class="max-w-xl mx-auto bg-gray-800 p-8 rounded-xl shadow-lg">
-                <form id="create-exercice-form" method="post" class="max-w-sm mx-auto">
-                    <div asp-validation-summary="ModelOnly" class="text-red-500 bg-red-100 p-4 rounded mb-4"></div>
-                    <div class="mb-5">
-                        <label asp-for="Title" class="Title" class="block text-sm font-medium text-gray-300">Titre de
-                            l'exercice</label>
-                        <input asp-for="Title"
-                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"/>
-                        <span asp-validation-for="Title" class="text-red-500"></span>
-                    </div>
-
-                    <div class="flex justify-center">
-                        <button type="submit"
-                                class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
-                            Créer l'exercice
-                        </button>
-                    </div>
-                </form>
-            </div>
+                <div class="flex justify-center">
+                    <button type="submit"
+                            class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                        Créer l'exercice
+                    </button>
+                </div>
+            </form>
         </div>
-
+    </div>
 </main>
 
 </body>

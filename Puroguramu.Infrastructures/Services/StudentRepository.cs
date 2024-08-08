@@ -11,6 +11,7 @@ using Puroguramu.Domains.modelsDomains;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Puroguramu.Domains;
 using Puroguramu.Infrastructures.Data;
 
 namespace Puroguramu.Infrastructures.Services
@@ -275,7 +276,7 @@ namespace Puroguramu.Infrastructures.Services
                 {
                     ExerciseId = nextExercise.Id,
                     Title = nextExercise.Title,
-                    Status = Domains.ExerciseStatus.NotStarted,
+                    Statuts = Domains.ExerciseStatuts.NotStarted,
                     DifficultyExo = Domains.DifficultyExo.Easy,
                 };
             }
@@ -286,7 +287,7 @@ namespace Puroguramu.Infrastructures.Services
                 {
                     ExerciseId = Guid.Empty, // ou tout autre identifiant qui indique qu'il n'y a plus d'exercices
                     Title = "Tout les exercices de cette leçon ont été réalisé.",
-                    Status = Domains.ExerciseStatus.Passed,
+                    Statuts = Domains.ExerciseStatuts.Passed,
                 };
             }
         }
@@ -311,6 +312,88 @@ namespace Puroguramu.Infrastructures.Services
             }
 
             return null; // Ne redirige pas, retourne null
+        }
+
+
+        public async Task<StudentExerciseDto> GetStudentExerciseByIdAsync(string userId, Guid exerciseId)
+        {
+            // Rechercher l'étudiant par son ID d'utilisateur
+            var student = await _userManager.Users
+                .Include(u => u.StudentExercises)
+                .ThenInclude(se => se.Exo)
+                .SingleOrDefaultAsync(u => u.Id == userId);
+
+            if (student == null)
+            {
+                throw new InvalidOperationException("Student not found.");
+            }
+
+            // Rechercher l'exercice de l'étudiant par l'ID de l'exercice
+            var studentExercise = student.StudentExercises
+                .SingleOrDefault(se => se.ExoId == exerciseId);
+
+            if (studentExercise == null)
+            {
+                return null;
+            }
+
+            // Retourner le DTO correspondant à l'exercice de l'étudiant
+            return new StudentExerciseDto
+            {
+                ExerciseId = studentExercise.ExoId,
+                Title = studentExercise.Exo.Title,
+                Statuts = MapStatus(studentExercise.Status),
+                DifficultyExo = MapDifficulty(studentExercise.Exo.Difficulty),
+            };
+        }
+
+        public async Task UpdateStudentExerciseStatusAsync(StudentExerciseDto studentExercise)
+        {
+            var existingStudentExercise = await _context.StudentExercise
+                .FirstOrDefaultAsync(se => se.ExoId == studentExercise.ExerciseId && se.StudentId == studentExercise.StudentId);
+
+            if (existingStudentExercise != null)
+            {
+                existingStudentExercise.Status = (ExerciseStatus)studentExercise.Statuts;
+                _context.StudentExercise.Update(existingStudentExercise);
+            }
+            else
+            {
+                var newStudentExercise = new StudentExercise
+                {
+                    Id = Guid.NewGuid(),
+                    ExoId = studentExercise.ExerciseId,
+                    StudentId = studentExercise.StudentId,
+                    Status = (ExerciseStatus)studentExercise.Statuts,
+                    Code = studentExercise.Code,
+                };
+                _context.StudentExercise.Add(newStudentExercise);
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        private DifficultyExo MapDifficulty(Difficulty difficulty)
+        {
+            return difficulty switch
+            {
+                Difficulty.Easy => DifficultyExo.Easy,
+                Difficulty.Medium => DifficultyExo.Medium,
+                Difficulty.Hard => DifficultyExo.Hard,
+                _ => throw new ArgumentOutOfRangeException(nameof(difficulty), "Unknown difficulty level")
+            };
+        }
+
+        private ExerciseStatuts MapStatus(ExerciseStatus status)
+        {
+            return status switch
+            {
+                ExerciseStatus.NotStarted => ExerciseStatuts.NotStarted,
+                ExerciseStatus.Passed => ExerciseStatuts.Passed,
+                ExerciseStatus.Failed => ExerciseStatuts.Failed,
+                ExerciseStatus.Started => ExerciseStatuts.Started,
+                _ => throw new ArgumentOutOfRangeException(nameof(status), "Unknown status")
+            };
         }
 
     }

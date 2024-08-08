@@ -17,45 +17,62 @@
     <title>Tableau de Bord de l'Enseignant</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-     <script src="~/js/dropdown.js"></script>
+    <script src="~/js/dropdown.js"></script>
 </head>
 <body class="bg-gray-900 text-gray-200 flex flex-col min-h-screen">
 
 <!-- Zone principale de contenu -->
-<main class="flex-grow container mx-auto p-10 mt-30">
-    <div class="flex justify-between items-center">
-        <h1 class="text-3xl font-bold">Tableau de Bord de l'Enseignant</h1>
-        <a href="/Lecons/CreateLesson" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow">Créer une Leçon</a>
+<main class="flex-grow container mx-auto p-10">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-100">Tableau de Bord de l'Enseignant</h1>
+        <a href="/Lecons/CreateLesson" class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out">Créer une Leçon</a>
     </div>
-    <div class="mt-6 space-y-6">
+    <div class="space-y-6">
         @foreach (var lesson in Model.Lessons.OrderBy(l => l.Order))
         {
-            <div class="bg-gray-800 rounded-xl p-6 shadow-lg grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="md:col-span-3">
-                    <h2 class="text-xl font-semibold">@lesson.Title</h2>
-                    <p class="text-gray-400">
-                        Étudiants ayant terminé: @lesson.StudentsWhoCompleted/@lesson.TotalStudents
-                    </p>
+            <div class="bg-gray-800 rounded-2xl p-6 shadow-xl transform hover:scale-105 transition duration-300 ease-in-out">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-100">@lesson.Title</h2>
+                        <p class="text-gray-400 mt-2">Étudiants ayant terminé : @lesson.StudentsWhoCompleted/@lesson.TotalStudents</p>
+                    </div>
+                    <div class="flex space-x-4">
+                        <form method="post" asp-page-handler="EditLesson" class="inline">
+                            <input type="hidden" name="id" value="@lesson.Id" />
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md flex items-center space-x-2 transition duration-300 ease-in-out">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M17.414 2.586a2 2 0 00-2.828 0l-10 10a1 1 0 00-.293.707v3a1 1 0 001 1h3a1 1 0 00.707-.293l10-10a2 2 0 000-2.828zM6 18H4v-2l10-10 2 2-10 10zM15 7l-2-2 1-1 2 2-1 1z"/>
+                                </svg>
+                                <span>Éditer</span>
+                            </button>
+                        </form>
+                        <form method="post" asp-page-handler="ToggleLesson" class="inline">
+                            <input type="hidden" name="id" value="@lesson.Id" />
+                            <input type="hidden" name="isPublished" value="@(lesson.IsPublished ? "false" : "true")" />
+                            <button type="submit" class="@(lesson.IsPublished ? "bg-gray-500 hover:bg-gray-700" : "bg-purple-500 hover:bg-purple-700") text-white font-bold py-2 px-4 rounded-lg shadow-md flex items-center space-x-2 transition duration-300 ease-in-out">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M5 3a3 3 0 00-3 3v8a3 3 0 003 3h10a3 3 0 003-3V6a3 3 0 00-3-3H5zm4 5a1 1 0 112 0v4a1 1 0 11-2 0V8zm-3 1a1 1 0 100 2h1a1 1 0 100-2H6zm8 0a1 1 0 100 2h1a1 1 0 100-2h-1z" clip-rule="evenodd" />
+                                </svg>
+                                <span>@((lesson.IsPublished ? "Masquer" : "Publier"))</span>
+                            </button>
+                        </form>
+                        <form method="post" asp-page-handler="DeleteLesson" class="inline">
+                            <input type="hidden" name="id" value="@lesson.Id" />
+                            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow-md flex items-center space-x-2 transition duration-300 ease-in-out">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2h1v9a2 2 0 002 2h6a2 2 0 002-2V6h1a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM6 6h8v9a1 1 0 01-1 1H7a1 1 0 01-1-1V6z" clip-rule="evenodd" />
+                                </svg>
+                                <span>Supprimer</span>
+                            </button>
+                        </form>
+                    </div>
                 </div>
-                <div class="flex flex-col space-y-2 md:space-y-0 md:flex-row md:justify-end items-center gap-2">
-                    <form method="post" asp-page-handler="EditLesson" class="inline">
-                        <input type="hidden" name="id" value="@lesson.Id" />
-                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow transition duration-300 ease-in-out">Éditer</button>
-                    </form>
-                    <form method="post" asp-page-handler="ToggleLesson" class="inline">
-                        <input type="hidden" name="id" value="@lesson.Id" />
-                        <input type="hidden" name="isPublished" value="@(lesson.IsPublished ? "false" : "true")" />
-                        <button type="submit" class="@(lesson.IsPublished ? "bg-gray-500 hover:bg-gray-700" : "bg-purple-500 hover:bg-purple-700") text-white font-bold py-2 px-4 rounded shadow transition duration-300 ease-in-out">@((lesson.IsPublished ? "Masquer" : "Publier"))</button>
-                    </form>
-                    <form method="post" asp-page-handler="DeleteLesson" class="inline">
-                        <input type="hidden" name="id" value="@lesson.Id" />
-                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow transition duration-300 ease-in-out">Supprimer</button>
-                    </form>
+                <div class="flex space-x-4">
                     <form method="post" asp-page-handler="MoveLesson" class="inline">
                         <input type="hidden" name="id" value="@lesson.Id" />
                         <input type="hidden" name="direction" value="up" />
-                        <button type="submit" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded shadow transition duration-300 ease-in-out">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20" fill="currentColor">
+                        <button type="submit" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg shadow-md flex items-center space-x-2 transition duration-300 ease-in-out">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 18a1 1 0 001-1V5.414l3.293 3.293a1 1 0 001.414-1.414l-5-5a1 1 0 00-1.414 0l-5 5a1 1 0 101.414 1.414L9 5.414V17a1 1 0 001 1z" clip-rule="evenodd" />
                             </svg>
                         </button>
@@ -63,9 +80,9 @@
                     <form method="post" asp-page-handler="MoveLesson" class="inline">
                         <input type="hidden" name="id" value="@lesson.Id" />
                         <input type="hidden" name="direction" value="down" />
-                        <button type="submit" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded shadow transition duration-300 ease-in-out">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 2a1 1 0 00-1 1v11.586l-3.293-3.293a1 1 0 10-1.414 1.414l5 5a1 1 0 001.414 0l5-5a1 1 0 00-1.414-1.414L11 14.586V3a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        <button type="submit" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg shadow-md flex items-center space-x-2 transition duration-300 ease-in-out">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 2a1 1 0 00-1 1v11.586l-3.293-3.293a1 1 0 00-1.414 1.414l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414L11 14.586V3a1 1 0 00-1-1z" clip-rule="evenodd" />
                             </svg>
                         </button>
                     </form>

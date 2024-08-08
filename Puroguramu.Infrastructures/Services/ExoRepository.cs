@@ -40,6 +40,7 @@ public class ExoRepository : IExoRepository
             Order = await _context.Exercises.CountAsync(e => e.LessonId == lessonId) + 1,
             LessonId = lessonId,
             Template = "public class Exercice { }", // Template par défaut
+            Stub = "",
             Solution = string.Empty
         };
 

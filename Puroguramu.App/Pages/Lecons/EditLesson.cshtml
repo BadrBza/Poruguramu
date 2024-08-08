@@ -16,115 +16,118 @@
 <body class="bg-gray-900 text-gray-200 flex flex-col min-h-screen">
 
     <!-- Main Content Area -->
-    <main class="flex-grow container mx-auto p-10 mt-20"> <!-- Increased top margin for spacing -->
-        <article class="max-w-4xl mx-auto bg-gray-800 p-8 rounded-xl shadow-lg">
+    <main class="flex-grow container mx-auto p-10 mt-20">
+        <article class="max-w-4xl mx-auto bg-gray-800 p-8 rounded-2xl shadow-lg transition duration-300 ease-in-out hover:shadow-xl">
             <header>
                 <h1 class="text-2xl font-bold text-center mb-6">Éditer la Leçon</h1>
             </header>
             
-                <section>
-                    <label for="title" class="block text-sm font-medium text-gray-300">Intitulé de la leçon</label>
-                    <input type="text" id="title" name="Lesson.Title" required
-                           class="mt-1 block w-full px-3 py-2 bg-gray-700 text-gray-300 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                           value="@Model.Lesson.Title">
-                </section>
-
-                <section>
-                    <label for="description" class="block text-sm font-medium text-gray-300">Description</label>
-                    <textarea id="description" name="Lesson.Description" rows="3" required
-                              class="mt-1 block w-full px-3 py-2 bg-gray-700 text-gray-300 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">@Model.Lesson.Description</textarea>
-                </section>
-
-                <section>
-                    <div class="flex justify-end mb-4 mt-4">
-                        <a href="/Exercices/CreateExercice?lessonId=@Model.Lesson.Id"
-                           class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
-                            Ajouter un Exercice
-                        </a>
-                    </div>
-                </section>
-
-                <section class="space-y-4">
-                    @foreach (var exercise in Model.Exercises.OrderBy(e => e.Order))
-                    {
-                    <div class="flex justify-between items-center bg-gray-700 p-4 rounded">
-                        <header>
-                            <h2 class="text-lg font-medium text-white">Exercice : @exercise.Title</h2>
-                            <p class="text-gray-400">Status: @(exercise.IsPublished ? "Publié" : "Non publié")</p>
-                        </header>
-                        <nav class="flex space-x-2">
-                            <a href="/Exercices/EditExercice?id=@exercise.Id&lessonId=@Model.Lesson.Id"
-                               class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">Éditer</a>
-
-                            <form method="post" asp-page-handler="ToggleExercise" class="inline">
-                                <input type="hidden" name="id" value="@exercise.Id"/>
-                                <input type="hidden" name="lessonId" value="@Model.Lesson.Id"/>
-                                <button type="submit"
-                                        class="@(exercise.IsPublished ? "bg-purple-500 hover:bg-purple-600" : "bg-gray-500 hover:bg-gray-700") text-white px-3 py-1 rounded">
-                                    @((exercise.IsPublished ? "Masquer" : "Publier"))
-                                </button>
-                            </form>
-
-
-                            <form method="post" asp-page-handler="DeleteExercise" class="inline">
-                                <input type="hidden" name="id" value="@exercise.Id"/>
-                                <input type="hidden" name="lessonId" value="@Model.Lesson.Id"/>
-                                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">
-                                    Supprimer
-                                </button>
-                            </form>
-                            
-                            <form method="post" asp-page-handler="MoveExercise" class="inline">
-                                <input type="hidden" name="id" value="@exercise.Id"/>
-                                <input type="hidden" name="direction" value="up"/>
-                                <input type="hidden" name="lessonId" value="@Model.Lesson.Id"/>
-                                <button type="submit"
-                                        class="bg-gray-500 hover:bg-gray-700 text-white px-3 py-1 rounded">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20"
-                                         fill="currentColor">
-                                        <path fill-rule="evenodd"
-                                              d="M10 18a1 1 0 001-1V5.414l3.293 3.293a1 1 0 001.414-1.414l-5-5a1 1 0 00-1.414 0l-5 5a1 1 0 101.414 1.414L9 5.414V17a1 1 0 001 1z"
-                                              clip-rule="evenodd"/>
-                                    </svg>
-                                </button>
-                            </form>
-
-                            <form method="post" asp-page-handler="MoveExercise" class="inline">
-                                <input type="hidden" name="id" value="@exercise.Id"/>
-                                <input type="hidden" name="direction" value="down"/>
-                                <input type="hidden" name="lessonId" value="@Model.Lesson.Id"/>
-                                <button type="submit"
-                                        class="bg-gray-500 hover:bg-gray-700 text-white px-3 py-1 rounded">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20"
-                                         fill="currentColor">
-                                        <path fill-rule="evenodd"
-                                              d="M10 2a1 1 0 00-1 1v11.586l-3.293-3.293a1 1 0 10-1.414 1.414l5 5a1 1 0 001.414 0l5-5a1 1 0 00-1.414-1.414L11 14.586V3a1 1 0 00-1-1z"
-                                              clip-rule="evenodd"/>
-                                    </svg>
-                                </button>
-                            </form>
-                        </nav>
-                    </div>
-                    }
-                </section>
             <form method="POST" class="space-y-6">
                 <!-- Hidden field for Lesson ID -->
                 <input type="hidden" name="Lesson.Id" value="@Model.Lesson.Id">
+                
+                <section class="mb-6">
+                    <label for="title" class="block text-lg font-semibold text-gray-300">Intitulé de la leçon</label>
+                    <input type="text" id="title" name="Lesson.Title" required
+                           class="mt-2 block w-full px-3 py-2 bg-gray-700 text-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-300 ease-in-out border-none"
+                           value="@Model.Lesson.Title">
+                </section>
+            
+                <section>
+                    <label for="description" class="block text-lg font-semibold text-gray-300">Description</label>
+                    <textarea id="description" name="Lesson.Description" rows="3" required
+                              class="mt-2 block w-full px-3 py-2 bg-gray-700 text-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-300 ease-in-out border-none">@Model.Lesson.Description</textarea>
+                </section>
+            
                 <section class="flex justify-center mt-10">
                     <button type="submit"
-                            class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Enregistrer
-                        les modifications
+                            class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out">
+                        Enregistrer les modifications
                     </button>
                 </section>
             </form>
 
+
+            <section>
+                <div class="flex justify-end mb-4 mt-4">
+                    <a href="/Exercices/CreateExercice?lessonId=@Model.Lesson.Id"
+                       class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out">
+                        Ajouter un Exercice
+                    </a>
+                </div>
+            </section>
+
+            <section class="space-y-4">
+                @foreach (var exercise in Model.Exercises.OrderBy(e => e.Order))
+                {
+                <div class="flex justify-between items-center bg-gray-700 p-4 rounded-lg shadow-md transition duration-300 ease-in-out hover:shadow-lg">
+                    <header>
+                        <h2 class="text-lg font-medium text-white">Exercice : @exercise.Title</h2>
+                        <p class="text-gray-400">Statut : @(exercise.IsPublished ? "Publié" : "Non publié")</p>
+                    </header>
+                    <nav class="flex space-x-2">
+                        <a href="/Exercices/EditExercice?id=@exercise.Id&lessonId=@Model.Lesson.Id"
+                           class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg transition duration-300 ease-in-out">Éditer</a>
+
+                        <form method="post" asp-page-handler="ToggleExercise" class="inline">
+                            <input type="hidden" name="id" value="@exercise.Id"/>
+                            <input type="hidden" name="lessonId" value="@Model.Lesson.Id"/>
+                            <button type="submit"
+                                    class="@(exercise.IsPublished ? "bg-purple-500 hover:bg-purple-600" : "bg-gray-500 hover:bg-gray-700") text-white px-3 py-1 rounded-lg transition duration-300 ease-in-out">
+                                @((exercise.IsPublished ? "Masquer" : "Publier"))
+                            </button>
+                        </form>
+
+                        <form method="post" asp-page-handler="DeleteExercise" class="inline">
+                            <input type="hidden" name="id" value="@exercise.Id"/>
+                            <input type="hidden" name="lessonId" value="@Model.Lesson.Id"/>
+                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg transition duration-300 ease-in-out">
+                                Supprimer
+                            </button>
+                        </form>
+                        
+                        <form method="post" asp-page-handler="MoveExercise" class="inline">
+                            <input type="hidden" name="id" value="@exercise.Id"/>
+                            <input type="hidden" name="direction" value="up"/>
+                            <input type="hidden" name="lessonId" value="@Model.Lesson.Id"/>
+                            <button type="submit"
+                                    class="bg-gray-500 hover:bg-gray-700 text-white px-3 py-1 rounded-lg transition duration-300 ease-in-out">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20"
+                                     fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                          d="M10 18a1 1 0 001-1V5.414l3.293 3.293a1 1 0 001.414-1.414l-5-5a1 1 0 00-1.414 0l-5 5a1 1 0 101.414 1.414L9 5.414V17a1 1 0 001 1z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                            </button>
+                        </form>
+
+                        <form method="post" asp-page-handler="MoveExercise" class="inline">
+                            <input type="hidden" name="id" value="@exercise.Id"/>
+                            <input type="hidden" name="direction" value="down"/>
+                            <input type="hidden" name="lessonId" value="@Model.Lesson.Id"/>
+                            <button type="submit"
+                                    class="bg-gray-500 hover:bg-gray-700 text-white px-3 py-1 rounded-lg transition duration-300 ease-in-out">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20"
+                                     fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                          d="M10 2a1 1 0 00-1 1v11.586l-3.293-3.293a1 1 0 10-1.414 1.414l5 5a1 1 0 001.414 0l5-5a1 1 0 00-1.414-1.414L11 14.586V3a1 1 0 00-1-1z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </nav>
+                </div>
+                }
+            </section>
+
+           
+
             <footer>
                 <!-- Validation Summary -->
-                <div asp-validation-summary="ModelOnly" class="text-red-500"></div>
+                <div asp-validation-summary="ModelOnly" class="text-red-500 mt-6"></div>
             </footer>
         </article>
     </main>
-    
 
 </body>
 </html>

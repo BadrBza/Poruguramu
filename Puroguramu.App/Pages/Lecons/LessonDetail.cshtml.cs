@@ -5,6 +5,7 @@ using Puroguramu.Domains.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Puroguramu.Domains;
 
 namespace Puroguramu.App.Pages.Lecons
 {
@@ -24,6 +25,9 @@ namespace Puroguramu.App.Pages.Lecons
         public LessonEditDto Lesson { get; set; }
         public List<StudentExerciseDto> Exercises { get; set; }
         public StudentDto Student { get; set; }
+
+        public Exercice Exercice { get; set; }
+
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {

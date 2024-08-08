@@ -41,7 +41,7 @@ public class StudentExerciseSeeder
                     StudentMatricule = students[1].Matricule,
                     StudentId = students[1].Id,
                     ExoId = exercises[2].Id,
-                    Status = ExerciseStatus.InProgress,
+                    Status = ExerciseStatus.Started,
                     Code = "public class Solution { /* Completed code here */ }"
                 },
                 new StudentExercise
@@ -59,7 +59,7 @@ public class StudentExerciseSeeder
                     StudentMatricule = students[1].Matricule,
                     StudentId = students[1].Id,
                     ExoId = exercises[4].Id,
-                    Status = ExerciseStatus.InProgress,
+                    Status = ExerciseStatus.Started,
                     Code = "public class Solution { /* Completed code here */ }"
                 },
             };

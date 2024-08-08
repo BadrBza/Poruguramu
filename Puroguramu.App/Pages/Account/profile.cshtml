@@ -33,55 +33,58 @@
 <body class="bg-gray-900 text-gray-200 flex flex-col justify-between min-h-screen">
 
     <!-- Main Content Area (Form Section) -->
-    <div class="flex-grow flex items-center justify-center p-4">
-        <div class="w-full max-w-lg p-5 bg-gray-800 rounded-xl shadow-xl">
+    <div class="flex-grow flex items-center justify-center p-4 mt-16 my-16"> <!-- Added margin-top to separate from navbar -->
+        <div class="w-full max-w-lg p-8 bg-gray-800 rounded-xl shadow-lg">
 
             <!-- Profile Update Form -->
             <form method="POST" enctype="multipart/form-data">
-                <h2 class="text-2xl font-semibold text-center mb-4">Modifier votre Profil</h2>
+                <h2 class="text-3xl font-bold text-center mb-6">Modifier votre Profil</h2>
+
                 <!-- Profile Image Preview -->
-                <div class="flex justify-center mb-6">
-                    <img src="@(Model.Student.ProfilePicture != null ? $"data:image;base64,{Convert.ToBase64String(Model.Student.ProfilePicture)}" : "/ressources/basic.jpg")" alt="Profile Picture" class="h-40 w-40 rounded-full border-4 border-blue-500 cursor-pointer">
+                <div class="flex justify-center mb-8">
+                    <img src="@(Model.Student.ProfilePicture != null ? $"data:image;base64,{Convert.ToBase64String(Model.Student.ProfilePicture)}" : "/ressources/basic.jpg")" alt="Profile Picture" class="h-40 w-40 rounded-full border-4 border-blue-500 cursor-pointer shadow-md">
                 </div>
 
-                <div class="mb-4">
-                    <label asp-for="Student.Matricule" class="block text-sm font-medium text-gray-400"></label>
-                    <input asp-for="Student.Matricule" class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Votre matricule" readonly>
+                <div class="mb-6">
+                    <label asp-for="Student.Matricule" class="block text-lg font-medium text-gray-300 mb-2">Matricule</label>
+                    <input asp-for="Student.Matricule" class="mt-1 block w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Votre matricule" readonly>
                 </div>
-                <div class="mb-4">
-                    <label asp-for="Student.FirstName" class="block text-sm font-medium text-gray-400"></label>
-                    <input asp-for="Student.FirstName" class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Entrez votre prénom">
-                    <span asp-validation-for="Student.FirstName" class="text-red-500"></span>
+                <div class="mb-6">
+                    <label asp-for="Student.FirstName" class="block text-lg font-medium text-gray-300 mb-2">Prénom</label>
+                    <input asp-for="Student.FirstName" class="mt-1 block w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Entrez votre prénom">
+                    <span asp-validation-for="Student.FirstName" class="text-red-500 mt-2 block"></span>
                 </div>
-                <div class="mb-4">
-                    <label asp-for="Student.LastName" class="block text-sm font-medium text-gray-400"></label>
-                    <input asp-for="Student.LastName" class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Entrez votre nom">
-                    <span asp-validation-for="Student.LastName" class="text-red-500"></span>
+                <div class="mb-6">
+                    <label asp-for="Student.LastName" class="block text-lg font-medium text-gray-300 mb-2">Nom</label>
+                    <input asp-for="Student.LastName" class="mt-1 block w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Entrez votre nom">
+                    <span asp-validation-for="Student.LastName" class="text-red-500 mt-2 block"></span>
                 </div>
-                <div class="mb-4">
-                    <label asp-for="Student.Email" class="block text-sm font-medium text-gray-400"></label>
-                    <input asp-for="Student.Email" class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Entrez votre adresse électronique">
-                    <span asp-validation-for="Student.Email" class="text-red-500"></span>
+                <div class="mb-6">
+                    <label asp-for="Student.Email" class="block text-lg font-medium text-gray-300 mb-2">Adresse électronique</label>
+                    <input asp-for="Student.Email" class="mt-1 block w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Entrez votre adresse électronique">
+                    <span asp-validation-for="Student.Email" class="text-red-500 mt-2 block"></span>
                 </div>
-                <div class="mb-4">
-                    <label asp-for="Student.LabGroup" class="block text-sm font-medium text-gray-400"></label>
-                    <select asp-for="Student.LabGroup" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                <div class="mb-6">
+                    <label asp-for="Student.LabGroup" class="block text-lg font-medium text-gray-300 mb-2">Groupe de laboratoire</label>
+                    <select asp-for="Student.LabGroup" class="bg-gray-700 border border-gray-600 text-gray-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3">
                         <option value="2i1">2i1</option>
                         <option value="2i2">2i2</option>
                         <option value="2i3">2i3</option>
                         <option value="2i4">2i4</option>
                     </select>
-                    <span asp-validation-for="Student.LabGroup" class="text-red-500"></span>
+                    <span asp-validation-for="Student.LabGroup" class="text-red-500 mt-2 block"></span>
                 </div>
-                <div class="mb-6">
-                    <label asp-for="ProfilePictureFile" class="block text-sm font-medium text-gray-400"></label>
-                    <input asp-for="ProfilePictureFile" accept=".jpg, .jpeg, .png" class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:border-blue-500 cursor-pointer">
-                    <span asp-validation-for="ProfilePictureFile" class="text-red-500"></span>
+                <div class="mb-8">
+                    <label asp-for="ProfilePictureFile" class="block text-lg font-medium text-gray-300 mb-2">Photo de profil</label>
+                    <input asp-for="ProfilePictureFile" accept=".jpg, .jpeg, .png" class="mt-1 block w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg shadow-sm focus:outline-none focus:border-blue-500 cursor-pointer">
+                    <span asp-validation-for="ProfilePictureFile" class="text-red-500 mt-2 block"></span>
                 </div>
 
                 <!-- Submit Button -->
                 <div class="flex items-center justify-center">
-                    <button type="submit" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-md shadow-lg font-medium text-white">Enregistrer les modifications</button>
+                    <button type="submit" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg shadow-lg font-medium text-white transition-transform transform hover:scale-105">
+                        Enregistrer les modifications
+                    </button>
                 </div>
             </form>
         </div>

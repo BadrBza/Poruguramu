@@ -16,10 +16,9 @@ public interface ILessonRepository
 
     Task<List<LessonDto>> GetPublishedLessonsWithProgressAsync(string studentMatricule);
     Task<int> GetTotalExercisesCountAsync(Guid lessonId);
-    Task<int> GetCompletedExercisesCountAsync(Guid lessonId, string studentMatricule);
+    Task<int> GetCompletedExercisesCountAsync(Guid lessonId, string studentId);
     Task<List<LessonDto>> GetLessonsWithStudentProgressAsync();
     Task<List<ExerciseDto>> GetExercisesByLessonIdAsync(Guid lessonId);
-
 
     Task<List<StudentExerciseDto>> GetAllExercisesByLessonAsync(string studentMatricule, Guid lessonId);
 }
