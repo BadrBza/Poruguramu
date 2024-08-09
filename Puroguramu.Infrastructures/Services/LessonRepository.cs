@@ -329,20 +329,56 @@ namespace Puroguramu.Infrastructures.Services
 
         public async Task ResetLessonAsync(Guid lessonId)
         {
-            var exercises = await _context.Exercises
-                .Where(e => e.LessonId == lessonId)
-                .ToListAsync();
-
+            var exercises = await _context.Exercises.Where(e => e.LessonId == lessonId).ToListAsync();
             foreach (var exercise in exercises)
             {
-                var studentExercises = await _context.StudentExercise
-                    .Where(se => se.ExoId == exercise.Id)
-                    .ToListAsync();
+                await ResetExerciseAsync(exercise.Id);
+            }
+        }
 
-                _context.StudentExercise.RemoveRange(studentExercises);
+        public async Task ResetAllLessonsAsync()
+        {
+            var lessons = await _context.Lessons.ToListAsync();
+            foreach (var lesson in lessons)
+            {
+                await ResetLessonAsync(lesson.Id);
+            }
+        }
+
+        public async Task ResetExerciseAsync(Guid exerciseId)
+        {
+            // Supprimer les tentatives liées à l'exercice
+            var tentatives = await _context.Tentatives.Where(t => t.ExoId == exerciseId).ToListAsync();
+            _context.Tentatives.RemoveRange(tentatives);
+            var studentExercise = _context.StudentExercise.Where(se => se.ExoId == exerciseId);
+            _context.StudentExercise.RemoveRange(studentExercise);
+            // Mettre à jour le statut des exercices des étudiants à NotStarted
+            var studentExercises = await _context.StudentExercise.Where(se => se.ExoId == exerciseId).ToListAsync();
+            foreach (var se in studentExercises)
+            {
+                se.Status = ExerciseStatus.NotStarted;
             }
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteStudentExerciseDataAsync(Guid exerciseId, string studentId)
+        {
+            // Rechercher les entrées de StudentExercise liées à cet exercice et à cet étudiant
+            var studentExercises = await _context.StudentExercise
+                .Where(se => se.ExoId == exerciseId && se.StudentId == studentId)
+                .ToListAsync();
+
+            foreach (var studentExercise in studentExercises)
+            {
+                Console.WriteLine("Données trouvée pour l'id : " + studentExercise.StudentId);
+            }
+            // Supprimer les entrées trouvées
+            if (studentExercises.Any())
+            {
+                _context.StudentExercise.RemoveRange(studentExercises);
+                await _context.SaveChangesAsync();
+            }
         }
 
     }

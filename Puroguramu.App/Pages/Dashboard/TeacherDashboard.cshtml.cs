@@ -61,5 +61,11 @@ namespace Puroguramu.App.Pages.Dashboard
             return RedirectToPage();
         }
 
+        public async Task<IActionResult> OnPostResetAllLessonsAsync()
+        {
+            await _lessonRepository.ResetAllLessonsAsync();
+            return RedirectToPage();
+        }
+
     }
 }

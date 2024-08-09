@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Puroguramu.Domains.modelsDomains;
 using Puroguramu.Domains.Repositories;
+using Puroguramu.Infrastructures.Data.models;
 
 namespace Puroguramu.App.Pages.Lecons
 {
@@ -9,16 +11,19 @@ namespace Puroguramu.App.Pages.Lecons
     {
         private readonly ILessonRepository _lessonRepository;
         private readonly IExoRepository _exoRepository;
+        private readonly IStudentRepository _studentRepository;
 
         public List<ExerciseDto> Exercises { get; set; } = new List<ExerciseDto>();
 
         [BindProperty]
         public LessonEditDto Lesson { get; set; }
+        public StudentExerciseDto StudentExercise { get; set; }
 
-        public EditLesson(ILessonRepository lessonRepository, IExoRepository exoRepository)
+        public EditLesson(ILessonRepository lessonRepository, IExoRepository exoRepository, IStudentRepository studentRepository)
         {
             _lessonRepository = lessonRepository;
             _exoRepository = exoRepository;
+            _studentRepository = studentRepository;
         }
 
         public async Task OnGetAsync(Guid id)
@@ -58,6 +63,15 @@ namespace Puroguramu.App.Pages.Lecons
         public async Task<IActionResult> OnPostDeleteExerciseAsync(Guid id, string lessonId)
         {
             await _exoRepository.DeleteExerciseAsync(id);
+            return RedirectToPage("/Lecons/EditLesson", new { id = lessonId });
+        }
+
+        public async Task<IActionResult> OnPostResetExerciseAsync(Guid id, Guid lessonId)
+        {
+            var student = _studentRepository.GetStudentProfileAsync(User);
+            Console.WriteLine("id trouvé = " + student.Id);
+            await _lessonRepository.DeleteStudentExerciseDataAsync(id, student.Id.ToString());
+            await _lessonRepository.ResetExerciseAsync(id);
             return RedirectToPage("/Lecons/EditLesson", new { id = lessonId });
         }
     }
