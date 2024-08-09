@@ -19,6 +19,7 @@ public class ApplicationDbContext : IdentityDbContext<Student>
 
     public DbSet<Student> Students { get; set; }
     public DbSet<StudentExercise> StudentExercise { get; set; }
+    public DbSet<Tentative> Tentatives { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -37,5 +38,7 @@ public class ApplicationDbContext : IdentityDbContext<Student>
         modelBuilder.ApplyConfiguration(new ExerciseMapping());
         modelBuilder.ApplyConfiguration(new StudentMapping());
         modelBuilder.ApplyConfiguration(new StudentExerciseMapping());
+        modelBuilder.ApplyConfiguration(new TentativeMapping());
+
     }
 }

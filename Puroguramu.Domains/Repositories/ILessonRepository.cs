@@ -21,6 +21,7 @@ public interface ILessonRepository
     Task<List<ExerciseDto>> GetExercisesByLessonIdAsync(Guid lessonId);
 
     Task<List<StudentExerciseDto>> GetAllExercisesByLessonAsync(string studentMatricule, Guid lessonId);
+    Task ResetLessonAsync(Guid lessonId);
 }
 
 

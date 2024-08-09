@@ -226,10 +226,6 @@ namespace Puroguramu.Infrastructures.Services
                 .Where(ur => ur.RoleId == studentRole.Id)
                 .Select(ur => ur.UserId)
                 .ToListAsync();
-            foreach (var studentId in studentIds)
-            {
-                Console.WriteLine("studentID : " + studentId);
-            }
 
             // Filtrer les leçons et leurs exercices
             var lessons = await _context.Lessons
@@ -263,7 +259,7 @@ namespace Puroguramu.Infrastructures.Services
         public async Task<List<ExerciseDto>> GetExercisesByLessonIdAsync(Guid lessonId)
         {
             var exercises = await _context.Exercises
-                .Where(e => e.LessonId == lessonId && e.IsPublished)
+                .Where(e => e.LessonId == lessonId)
                 .Select(e => new ExerciseDto
                 {
                     Id = e.Id,
@@ -320,9 +316,6 @@ namespace Puroguramu.Infrastructures.Services
             return studentExercises;
         }
 
-
-
-
         private Domains.DifficultyExo MapDifficultyToDto(Puroguramu.Infrastructures.Data.models.Difficulty difficulty)
         {
             return difficulty switch
@@ -334,7 +327,23 @@ namespace Puroguramu.Infrastructures.Services
             };
         }
 
+        public async Task ResetLessonAsync(Guid lessonId)
+        {
+            var exercises = await _context.Exercises
+                .Where(e => e.LessonId == lessonId)
+                .ToListAsync();
 
+            foreach (var exercise in exercises)
+            {
+                var studentExercises = await _context.StudentExercise
+                    .Where(se => se.ExoId == exercise.Id)
+                    .ToListAsync();
 
-}
+                _context.StudentExercise.RemoveRange(studentExercises);
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+    }
 }
