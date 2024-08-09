@@ -41,6 +41,10 @@ namespace Puroguramu.App.Pages.Exercices
         public string Template { get; set; }
 
         [BindProperty]
+        [Required(ErrorMessage = "Le stub est requis.")]
+        public string Stub { get; set; }
+
+        [BindProperty]
         [Required(ErrorMessage = "La solution est requise.")]
         public string Solution { get; set; }
 
@@ -62,6 +66,7 @@ namespace Puroguramu.App.Pages.Exercices
             Title = exercise.Title;
             Description = exercise.Description;
             Template = exercise.Template;
+            Stub = exercise.Stub;
             Solution = exercise.Solution;
             DifficultyExo = exercise.Difficulty;
 
@@ -81,6 +86,7 @@ namespace Puroguramu.App.Pages.Exercices
                 Title = Title,
                 Description = Description,
                 Template = Template,
+                Stub = Stub,
                 Solution = Solution,
                 Difficulty = DifficultyExo
             };
