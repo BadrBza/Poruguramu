@@ -311,7 +311,7 @@ namespace Puroguramu.Infrastructures.Services
                 }
             }
 
-            return null; // Ne redirige pas, retourne null
+            return null;
         }
 
 
@@ -433,6 +433,8 @@ namespace Puroguramu.Infrastructures.Services
                 .Select(t => new TentativeDto { AttemptedOn = t.AttemptedOn, Status = (ExerciseStatuts)t.Status, Code = t.Code})
                 .ToListAsync();
         }
+
+
 
     }
 

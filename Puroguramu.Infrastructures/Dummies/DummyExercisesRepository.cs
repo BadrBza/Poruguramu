@@ -89,4 +89,21 @@
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateStudentExerciseAbandonnedStatusAsync(Guid exerciseId, string studentId)
+        {
+            var studentExercise = await _context.StudentExercise
+                .SingleOrDefaultAsync(se => se.ExoId == exerciseId && se.StudentId == studentId);
+
+            if (studentExercise != null)
+            {
+                studentExercise.Status = ExerciseStatus.Failed;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+
+
+
+
+
     }

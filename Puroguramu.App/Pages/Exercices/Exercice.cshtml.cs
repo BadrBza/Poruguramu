@@ -25,6 +25,10 @@ namespace Puroguramu.App.Pages
         public string Proposal { get; set; } = string.Empty;
         public StudentExerciseDto StudentExercise { get; set; }
 
+        public bool ShowSolution { get; set; } = false;
+        public string Solution { get; set; }
+
+
         public IEnumerable<TestResultViewModel> TestResult
             => _result?.TestResults?.Select(result => new TestResultViewModel(result)) ?? Array.Empty<TestResultViewModel>();
 
@@ -99,6 +103,7 @@ namespace Puroguramu.App.Pages
                 };
             }
 
+
             // Mettre à jour le statut de l'exercice en fonction du résultat de l'évaluation
             studentExercise.Statuts = _result.Statuts;
             studentExercise.Code = Proposal;
@@ -113,6 +118,40 @@ namespace Puroguramu.App.Pages
             await _studentRepository.UpdateStudentExerciseStatusAsync(studentExercise);
             return Page();
         }
+
+        public async Task<IActionResult> OnPostShowSolutionAsync(Guid exerciseId)
+        {
+            // Récupérer les informations sur l'étudiant et l'exercice
+            Student = await _studentRepository.GetStudentProfileAsync(User);
+            var studentExercise = await _studentRepository.GetStudentExerciseByIdAsync(Student.Id, exerciseId);
+
+            if (studentExercise == null)
+            {
+                return NotFound(); // Si l'exercice n'existe pas pour cet étudiant, retourner une erreur 404.
+            }
+
+            // Si l'exercice est en cours (Started), changer le statut en Abandoned (Failed)
+            if (studentExercise.Statuts == ExerciseStatuts.Started)
+            {
+                await _exercisesRepository.UpdateStudentExerciseAbandonnedStatusAsync(exerciseId, Student.Id);
+            }
+
+            // Afficher la solution
+            ShowSolution = true;
+            var exercise =  _exercisesRepository.GetExercise(exerciseId);
+            Solution = exercise.Solution;
+
+            ExerciseTitle = exercise.Title;
+            ExerciseStatut = exercise.Difficulty.ToString();
+            DescriptionExo = exercise.Description;
+
+            return Page();
+        }
+
+
+
+
+
     }
 
     public record TestResultViewModel(TestResult Result)

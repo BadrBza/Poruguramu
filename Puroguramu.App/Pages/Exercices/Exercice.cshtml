@@ -60,6 +60,14 @@
         {
         <p class="text-gray-400">No test results to display. Run the exercise to see the results.</p>
         }
+        @if (Model.ShowSolution)
+            {
+                <div class="mt-6 p-4 bg-gray-900 rounded-lg">
+                    <h2 class="text-xl font-bold text-white mb-2">Solution:</h2>
+                    <pre class="bg-gray-800 text-white p-4 rounded">@Model.Solution</pre>
+                </div>
+            }
+     
     </section>
 
     <!-- Previous Attempts Section -->
@@ -90,6 +98,7 @@
             }
         </div>
     </section>
+   
 </main>
 
 <script>
