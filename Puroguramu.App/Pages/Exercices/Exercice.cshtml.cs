@@ -24,9 +24,10 @@ namespace Puroguramu.App.Pages
         public StudentDto Student { get; set; }
         public string Proposal { get; set; } = string.Empty;
         public StudentExerciseDto StudentExercise { get; set; }
+        public Guid IdExo { get; set; }
 
-        public bool ShowSolution { get; set; } = false;
-        public string Solution { get; set; }
+        public bool ShowRunButton { get; set; } = true;
+
 
 
         public IEnumerable<TestResultViewModel> TestResult
@@ -54,6 +55,7 @@ namespace Puroguramu.App.Pages
             ExerciseTitle = exercise.Title;
             ExerciseStatut = exercise.Difficulty.ToString();
             DescriptionExo = exercise.Description;
+            IdExo = exerciseId;
 
             Proposal = await _exercisesRepository.GetStudentProposalAsync(exerciseId, Student.Id);
 
@@ -61,6 +63,11 @@ namespace Puroguramu.App.Pages
             {
                 _result = await _assessor.StubForExercise(exerciseId);
                 Proposal = _result.Proposal;
+            }
+
+            if (StudentExercise != null && StudentExercise.Statuts == ExerciseStatuts.Failed)
+            {
+                ShowRunButton = false;
             }
         }
 
@@ -116,41 +123,39 @@ namespace Puroguramu.App.Pages
             await _lessonRepository.GetCompletedExercisesCountAsync(exercise.LessonId, Student.Id);
             await _exercisesRepository.SaveStudentProposalAsync(exerciseId, Student.Id, Proposal);
             await _studentRepository.UpdateStudentExerciseStatusAsync(studentExercise);
+
+            if (studentExercise.Statuts == ExerciseStatuts.Failed)
+            {
+                ShowRunButton = false;
+            }
             return Page();
         }
 
-        public async Task<IActionResult> OnPostShowSolutionAsync(Guid exerciseId)
+        public async Task<IActionResult> OnGetViewSolutionAsync(Guid exerciseId)
         {
-            // Récupérer les informations sur l'étudiant et l'exercice
             Student = await _studentRepository.GetStudentProfileAsync(User);
-            var studentExercise = await _studentRepository.GetStudentExerciseByIdAsync(Student.Id, exerciseId);
+            StudentExercise = await _studentRepository.GetStudentExerciseByIdAsync(Student.Id, exerciseId);
 
-            if (studentExercise == null)
+            var exercise = _exercisesRepository.GetExercise(exerciseId);
+            if (exercise == null)
             {
-                return NotFound(); // Si l'exercice n'existe pas pour cet étudiant, retourner une erreur 404.
+                return NotFound();
             }
-
-            // Si l'exercice est en cours (Started), changer le statut en Abandoned (Failed)
-            if (studentExercise.Statuts == ExerciseStatuts.Started)
-            {
-                await _exercisesRepository.UpdateStudentExerciseAbandonnedStatusAsync(exerciseId, Student.Id);
-            }
-
-            // Afficher la solution
-            ShowSolution = true;
-            var exercise =  _exercisesRepository.GetExercise(exerciseId);
-            Solution = exercise.Solution;
 
             ExerciseTitle = exercise.Title;
             ExerciseStatut = exercise.Difficulty.ToString();
             DescriptionExo = exercise.Description;
 
-            return Page();
+            // Si l'étudiant n'a pas encore résolu l'exercice, marquer comme abandonné
+            if ( StudentExercise.Statuts != ExerciseStatuts.Passed)
+            {
+                await _exercisesRepository.UpdateStudentExerciseAbandonnedStatusAsync(exerciseId, Student.Id);
+            }
+
+            Proposal = exercise.Solution;
+            return new ContentResult { Content = Proposal, ContentType = "text/plain", StatusCode = 200 };
+
         }
-
-
-
-
 
     }
 

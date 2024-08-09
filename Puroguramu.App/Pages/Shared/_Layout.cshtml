@@ -15,34 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="~/js/dropdown.js"></script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-
-        .nav-link {
-            position: relative;
-            display: inline-block;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            transform: scaleX(0);
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: #FFFFFF; /* White underline */
-            transform-origin: bottom right;
-            transition: transform 0.25s ease-out;
-        }
-
-        .nav-link:hover::after {
-            transform: scaleX(1);
-            transform-origin: bottom left;
-        }
-    </style>
+    <link href="~/css/AnimationNavbar.css" rel="stylesheet"/>
 </head>
 <body class="bg-gray-900 text-gray-200 flex flex-col min-h-screen">
     <header>

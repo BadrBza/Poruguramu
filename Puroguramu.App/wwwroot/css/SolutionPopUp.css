@@ -1,0 +1,39 @@
+﻿
+#solutionModal {
+    position: fixed;
+    inset: 0;
+    display: none; /* Initialement cachée */
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000; /* Assurez-vous que la modal est au-dessus de tout le contenu */
+}
+
+#solutionModal .modal-content {
+    background-color: #1a202c;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    width: 80%;
+    max-width: 768px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#solutionModal .modal-content h2 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+#solutionModal .modal-content pre {
+    background-color: #2d3748;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    color: #ffffff;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+#solutionModal .modal-content button {
+    margin-top: 1rem;
+}
+

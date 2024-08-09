@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\img\profilePictures"/>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Puroguramu.Domains\Puroguramu.Domains.csproj"/>
     <ProjectReference Include="..\Puroguramu.Infrastructures\Puroguramu.Infrastructures.csproj"/>
   </ItemGroup>
