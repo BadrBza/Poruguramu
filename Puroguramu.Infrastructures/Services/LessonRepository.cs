@@ -57,10 +57,21 @@ namespace Puroguramu.Infrastructures.Services
 
         public async Task<List<LessonDto>> GetAllLessonsAsync()
         {
-            return await _context.Lessons
+            var lessons = await _context.Lessons
                 .OrderBy(lesson => lesson.Order)
-                .Select(lesson => new LessonDto { Id = lesson.Id, Title = lesson.Title, IsPublished = lesson.IsPublished, Order = lesson.Order })
+                .Include(lesson => lesson.Exercises)
                 .ToListAsync();
+
+            return lessons
+                .Where(lesson => lesson.Exercises.Any(e => e.IsPublished)) // Filtre les leçons sans exercices publiés
+                .Select(lesson => new LessonDto
+                {
+                    Id = lesson.Id,
+                    Title = lesson.Title,
+                    IsPublished = lesson.IsPublished,
+                    Order = lesson.Order,
+                    TotalExercises = lesson.Exercises.Count(e => e.IsPublished),
+                }).ToList();
         }
 
         public async Task ToggleLessonAsync(Guid id)
@@ -132,14 +143,25 @@ namespace Puroguramu.Infrastructures.Services
 
         public async Task<List<LessonDto>> GetPublishedLessonsAsync()
         {
-            return await _context.Lessons
+            var lessons = await _context.Lessons
                 .Where(lesson => lesson.IsPublished)
                 .OrderBy(lesson => lesson.Order)
-                .Select(lesson => new LessonDto { Id = lesson.Id, Title = lesson.Title, IsPublished = lesson.IsPublished, Order = lesson.Order })
+                .Include(lesson => lesson.Exercises)
                 .ToListAsync();
+
+            return lessons
+                .Where(lesson => lesson.Exercises.Any(e => e.IsPublished)) // Filtre les leçons sans exercices publiés
+                .Select(lesson => new LessonDto
+                {
+                    Id = lesson.Id,
+                    Title = lesson.Title,
+                    IsPublished = lesson.IsPublished,
+                    Order = lesson.Order,
+                    TotalExercises = lesson.Exercises.Count(e => e.IsPublished),
+                }).ToList();
         }
 
-        public async Task<List<LessonDto>> GetPublishedLessonsWithProgressAsync(string studentMatricule)
+        public async Task<List<LessonDto>> GetPublishedLessonsWithProgressAsync(string studentId)
         {
             var lessons = await _context.Lessons
                 .Where(lesson => lesson.IsPublished)
@@ -148,16 +170,19 @@ namespace Puroguramu.Infrastructures.Services
                 .ThenInclude(exo => exo.StudentExercises)
                 .ToListAsync();
 
-            return lessons.Select(lesson => new LessonDto
+            return lessons
+                .Where(lesson => lesson.Exercises.Any(e => e.IsPublished))
+                .Select(lesson => new LessonDto
             {
                 Id = lesson.Id,
                 Title = lesson.Title,
                 IsPublished = lesson.IsPublished,
                 Order = lesson.Order,
                 CompletedExercises = lesson.Exercises
+                    .Where(e => e.IsPublished)
                     .Count(e => e.StudentExercises
-                        .Any(se => se.Student != null && se.Student.Matricule == studentMatricule && se.Status == ExerciseStatus.Passed)),
-                TotalExercises = lesson.Exercises.Count
+                        .Any(se => se.StudentId == studentId && se.Status == ExerciseStatus.Passed)),
+                TotalExercises = lesson.Exercises.Count(e => e.IsPublished),
             }).ToList();
         }
 
@@ -238,7 +263,7 @@ namespace Puroguramu.Infrastructures.Services
         public async Task<List<ExerciseDto>> GetExercisesByLessonIdAsync(Guid lessonId)
         {
             var exercises = await _context.Exercises
-                .Where(e => e.LessonId == lessonId)
+                .Where(e => e.LessonId == lessonId && e.IsPublished)
                 .Select(e => new ExerciseDto
                 {
                     Id = e.Id,
@@ -273,7 +298,7 @@ namespace Puroguramu.Infrastructures.Services
 
             // Récupérer tous les exercices de la leçon donnée
             var exercises = await _context.Exercises
-                .Where(e => e.LessonId == lessonId)
+                .Where(e => e.LessonId == lessonId && e.IsPublished)
                 .OrderBy(e => e.Order)
                 .ToListAsync();
 
