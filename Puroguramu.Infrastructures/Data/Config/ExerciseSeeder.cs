@@ -24,18 +24,56 @@ public static class ExerciseSeeder
                     IsPublished = true,
                     Order = 1,
                     LessonId = lessons[0].Id,
-                    Template = "public class Exercise { }",
+                    Template = @"// code-insertion-point
+
+public class Test
+{
+    public static TestResult Ensure(float b, int exponent, float expected)
+    {
+      TestStatus status = TestStatus.Passed;
+      float actual = float.NaN;
+      try
+      {
+         actual = Exercice.Power(b, exponent);
+         if(Math.Abs(actual - expected) > 0.00001f)
+         {
+             status = TestStatus.Failed;
+         }
+      }
+      catch(Exception ex)
+      {
+         status = TestStatus.Inconclusive;
+      }
+
+      return new TestResult(
+        string.Format(""Power of {0} by {1} should be {2}"", b, exponent, expected),
+        status,
+        status == TestStatus.Passed ? string.Empty : string.Format(""Expected {0}. Got {1}."", expected, actual)
+      );
+    }
+}
+
+return new TestResult[] {
+  Test.Ensure(2, 4, 16.0f),
+  Test.Ensure(2, -4, 1.0f/16.0f)
+};",
                     Stub = @"public class Exercice
 {
   // Tapez votre code ici
 }",
-                    Solution = "public class Exercise { /* Solution goes here */ }"
+                    Solution = @"public class Exercice
+{
+    public static float Power(float b, int e)
+    {
+        return (float)Math.Pow(b, e);
+    }
+}"
                 },
                 new Exo
                 {
                     Id = Guid.NewGuid(),
                     Title = "Math Power C#",
-                    Description = "Créez une fonction Power C# prenant en paramètre une base b de type float et un exposant e de type int. Power(b, e) retourne le float b",
+                    Description = "Créez une fonction Power C# prenant en paramètre une base b de type float et un exposant e de type int.",
                     Difficulty = Difficulty.Medium,
                     IsPublished = true,
                     Order = 2,
@@ -77,54 +115,85 @@ return new TestResult[] {
 {
   // Tapez votre code ici
 }",
-                    Solution = "public static float Power(float b, int e)\n{\n    return (float)Math.Pow(b, e);\n}\n"
+                    Solution = @"public class Exercice
+                                {
+                                    public static float Power(float b, int e)
+                                    {
+                                        return (float)Math.Pow(b, e);
+                                    }
+                                }"
                 },
                 new Exo
                 {
                     Id = Guid.NewGuid(),
-                    Title = "LINQ in C#",
-                    Description = "Learn how to use LINQ in C#.",
-                    Difficulty = Difficulty.Medium,
+                    Title = "FizzBuzz Exercise",
+                    Description = "Implémentez la fonction FizzBuzz.",
+                    Difficulty = Difficulty.Easy,
                     IsPublished = true,
                     Order = 3,
                     LessonId = lessons[2].Id,
-                    Template = "public class Exercise { }",
+                    Template = @"// code-insertion-point
+
+public class Test
+{
+    public static TestResult Ensure(int number, string expected)
+    {
+        TestStatus status = TestStatus.Passed;
+        string actual = string.Empty;
+        try
+        {
+            actual = Exercice.FizzBuzz(number);
+            if (actual != expected)
+            {
+                status = TestStatus.Failed;
+            }
+        }
+        catch (Exception ex)
+        {
+            status = TestStatus.Inconclusive;
+        }
+
+        return new TestResult(
+            string.Format(""FizzBuzz of {0} should be '{1}'"", number, expected),
+            status,
+            status == TestStatus.Passed ? string.Empty : string.Format(""Expected '{0}'. Got '{1}'."", expected, actual)
+        );
+    }
+}
+
+return new TestResult[] {
+    Test.Ensure(1, ""1""),
+    Test.Ensure(2, ""2""),
+    Test.Ensure(3, ""Fizz""),
+    Test.Ensure(4, ""4""),
+    Test.Ensure(5, ""Buzz""),
+    Test.Ensure(6, ""Fizz""),
+    Test.Ensure(10, ""Buzz""),
+    Test.Ensure(15, ""FizzBuzz""),
+    Test.Ensure(30, ""FizzBuzz""),
+    Test.Ensure(16, ""16"")
+};",
                     Stub = @"public class Exercice
 {
-  // Tapez votre code ici
+    public static string FizzBuzz(int number)
+    {
+        // Tapez votre code ici
+        return string.Empty;
+    }
 }",
-                    Solution = "public class Exercise { /* Solution goes here */ }"
-                },
-                new Exo
-                {
-                    Id = Guid.NewGuid(),
-                    Title = "if-else in C#",
-                    Description = "Learn how to use if-else in C#.",
-                    Difficulty = Difficulty.Easy,
-                    IsPublished = true,
-                    Order = 4,
-                    LessonId = lessons[2].Id,
-                    Template = "public class Exercise { }",
-                    Stub = @"public class Exercice
+                    Solution = @"public class Exercice
 {
-  // Tapez votre code ici
-}",
-                    Solution = "public class Exercise { /* Solution goes here */ }"
-                },
-                new Exo
-                {
-                    Id = Guid.NewGuid(),
-                    Title = "While in C#",
-                    Description = "Learn how to use while in C#.",
-                    Difficulty = Difficulty.Medium,
-                    IsPublished = true,
-                    Order = 5,
-                    LessonId = lessons[2].Id,
-                    Template = "public class Exercise { }", Stub = @"public class Exercice
-{
-  // Tapez votre code ici
-}",
-                    Solution = "public class Exercise { /* Solution goes here */ }"
+    public static string FizzBuzz(int number)
+    {
+        if (number % 3 == 0 && number % 5 == 0)
+            return ""FizzBuzz"";
+        if (number % 3 == 0)
+            return ""Fizz"";
+        if (number % 5 == 0)
+            return ""Buzz"";
+        return number.ToString();
+    }
+}"
                 },
             };
 

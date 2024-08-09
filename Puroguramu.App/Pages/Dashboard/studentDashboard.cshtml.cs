@@ -24,12 +24,12 @@ public class studentDashboard : PageModel
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         Student = await _studentRepository.GetStudentProfileAsync(User);
-        PublishedLessons = await _lessonRepository.GetPublishedLessonsAsync();
+        PublishedLessons = await _lessonRepository.GetPublishedLessonsWithProgressAsync(Student.Id);
 
         foreach (var lesson in PublishedLessons)
         {
             lesson.TotalExercises = await _lessonRepository.GetTotalExercisesCountAsync(lesson.Id);
-            lesson.CompletedExercises = await _lessonRepository.GetCompletedExercisesCountAsync(lesson.Id, Student.Matricule);
+            lesson.CompletedExercises = await _lessonRepository.GetCompletedExercisesCountAsync(lesson.Id, Student.Id);
             Console.WriteLine("total exercice dans lesson : " + lesson.TotalExercises);
             Console.WriteLine("total exercice fini dans lesson : " + lesson.CompletedExercises);
             var nextExercise = await _studentRepository.GetNextExerciseAsync(Student.Matricule, lesson.Id);

@@ -62,7 +62,7 @@ using (var scope = app.Services.CreateScope())
 
     await ExerciseSeeder.SeedExercises(context);
 
-    await StudentExerciseSeeder.SeedStudentExercises(context);
+    //await StudentExerciseSeeder.SeedStudentExercises(context);
 }
 
 

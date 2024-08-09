@@ -14,13 +14,14 @@ public interface ILessonRepository
     Task UpdateLessonAsync(LessonEditDto lessonDto);
     Task<List<LessonDto>> GetPublishedLessonsAsync();
 
-    Task<List<LessonDto>> GetPublishedLessonsWithProgressAsync(string studentMatricule);
+    Task<List<LessonDto>> GetPublishedLessonsWithProgressAsync(string studentId);
     Task<int> GetTotalExercisesCountAsync(Guid lessonId);
-    Task<int> GetCompletedExercisesCountAsync(Guid lessonId, string studentMatricule);
+    Task<int> GetCompletedExercisesCountAsync(Guid lessonId, string studentId);
     Task<List<LessonDto>> GetLessonsWithStudentProgressAsync();
     Task<List<ExerciseDto>> GetExercisesByLessonIdAsync(Guid lessonId);
 
     Task<List<StudentExerciseDto>> GetAllExercisesByLessonAsync(string studentMatricule, Guid lessonId);
+    Task ResetLessonAsync(Guid lessonId);
 }
 
 

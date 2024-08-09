@@ -15,4 +15,5 @@ public class Exo
     public string Stub { get; set; }
     public string Solution { get; set; }
     public List<StudentExercise> StudentExercises { get; set; } = new List<StudentExercise>();
+    public List<Tentative> Tentatives { get; set; } = new List<Tentative>();
 }

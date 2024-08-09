@@ -83,7 +83,7 @@
             else
             {
                 studentExercise.Code = proposal;
-                studentExercise.Status = ExerciseStatus.InProgress;
+                studentExercise.Status = ExerciseStatus.Started;
             }
 
             await _context.SaveChangesAsync();
