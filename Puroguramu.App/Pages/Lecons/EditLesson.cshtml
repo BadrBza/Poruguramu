@@ -85,6 +85,15 @@
                                 Supprimer
                             </button>
                         </form>
+
+                        <form method="post" asp-page-handler="ResetExercise" class="inline ml-4">
+                            <input type="hidden" name="id" value="@exercise.Id"/>
+                            <input type="hidden" name="lessonId" value="@Model.Lesson.Id"/>
+                            <button type="submit"
+                                    class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-lg transition duration-300 ease-in-out">
+                                Réinitialiser
+                            </button>
+                        </form>
                         
                         <form method="post" asp-page-handler="MoveExercise" class="inline">
                             <input type="hidden" name="id" value="@exercise.Id"/>

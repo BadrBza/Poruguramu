@@ -24,7 +24,7 @@ public class studentDashboard : PageModel
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         Student = await _studentRepository.GetStudentProfileAsync(User);
-        PublishedLessons = await _lessonRepository.GetPublishedLessonsAsync();
+        PublishedLessons = await _lessonRepository.GetPublishedLessonsWithProgressAsync(Student.Id);
 
         foreach (var lesson in PublishedLessons)
         {

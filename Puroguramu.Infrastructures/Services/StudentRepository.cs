@@ -321,6 +321,7 @@ namespace Puroguramu.Infrastructures.Services
             var student = await _userManager.Users
                 .Include(u => u.StudentExercises)
                 .ThenInclude(se => se.Exo)
+                .Include(u => u.Tentatives)
                 .SingleOrDefaultAsync(u => u.Id == userId);
 
             if (student == null)
@@ -337,6 +338,11 @@ namespace Puroguramu.Infrastructures.Services
                 return null;
             }
 
+            var tentatives = await _context.Tentatives
+                .Where(a => a.StudentId == userId && a.ExoId == exerciseId)
+                .OrderBy(a => a.AttemptedOn)
+                .ToListAsync();
+
             // Retourner le DTO correspondant à l'exercice de l'étudiant
             return new StudentExerciseDto
             {
@@ -344,6 +350,13 @@ namespace Puroguramu.Infrastructures.Services
                 Title = studentExercise.Exo.Title,
                 Statuts = MapStatus(studentExercise.Status),
                 DifficultyExo = MapDifficulty(studentExercise.Exo.Difficulty),
+                Tentative = tentatives.Select(a => new TentativeDto()
+                {
+                    Id = a.Id,
+                    Code = a.Code,
+                    AttemptedOn = a.AttemptedOn,
+                    Status = a.Status,
+                }).ToList()
             };
         }
 
@@ -394,6 +407,31 @@ namespace Puroguramu.Infrastructures.Services
                 ExerciseStatus.Started => ExerciseStatuts.Started,
                 _ => throw new ArgumentOutOfRangeException(nameof(status), "Unknown status")
             };
+        }
+
+        public async Task SaveStudentAttemptAsync(Guid exerciseId, string studentId, string code, ExerciseStatuts status)
+        {
+            var tentative = new Tentative()
+            {
+                Id = Guid.NewGuid(),
+                ExoId = exerciseId,
+                StudentId = studentId,
+                Code = code,
+                AttemptedOn = DateTime.UtcNow,
+                Status = status,
+            };
+
+            _context.Tentatives.Add(tentative);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<TentativeDto>> GetStudentTentativesAsync(Guid exerciseId, string studentId)
+        {
+            return await _context.Tentatives
+                .Where(t => t.ExoId == exerciseId && t.StudentId == studentId)
+                .OrderBy(t => t.AttemptedOn)
+                .Select(t => new TentativeDto { AttemptedOn = t.AttemptedOn, Status = (ExerciseStatuts)t.Status, Code = t.Code})
+                .ToListAsync();
         }
 
     }

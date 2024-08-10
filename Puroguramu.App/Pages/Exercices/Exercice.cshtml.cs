@@ -39,27 +39,13 @@ namespace Puroguramu.App.Pages
         public async Task OnGetAsync(Guid exerciseId)
         {
             Student = await _studentRepository.GetStudentProfileAsync(User);
-            // Vérification si l'étudiant est null
-            if (Student == null)
-            {
-                // Gérer le cas où l'étudiant est introuvable
-                Console.WriteLine("Aucun etudiant");
-            }
-
             StudentExercise = await _studentRepository.GetStudentExerciseByIdAsync(Student.Id, exerciseId);
-
-            if (StudentExercise == null)
+            if (StudentExercise != null)
             {
-                // L'étudiant n'a pas encore commencé cet exercice, vous pouvez initialiser un nouvel objet ou simplement informer l'utilisateur
-                Console.WriteLine("Aucun exercice trouvé pour cet étudiant. Initialisation d'un nouvel exercice.");
+                StudentExercise.Tentative = await _studentRepository.GetStudentTentativesAsync(exerciseId, Student.Id);
             }
 
             var exercise = _exercisesRepository.GetExercise(exerciseId);
-            if (exercise == null)
-            {
-                Console.WriteLine("Exercice non trouvé miaow");
-                Console.WriteLine("id" + exercise);
-            }
 
             ExerciseTitle = exercise.Title;
             ExerciseStatut = exercise.Difficulty.ToString();
@@ -121,6 +107,7 @@ namespace Puroguramu.App.Pages
 
             Console.WriteLine("statut exo StudentExercice = " + studentExercise.Statuts);
 
+            await _studentRepository.SaveStudentAttemptAsync(exerciseId, Student.Id, Proposal, _result.Statuts);
             await _lessonRepository.GetCompletedExercisesCountAsync(exercise.LessonId, Student.Id);
             await _exercisesRepository.SaveStudentProposalAsync(exerciseId, Student.Id, Proposal);
             await _studentRepository.UpdateStudentExerciseStatusAsync(studentExercise);

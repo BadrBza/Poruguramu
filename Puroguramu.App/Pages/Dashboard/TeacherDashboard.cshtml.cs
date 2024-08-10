@@ -54,5 +54,18 @@ namespace Puroguramu.App.Pages.Dashboard
         {
             return RedirectToPage("/Lecons/EditLesson", new { id });
         }
+
+        public async Task<IActionResult> OnPostResetLessonAsync(Guid id)
+        {
+            await _lessonRepository.ResetLessonAsync(id);
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnPostResetAllLessonsAsync()
+        {
+            await _lessonRepository.ResetAllLessonsAsync();
+            return RedirectToPage();
+        }
+
     }
 }

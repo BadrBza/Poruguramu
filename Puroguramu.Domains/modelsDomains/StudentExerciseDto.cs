@@ -10,4 +10,5 @@ public class StudentExerciseDto
 
     public string StudentMatricule { get; set; }
     public string Code { get; set; }
+    public List<TentativeDto> Tentative { get; set; } = new List<TentativeDto>();
 }

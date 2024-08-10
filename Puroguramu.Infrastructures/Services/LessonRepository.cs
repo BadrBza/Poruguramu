@@ -57,10 +57,21 @@ namespace Puroguramu.Infrastructures.Services
 
         public async Task<List<LessonDto>> GetAllLessonsAsync()
         {
-            return await _context.Lessons
+            var lessons = await _context.Lessons
                 .OrderBy(lesson => lesson.Order)
-                .Select(lesson => new LessonDto { Id = lesson.Id, Title = lesson.Title, IsPublished = lesson.IsPublished, Order = lesson.Order })
+                .Include(lesson => lesson.Exercises)
                 .ToListAsync();
+
+            return lessons
+                .Where(lesson => lesson.Exercises.Any(e => e.IsPublished)) // Filtre les leçons sans exercices publiés
+                .Select(lesson => new LessonDto
+                {
+                    Id = lesson.Id,
+                    Title = lesson.Title,
+                    IsPublished = lesson.IsPublished,
+                    Order = lesson.Order,
+                    TotalExercises = lesson.Exercises.Count(e => e.IsPublished),
+                }).ToList();
         }
 
         public async Task ToggleLessonAsync(Guid id)
@@ -132,14 +143,25 @@ namespace Puroguramu.Infrastructures.Services
 
         public async Task<List<LessonDto>> GetPublishedLessonsAsync()
         {
-            return await _context.Lessons
+            var lessons = await _context.Lessons
                 .Where(lesson => lesson.IsPublished)
                 .OrderBy(lesson => lesson.Order)
-                .Select(lesson => new LessonDto { Id = lesson.Id, Title = lesson.Title, IsPublished = lesson.IsPublished, Order = lesson.Order })
+                .Include(lesson => lesson.Exercises)
                 .ToListAsync();
+
+            return lessons
+                .Where(lesson => lesson.Exercises.Any(e => e.IsPublished)) // Filtre les leçons sans exercices publiés
+                .Select(lesson => new LessonDto
+                {
+                    Id = lesson.Id,
+                    Title = lesson.Title,
+                    IsPublished = lesson.IsPublished,
+                    Order = lesson.Order,
+                    TotalExercises = lesson.Exercises.Count(e => e.IsPublished),
+                }).ToList();
         }
 
-        public async Task<List<LessonDto>> GetPublishedLessonsWithProgressAsync(string studentMatricule)
+        public async Task<List<LessonDto>> GetPublishedLessonsWithProgressAsync(string studentId)
         {
             var lessons = await _context.Lessons
                 .Where(lesson => lesson.IsPublished)
@@ -148,16 +170,19 @@ namespace Puroguramu.Infrastructures.Services
                 .ThenInclude(exo => exo.StudentExercises)
                 .ToListAsync();
 
-            return lessons.Select(lesson => new LessonDto
+            return lessons
+                .Where(lesson => lesson.Exercises.Any(e => e.IsPublished))
+                .Select(lesson => new LessonDto
             {
                 Id = lesson.Id,
                 Title = lesson.Title,
                 IsPublished = lesson.IsPublished,
                 Order = lesson.Order,
                 CompletedExercises = lesson.Exercises
+                    .Where(e => e.IsPublished)
                     .Count(e => e.StudentExercises
-                        .Any(se => se.Student != null && se.Student.Matricule == studentMatricule && se.Status == ExerciseStatus.Passed)),
-                TotalExercises = lesson.Exercises.Count
+                        .Any(se => se.StudentId == studentId && se.Status == ExerciseStatus.Passed)),
+                TotalExercises = lesson.Exercises.Count(e => e.IsPublished),
             }).ToList();
         }
 
@@ -201,10 +226,6 @@ namespace Puroguramu.Infrastructures.Services
                 .Where(ur => ur.RoleId == studentRole.Id)
                 .Select(ur => ur.UserId)
                 .ToListAsync();
-            foreach (var studentId in studentIds)
-            {
-                Console.WriteLine("studentID : " + studentId);
-            }
 
             // Filtrer les leçons et leurs exercices
             var lessons = await _context.Lessons
@@ -273,7 +294,7 @@ namespace Puroguramu.Infrastructures.Services
 
             // Récupérer tous les exercices de la leçon donnée
             var exercises = await _context.Exercises
-                .Where(e => e.LessonId == lessonId)
+                .Where(e => e.LessonId == lessonId && e.IsPublished)
                 .OrderBy(e => e.Order)
                 .ToListAsync();
 
@@ -295,9 +316,6 @@ namespace Puroguramu.Infrastructures.Services
             return studentExercises;
         }
 
-
-
-
         private Domains.DifficultyExo MapDifficultyToDto(Puroguramu.Infrastructures.Data.models.Difficulty difficulty)
         {
             return difficulty switch
@@ -309,7 +327,59 @@ namespace Puroguramu.Infrastructures.Services
             };
         }
 
+        public async Task ResetLessonAsync(Guid lessonId)
+        {
+            var exercises = await _context.Exercises.Where(e => e.LessonId == lessonId).ToListAsync();
+            foreach (var exercise in exercises)
+            {
+                await ResetExerciseAsync(exercise.Id);
+            }
+        }
 
+        public async Task ResetAllLessonsAsync()
+        {
+            var lessons = await _context.Lessons.ToListAsync();
+            foreach (var lesson in lessons)
+            {
+                await ResetLessonAsync(lesson.Id);
+            }
+        }
 
-}
+        public async Task ResetExerciseAsync(Guid exerciseId)
+        {
+            // Supprimer les tentatives liées à l'exercice
+            var tentatives = await _context.Tentatives.Where(t => t.ExoId == exerciseId).ToListAsync();
+            _context.Tentatives.RemoveRange(tentatives);
+            var studentExercise = _context.StudentExercise.Where(se => se.ExoId == exerciseId);
+            _context.StudentExercise.RemoveRange(studentExercise);
+            // Mettre à jour le statut des exercices des étudiants à NotStarted
+            var studentExercises = await _context.StudentExercise.Where(se => se.ExoId == exerciseId).ToListAsync();
+            foreach (var se in studentExercises)
+            {
+                se.Status = ExerciseStatus.NotStarted;
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteStudentExerciseDataAsync(Guid exerciseId, string studentId)
+        {
+            // Rechercher les entrées de StudentExercise liées à cet exercice et à cet étudiant
+            var studentExercises = await _context.StudentExercise
+                .Where(se => se.ExoId == exerciseId && se.StudentId == studentId)
+                .ToListAsync();
+
+            foreach (var studentExercise in studentExercises)
+            {
+                Console.WriteLine("Données trouvée pour l'id : " + studentExercise.StudentId);
+            }
+            // Supprimer les entrées trouvées
+            if (studentExercises.Any())
+            {
+                _context.StudentExercise.RemoveRange(studentExercises);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+    }
 }

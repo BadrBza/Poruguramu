@@ -10,4 +10,5 @@ public class Student : IdentityUser
     public string LabGroup { get; set; }
     public byte[]? ProfilePicture { get; set; }
     public List<StudentExercise> StudentExercises { get; set; }
+    public List<Tentative> Tentatives { get; set; } = new List<Tentative>();
 }
