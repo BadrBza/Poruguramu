@@ -82,6 +82,7 @@ namespace Puroguramu.App.Areas.Identity.Pages.Account
             ExternalLogins = await _studentRepository.GetExternalAuthenticationSchemesAsync();
         }
 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");

@@ -23,17 +23,18 @@
                 </div>
             }
             <form id="account" method="post" class="max-w-sm mx-auto">
+                 @Html.AntiForgeryToken()
                 <h2 class="text-xl font-semibold mb-4 text-white">Connectez-vous à votre compte</h2> <!-- Increased margin and weight -->
-                <hr class="mb-6 border-gray-700" /> <!-- Increased margin -->
+                <hr class="mb-6 border-gray-700"/> <!-- Increased margin -->
                 <div asp-validation-summary="ModelOnly" class="text-red-500 bg-red-100 p-4 rounded-lg mb-6"></div> <!-- Rounded corners and larger margin -->
                 <div class="mb-6"> <!-- Increased margin -->
                     <label asp-for="Input.Matricule" class="block mb-2 text-sm font-medium text-gray-300">Matricule</label>
-                    <input asp-for="Input.Matricule" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 placeholder-gray-400" autocomplete="username" aria-required="true" /> <!-- Updated input styles for consistency -->
+                    <input asp-for="Input.Matricule" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 placeholder-gray-400" autocomplete="username" aria-required="true"/> <!-- Updated input styles for consistency -->
                     <span asp-validation-for="Input.Matricule" class="text-red-500 mt-2 block"></span> <!-- Block display for better error alignment -->
                 </div>
                 <div class="mb-6">
                     <label asp-for="Input.Password" class="block mb-2 text-sm font-medium text-gray-300">Mot de passe</label>
-                    <input asp-for="Input.Password" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 placeholder-gray-400" autocomplete="current-password" aria-required="true" />
+                    <input asp-for="Input.Password" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 placeholder-gray-400" autocomplete="current-password" aria-required="true"/>
                     <span asp-validation-for="Input.Password" class="text-red-500 mt-2 block"></span>
                 </div>
                 <div>

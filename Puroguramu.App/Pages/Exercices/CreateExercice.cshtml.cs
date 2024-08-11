@@ -29,6 +29,7 @@ namespace Puroguramu.App.Pages.Exercices
             LessonId = lessonId;
         }
 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAsync()
         {
             if (ModelState.IsValid)

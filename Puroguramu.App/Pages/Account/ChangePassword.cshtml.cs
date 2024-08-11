@@ -49,6 +49,8 @@ namespace Puroguramu.App.Pages.Account
         {
             Student = await _studentRepository.GetStudentProfileAsync(User);
         }
+
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
