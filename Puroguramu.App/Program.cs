@@ -1,3 +1,4 @@
+using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ using Puroguramu.Infrastructures.Data.models;
 using Puroguramu.Infrastructures.Dummies;
 using Puroguramu.Infrastructures.Roslyn;
 using Puroguramu.Infrastructures.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,8 +48,15 @@ builder.Services.AddScoped<IExoRepository, ExoRepository>();
 
 
 builder.Services.AddRazorPages();
+builder.Services.AddMemoryCache();
+builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
+builder.Services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+builder.Services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+builder.Services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
 
 var app = builder.Build();
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -73,6 +82,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
 }
 
+app.UseIpRateLimiting();
 app.UseForwardedHeaders(new ForwardedHeadersOptions());
 app.UseReverseProxyLinks();
 
