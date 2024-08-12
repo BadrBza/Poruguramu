@@ -26,21 +26,18 @@ namespace Puroguramu.App.Pages.Exercices
         {
             ExerciseId = exerciseId;
 
-            // Vérifier si l'utilisateur est authentifié
             var student = await _studentRepository.GetStudentProfileAsync(User);
             if (student == null)
             {
                 return NotFound("Student not found.");
             }
 
-            // Récupérer l'exercice de l'étudiant
             var studentExercise = await _studentRepository.GetStudentExerciseByIdAsync(student.Id, exerciseId);
             if (studentExercise == null)
             {
                 return NotFound("Student exercise not found.");
             }
 
-            // Récupérer l'exercice
             var exercise = _exercisesRepository.GetExercise(exerciseId);
             if (exercise == null)
             {
@@ -50,13 +47,11 @@ namespace Puroguramu.App.Pages.Exercices
             ExerciseTitle = exercise.Title;
 
 
-            // Vérifier si l'exercice est en cours ou échoué, puis le marquer comme abandonné
             if (studentExercise.Statuts == ExerciseStatuts.Started || studentExercise.Statuts == ExerciseStatuts.Failed || studentExercise.Statuts == ExerciseStatuts.NotStarted)
             {
                 await _exercisesRepository.UpdateStudentExerciseAbandonnedStatusAsync(exerciseId, student.Id);
             }
 
-            // Assigner le texte de la solution
             SolutionText = exercise.Solution;
 
             return Page();
