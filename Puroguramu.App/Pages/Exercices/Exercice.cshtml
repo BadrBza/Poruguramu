@@ -1,7 +1,7 @@
 ﻿@page "/Exercices/Exercice/{exerciseId:Guid}"
 @model Puroguramu.App.Pages.Exercice
 @{
-    Layout = "_Layout"; 
+    Layout = "_Layout";
 }
 <!DOCTYPE html>
 <html lang="fr">
@@ -12,32 +12,51 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.3/ace.js" crossorigin="anonymous"></script>
+    <link href="~/css/SolutionPopUp.css" rel="stylesheet"/>
 </head>
 <body class="bg-gray-900 text-gray-200 font-sans">
 
 <main class="min-h-screen flex flex-col items-center justify-center p-10 space-y-6">
-    <!-- Exercise Section -->
     <section class="w-2/3 max-w-7xl bg-gray-800 p-6 rounded-lg shadow-lg">
         <h1 class="text-3xl font-bold text-white mb-4">@Model.ExerciseTitle</h1>
         <p class="text-lg text-gray-400 mb-4"><strong>Difficulty:</strong> @Model.ExerciseStatut</p>
         <p class="text-lg text-gray-400 mb-4"><strong>Description :</strong> @Model.DescriptionExo</p>
+         @if (!Model.ShowRunButton)
+                {
+                    <div id="failedMessage" class="bg-red-500 text-white p-4 rounded-lg mb-4 mt-7">
+                        <p>Vous avez consulté la solution. Vous ne pouvez plus exécuter cet exercice.</p>
+                    </div>
+                }
         <form method="post">
             <div class="space-y-6">
                 <div>
                     <div id="ProposalEditor" class="ace_editor rounded-lg h-96 w-full">@Model.Proposal</div>
                     <div class="text-center mt-4">
-                        <button type="submit"
-                                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
-                            Run
-                        </button>
+                        @if (Model.ShowRunButton)
+                        {
+                            <button type="submit" id="runButton"
+                                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+                                Run
+                            </button>
+                        }
+                      
+                        <a href="/Exercices/Solution/@Model.IdExo" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+                            Voir la solution
+                            </a>
                     </div>
                     <input asp-for="Proposal" type="hidden">
                 </div>
             </div>
         </form>
     </section>
-
-    <!-- Test Results Section -->
+      <!-- Lien vers la page de tentatives -->
+           <section class="w-2/3 max-w-7xl bg-gray-800 p-6 rounded-lg shadow-lg">
+               <h2 class="text-2xl font-bold text-white mb-4">Voir les tentatives précédentes</h2>
+               <a href="/Exercices/Tentatives/@Model.IdExo" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+                   Voir les Tentatives
+               </a>
+           </section>
+    <!-- Section des résultats des tests -->
     <section class="w-2/3 max-w-7xl bg-gray-800 p-6 rounded-lg shadow-lg">
         <h2 class="text-2xl font-bold text-white mb-4">Test Results</h2>
         @if (Model.TestResult.Any())
@@ -62,34 +81,7 @@
         }
     </section>
 
-    <!-- Previous Attempts Section -->
-    <section class="w-2/3 max-w-7xl bg-gray-800 p-6 rounded-lg shadow-lg">
-        <h2 class="text-2xl font-bold text-white mb-4">Tentatives précedentes</h2>
-        <button id="toggleAttempts"
-                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mb-4">
-            Afficher/Cacher Tentatives
-        </button>
-        <div id="attemptsSection" class="space-y-4">
-            @if (Model.StudentExercise != null && Model.StudentExercise.Tentative != null && Model.StudentExercise.Tentative.Any())
-            {
-            <ul class="space-y-4">
-                @foreach (var attempt in Model.StudentExercise.Tentative)
-                {
-                <li class="bg-gray-700 p-4 rounded-lg">
-                    <p>Tentative faite le : <span class="font-bold">@attempt.AttemptedOn</span></p>
-                    <p>Status: <span class="font-bold">@attempt.Status</span></p>
-                    <p>Code:</p>
-                    <pre class="bg-gray-900 p-2 rounded">@attempt.Code</pre>
-                </li>
-                }
-            </ul>
-            }
-            else
-            {
-            <p class="text-gray-400">Aucune tentative effectuée.</p>
-            }
-        </div>
-    </section>
+  
 </main>
 
 <script>
@@ -102,20 +94,6 @@
         proposalEditor.session.on('change', (evt) => {
             proposalInput.value = proposalEditor.session.getValue();
         });
-
-        const toggleButton = document.getElementById("toggleAttempts");
-        const attemptsSection = document.getElementById("attemptsSection");
-
-        toggleButton.addEventListener("click", () => {
-            if (attemptsSection.style.display === "none") {
-                attemptsSection.style.display = "block";
-            } else {
-                attemptsSection.style.display = "none";
-            }
-        });
-
-        // Start with the attempts section hidden
-        attemptsSection.style.display = "none";
     });
 </script>
 </body>

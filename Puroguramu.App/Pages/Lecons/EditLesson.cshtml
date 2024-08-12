@@ -23,22 +23,23 @@
             </header>
             
             <form method="POST" class="space-y-6">
+                @Html.AntiForgeryToken()
                 <!-- Hidden field for Lesson ID -->
                 <input type="hidden" name="Lesson.Id" value="@Model.Lesson.Id">
-                
+
                 <section class="mb-6">
                     <label for="title" class="block text-lg font-semibold text-gray-300">Intitulé de la leçon</label>
                     <input type="text" id="title" name="Lesson.Title" required
                            class="mt-2 block w-full px-3 py-2 bg-gray-700 text-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-300 ease-in-out border-none"
                            value="@Model.Lesson.Title">
                 </section>
-            
+
                 <section>
                     <label for="description" class="block text-lg font-semibold text-gray-300">Description</label>
                     <textarea id="description" name="Lesson.Description" rows="3" required
                               class="mt-2 block w-full px-3 py-2 bg-gray-700 text-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 transition duration-300 ease-in-out border-none">@Model.Lesson.Description</textarea>
                 </section>
-            
+
                 <section class="flex justify-center mt-10">
                     <button type="submit"
                             class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out">

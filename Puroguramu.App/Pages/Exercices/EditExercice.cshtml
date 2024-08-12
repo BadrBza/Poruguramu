@@ -16,26 +16,27 @@
 
 <div class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <h1 class="text-2xl font-bold mb-4 text-white text-center">Éditer un Exercice</h1>
-        <div class="bg-gray-900 px-8 py-8 rounded shadow-md">
-            <form id="edit-exercice-form" method="post" class="max-w-sm mx-auto">
-                <div asp-validation-summary="ModelOnly" class="text-red-500 bg-red-100 p-4 rounded mb-4"></div>
+        <h1 class="text-3xl font-bold mb-6 text-white text-center">Éditer un Exercice</h1>
+        <div class="bg-gray-800 px-10 py-8 rounded-lg shadow-lg">
+            <form id="edit-exercice-form" method="post" class="max-w-md mx-auto">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-red-500 bg-red-200 p-4 rounded mb-4 border border-red-300"></div>
 
-                <div class="mb-5">
-                    <label asp-for="Title" class="block mb-2 text-sm font-medium text-gray-300">Titre de l'exercice</label>
-                    <input asp-for="Title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"/>
+                <div class="mb-6">
+                    <label asp-for="Title" class="block mb-2 text-sm font-semibold text-gray-400">Titre de l'exercice</label>
+                    <input asp-for="Title" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3"/>
                     <span asp-validation-for="Title" class="text-red-500"></span>
                 </div>
 
-                <div class="mb-5">
-                    <label asp-for="Description" class="block mb-2 text-sm font-medium text-gray-300">Énoncé</label>
-                    <textarea asp-for="Description" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" rows="5"></textarea>
+                <div class="mb-6">
+                    <label asp-for="Description" class="block mb-2 text-sm font-semibold text-gray-400">Énoncé</label>
+                    <textarea asp-for="Description" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" rows="5"></textarea>
                     <span asp-validation-for="Description" class="text-red-500"></span>
                 </div>
 
-                <div class="mb-5">
-                    <label asp-for="DifficultyExo" class="block mb-2 text-sm font-medium text-gray-300">Difficulté</label>
-                    <select asp-for="DifficultyExo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                <div class="mb-6">
+                    <label asp-for="DifficultyExo" class="block mb-2 text-sm font-semibold text-gray-400">Difficulté</label>
+                    <select asp-for="DifficultyExo" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3">
                         <option value="Easy">Facile</option>
                         <option value="Medium">Moyen</option>
                         <option value="Hard">Difficile</option>
@@ -43,26 +44,26 @@
                     <span asp-validation-for="DifficultyExo" class="text-red-500"></span>
                 </div>
 
-                <div class="mb-5">
-                    <label asp-for="Template" class="block mb-2 text-sm font-medium text-gray-300">Modèle</label>
-                    <textarea asp-for="Template" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" rows="5"></textarea>
+                <div class="mb-6">
+                    <label asp-for="Template" class="block mb-2 text-sm font-semibold text-gray-400">Modèle</label>
+                    <textarea asp-for="Template" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" rows="5"></textarea>
                     <span asp-validation-for="Template" class="text-red-500"></span>
                 </div>
 
-                <div class="mb-5">
-                    <label asp-for="Stub" class="block mb-2 text-sm font-medium text-gray-300">Stub</label>
-                    <textarea asp-for="Stub" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" rows="5"></textarea>
+                <div class="mb-6">
+                    <label asp-for="Stub" class="block mb-2 text-sm font-semibold text-gray-400">Stub</label>
+                    <textarea asp-for="Stub" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" rows="5"></textarea>
                     <span asp-validation-for="Stub" class="text-red-500"></span>
                 </div>
 
-                <div class="mb-5">
-                    <label asp-for="Solution" class="block mb-2 text-sm font-medium text-gray-300">Solution</label>
-                    <textarea asp-for="Solution" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" rows="5"></textarea>
+                <div class="mb-6">
+                    <label asp-for="Solution" class="block mb-2 text-sm font-semibold text-gray-400">Solution</label>
+                    <textarea asp-for="Solution" class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-3" rows="5"></textarea>
                     <span asp-validation-for="Solution" class="text-red-500"></span>
                 </div>
 
                 <div>
-                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300 ease-in-out">
                         Enregistrer les modifications
                     </button>
                 </div>

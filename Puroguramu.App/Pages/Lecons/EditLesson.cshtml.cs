@@ -33,6 +33,7 @@ namespace Puroguramu.App.Pages.Lecons
         }
 
 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)

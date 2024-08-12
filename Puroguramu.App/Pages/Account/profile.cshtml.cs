@@ -40,6 +40,7 @@ namespace Puroguramu.App.Pages.Account
             return Page();
         }
 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAsync()
         {
             var success = await _studentRepository.UpdateStudentProfileAsync(User, Student, ProfilePictureFile);

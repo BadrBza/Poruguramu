@@ -20,7 +20,8 @@
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
             <div class="bg-gray-800 px-8 py-10 rounded-xl shadow-lg"> <!-- Arrière-plan plus foncé, coins plus arrondis -->
                 <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
-                                    <h2 class="text-xl font-semibold mb-4 text-white">Inscrivez-vous :3</h2> <!-- Increased margin and weight -->
+                     @Html.AntiForgeryToken()
+                    <h2 class="text-xl font-semibold mb-4 text-white">Inscrivez-vous :3</h2> <!-- Increased margin and weight -->
 
                     <hr class="mb-6 border-gray-700"/> <!-- Marge plus grande sous la ligne de séparation -->
                     <div class="mb-6">

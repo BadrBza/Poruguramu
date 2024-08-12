@@ -65,6 +65,7 @@ public class ExoRepository : IExoRepository
             Description = exercise.Description,
             Template = exercise.Template,
             Solution = exercise.Solution,
+            Stub = exercise.Stub,
             LessonId = exercise.LessonId,
             Difficulty = (DifficultyExo)exercise.Difficulty
         };
@@ -132,4 +133,7 @@ public class ExoRepository : IExoRepository
             await _context.SaveChangesAsync();
         }
     }
+
+
+
 }

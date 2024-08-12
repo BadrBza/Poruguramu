@@ -1,0 +1,50 @@
+﻿@page "/Exercices/Tentatives/{exerciseId:Guid}"
+@model Puroguramu.App.Pages.TentativesModel
+@{
+    Layout = "_Layout";
+}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Tentatives pour l'exercice</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-gray-200 font-sans">
+<main class="min-h-screen flex flex-col items-center justify-center p-10 space-y-6">
+    <section class="w-2/3 max-w-7xl bg-gray-800 p-6 rounded-lg shadow-lg">
+        <h1 class="text-3xl font-bold text-white mb-4">Tentatives pour @Model.ExerciseTitle</h1>
+        <p class="text-lg text-gray-400 mb-4"><strong>Difficulté :</strong> @Model.ExerciseStatut</p>
+        
+        <div class="mb-8">
+            <a href="/Exercices/Exercice/@Model.ExerciseId" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300 ease-in-out shadow-lg transform hover:translate-y-1">
+                Retour à l'exercice
+            </a>
+        </div>
+
+        <div id="attemptsSection" class="space-y-4 mt-5">
+            @if (Model.Tentatives != null && Model.Tentatives.Any())
+            {
+            <ul class="space-y-4">
+                @foreach (var attempt in Model.Tentatives)
+                {
+                <li class="bg-gray-700 p-4 rounded-lg">
+                    <p>Tentative faite le : <span class="font-bold">@attempt.AttemptedOn</span></p>
+                    <p>Status: <span class="font-bold">@attempt.Status</span></p>
+                    <p>Code:</p>
+                    <pre class="bg-gray-900 p-2 rounded">@attempt.Code</pre>
+                </li>
+                }
+            </ul>
+            }
+            else
+            {
+            <p class="text-gray-400">Aucune tentative effectuée.</p>
+            }
+        </div>
+    </section>
+</main>
+</body>
+</html>

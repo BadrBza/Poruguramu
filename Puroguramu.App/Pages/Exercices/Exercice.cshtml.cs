@@ -24,6 +24,9 @@ namespace Puroguramu.App.Pages
         public StudentDto Student { get; set; }
         public string Proposal { get; set; } = string.Empty;
         public StudentExerciseDto StudentExercise { get; set; }
+        public Guid IdExo { get; set; }
+
+        public bool ShowRunButton { get; set; } = true;
 
         public IEnumerable<TestResultViewModel> TestResult
             => _result?.TestResults?.Select(result => new TestResultViewModel(result)) ?? Array.Empty<TestResultViewModel>();
@@ -50,6 +53,7 @@ namespace Puroguramu.App.Pages
             ExerciseTitle = exercise.Title;
             ExerciseStatut = exercise.Difficulty.ToString();
             DescriptionExo = exercise.Description;
+            IdExo = exerciseId;
 
             Proposal = await _exercisesRepository.GetStudentProposalAsync(exerciseId, Student.Id);
 
@@ -57,6 +61,11 @@ namespace Puroguramu.App.Pages
             {
                 _result = await _assessor.StubForExercise(exerciseId);
                 Proposal = _result.Proposal;
+            }
+
+            if (StudentExercise != null && StudentExercise.Statuts == ExerciseStatuts.Failed)
+            {
+                ShowRunButton = false;
             }
         }
 
@@ -72,8 +81,6 @@ namespace Puroguramu.App.Pages
             ExerciseStatut = exercise.Difficulty.ToString();
             DescriptionExo = exercise.Description;
 
-
-
             Student = await _studentRepository.GetStudentProfileAsync(User);
             if (Student == null)
             {
@@ -87,7 +94,6 @@ namespace Puroguramu.App.Pages
             var studentExercise = await _studentRepository.GetStudentExerciseByIdAsync(Student.Id, exerciseId);
             if (studentExercise == null)
             {
-                // Si l'exercice étudiant n'existe pas, créer une nouvelle entrée
                 studentExercise = new StudentExerciseDto
                 {
                     ExerciseId = exerciseId,
@@ -99,21 +105,26 @@ namespace Puroguramu.App.Pages
                 };
             }
 
-            // Mettre à jour le statut de l'exercice en fonction du résultat de l'évaluation
             studentExercise.Statuts = _result.Statuts;
             studentExercise.Code = Proposal;
             studentExercise.StudentMatricule = Student.Matricule;
             studentExercise.StudentId = Student.Id;
 
-            Console.WriteLine("statut exo StudentExercice = " + studentExercise.Statuts);
-
             await _studentRepository.SaveStudentAttemptAsync(exerciseId, Student.Id, Proposal, _result.Statuts);
             await _lessonRepository.GetCompletedExercisesCountAsync(exercise.LessonId, Student.Id);
             await _exercisesRepository.SaveStudentProposalAsync(exerciseId, Student.Id, Proposal);
             await _studentRepository.UpdateStudentExerciseStatusAsync(studentExercise);
+
+            if (studentExercise.Statuts == ExerciseStatuts.Failed)
+            {
+                ShowRunButton = false;
+            }
             return Page();
         }
+
     }
+
+
 
     public record TestResultViewModel(TestResult Result)
     {
