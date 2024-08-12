@@ -81,6 +81,7 @@ namespace Puroguramu.App.Pages
             ExerciseStatut = exercise.Difficulty.ToString();
             DescriptionExo = exercise.Description;
             IdExo = exerciseId;
+
             Student = await _studentRepository.GetStudentProfileAsync(User);
             if (Student == null)
             {
