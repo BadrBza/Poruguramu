@@ -44,24 +44,7 @@ public class StudentExerciseSeeder
                     Status = ExerciseStatus.Started,
                     Code = "public class Solution { /* Completed code here */ }"
                 },
-                new StudentExercise
-                {
-                    Id = Guid.NewGuid(),
-                    StudentMatricule = students[1].Matricule,
-                    StudentId = students[1].Id,
-                    ExoId = exercises[3].Id,
-                    Status = ExerciseStatus.NotStarted,
-                    Code = "public class Solution { /* Completed code here */ }"
-                },
-                new StudentExercise
-                {
-                    Id = Guid.NewGuid(),
-                    StudentMatricule = students[1].Matricule,
-                    StudentId = students[1].Id,
-                    ExoId = exercises[4].Id,
-                    Status = ExerciseStatus.Started,
-                    Code = "public class Solution { /* Completed code here */ }"
-                },
+
             };
 
             context.StudentExercise.AddRange(studentExercises);

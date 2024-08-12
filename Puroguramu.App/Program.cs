@@ -32,7 +32,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Identity/Account/Login";
     options.SlidingExpiration = true;
-    options.ExpireTimeSpan = TimeSpan.FromHours(1);
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
 });
 
 
@@ -62,7 +62,7 @@ using (var scope = app.Services.CreateScope())
 
     await ExerciseSeeder.SeedExercises(context);
 
-    //await StudentExerciseSeeder.SeedStudentExercises(context);
+    await StudentExerciseSeeder.SeedStudentExercises(context);
 }
 
 

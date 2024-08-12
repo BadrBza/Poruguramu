@@ -80,7 +80,7 @@ namespace Puroguramu.App.Pages
             ExerciseTitle = exercise.Title;
             ExerciseStatut = exercise.Difficulty.ToString();
             DescriptionExo = exercise.Description;
-
+            IdExo = exerciseId;
             Student = await _studentRepository.GetStudentProfileAsync(User);
             if (Student == null)
             {
