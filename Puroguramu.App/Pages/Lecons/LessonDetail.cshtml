@@ -2,7 +2,7 @@
 @model Puroguramu.App.Pages.Lecons.LessonDetail
 
 @{
-    Layout = "_Layout"; 
+Layout = "_Layout";
 }
 
 <!DOCTYPE html>
@@ -16,28 +16,13 @@
 </head>
 <body class="bg-gray-900 text-gray-200 flex flex-col min-h-screen">
 
-
 <div class="flex-grow container mx-auto p-10">
     <h1 class="text-3xl font-bold text-gray-100 mb-6">@Model.Lesson.Title</h1>
     <h2 class="text-xl text-gray-400 mb-4">@Model.Lesson.Description</h2>
 
-    <!-- Liste des exercices -->
-    <div class="space-y-4">
-        @foreach (var exercise in Model.Exercises)
-        {
-            <div class="bg-gray-800 rounded-2xl p-8 shadow-xl transform hover:-translate-y-1 transition duration-300 ease-in-out">
-                <h2 class="text-2xl font-bold text-gray-100 mb-2">@exercise.Title</h2>
-                <p class="text-gray-400 text-sm">Difficulté : @exercise.DifficultyExo</p>
-                <p class="text-gray-400 text-sm">État : @exercise.Statuts</p>
-                <a href="/Exercices/Exercice/@exercise.ExerciseId" class="inline-block mt-4 px-5 py-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-semibold text-sm rounded-lg shadow-md transform hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-200 ease-in-out">
-                    Commencer cet exercice
-                </a>
-            </div>
-        }
-    </div>
+    <!-- Inclusion de la vue partielle pour les exercices -->
+    <partial name="Shared/_StudentExercisePartial" model="Model.Exercises"/>
 </div>
-
-
 
 </body>
 </html>
