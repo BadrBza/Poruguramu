@@ -24,7 +24,6 @@
             
             <form method="POST" class="space-y-6">
                 @Html.AntiForgeryToken()
-                <!-- Hidden field for Lesson ID -->
                 <input type="hidden" name="Lesson.Id" value="@Model.Lesson.Id">
 
                 <section class="mb-6">
@@ -71,6 +70,7 @@
                            class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg transition duration-300 ease-in-out">Éditer</a>
 
                         <form method="post" asp-page-handler="ToggleExercise" class="inline">
+                            @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@exercise.Id"/>
                             <input type="hidden" name="lessonId" value="@Model.Lesson.Id"/>
                             <button type="submit"
@@ -80,6 +80,7 @@
                         </form>
 
                         <form method="post" asp-page-handler="DeleteExercise" class="inline">
+                            @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@exercise.Id"/>
                             <input type="hidden" name="lessonId" value="@Model.Lesson.Id"/>
                             <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg transition duration-300 ease-in-out">
@@ -88,6 +89,7 @@
                         </form>
 
                         <form method="post" asp-page-handler="ResetExercise" class="inline ml-4">
+                            @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@exercise.Id"/>
                             <input type="hidden" name="lessonId" value="@Model.Lesson.Id"/>
                             <button type="submit"
@@ -97,6 +99,7 @@
                         </form>
                         
                         <form method="post" asp-page-handler="MoveExercise" class="inline">
+                            @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@exercise.Id"/>
                             <input type="hidden" name="direction" value="up"/>
                             <input type="hidden" name="lessonId" value="@Model.Lesson.Id"/>
@@ -112,6 +115,7 @@
                         </form>
 
                         <form method="post" asp-page-handler="MoveExercise" class="inline">
+                            @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@exercise.Id"/>
                             <input type="hidden" name="direction" value="down"/>
                             <input type="hidden" name="lessonId" value="@Model.Lesson.Id"/>

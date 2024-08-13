@@ -57,7 +57,6 @@ namespace Puroguramu.App.Pages.Exercices
 
             ExerciseTitle = exercise.Title;
 
-            // Si l'exercice est dans un état où il peut être abandonné, le marquer comme abandonné
             if (studentExercise.Statuts == ExerciseStatuts.Started || studentExercise.Statuts == ExerciseStatuts.Failed || studentExercise.Statuts == ExerciseStatuts.NotStarted)
             {
                 await _exercisesRepository.UpdateStudentExerciseAbandonnedStatusAsync(exerciseId, student.Id);

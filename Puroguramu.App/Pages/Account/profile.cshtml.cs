@@ -43,6 +43,11 @@ namespace Puroguramu.App.Pages.Account
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAsync()
         {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
             var success = await _studentRepository.UpdateStudentProfileAsync(User, Student, ProfilePictureFile);
             if (!success)
             {
