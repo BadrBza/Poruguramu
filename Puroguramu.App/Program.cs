@@ -33,7 +33,6 @@ else
 }
 
 
-
 builder.Services.AddDefaultIdentity<Student>(options =>
     {
         options.SignIn.RequireConfirmedAccount = false;
@@ -91,11 +90,15 @@ using (var scope = app.Services.CreateScope())
 }
 
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsProduction())
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
     app.UseHttpsRedirection();
+}
+else
+{
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseIpRateLimiting();
