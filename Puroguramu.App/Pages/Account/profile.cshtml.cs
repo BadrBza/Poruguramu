@@ -37,6 +37,7 @@ namespace Puroguramu.App.Pages.Account
                 return NotFound($"Unable to load user.");
 
             Student = studentDto;
+
             return Page();
         }
 
