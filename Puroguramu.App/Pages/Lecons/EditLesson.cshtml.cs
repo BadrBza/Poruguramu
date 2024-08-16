@@ -38,7 +38,7 @@ namespace Puroguramu.App.Pages.Lecons
         {
             if (!ModelState.IsValid)
             {
-                return Page(); // Returns to the same page if validation fails
+                return Page();
             }
 
             Console.WriteLine("OnPostAsync UpdateLessonAsync");
@@ -46,6 +46,7 @@ namespace Puroguramu.App.Pages.Lecons
             return RedirectToPage("/Dashboard/TeacherDashboard");
         }
 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostMoveExerciseAsync(Guid id, string direction, string lessonId)
         {
             Console.WriteLine("Entry OnPostMoveExerciseAsync");
@@ -54,6 +55,7 @@ namespace Puroguramu.App.Pages.Lecons
             return RedirectToPage("/Lecons/EditLesson", new { id = lessonId });
         }
 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostToggleExerciseAsync(Guid id, string lessonId)
         {
             Console.WriteLine($"Entry OnPostToggleExerciseAsync with id: {id} and lessonId: {lessonId}");
@@ -61,12 +63,14 @@ namespace Puroguramu.App.Pages.Lecons
             return RedirectToPage("/Lecons/EditLesson", new { id = lessonId });
         }
 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostDeleteExerciseAsync(Guid id, string lessonId)
         {
             await _exoRepository.DeleteExerciseAsync(id);
             return RedirectToPage("/Lecons/EditLesson", new { id = lessonId });
         }
 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostResetExerciseAsync(Guid id, Guid lessonId)
         {
             var student = _studentRepository.GetStudentProfileAsync(User);

@@ -31,18 +31,21 @@ namespace Puroguramu.App.Pages.Dashboard
             Student = await _studentRepository.GetStudentProfileAsync(User);
         }
 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostToggleLessonAsync(Guid id)
         {
             await _lessonRepository.ToggleLessonAsync(id);
             return RedirectToPage();
         }
 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostDeleteLessonAsync(Guid id)
         {
             await _lessonRepository.DeleteLessonAsync(id);
             return RedirectToPage();
         }
 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostMoveLessonAsync(Guid id, string direction)
         {
             bool moveUp = direction == "up";
@@ -50,17 +53,20 @@ namespace Puroguramu.App.Pages.Dashboard
             return RedirectToPage();
         }
 
+        [ValidateAntiForgeryToken]
         public IActionResult OnPostEditLesson(Guid id)
         {
             return RedirectToPage("/Lecons/EditLesson", new { id });
         }
 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostResetLessonAsync(Guid id)
         {
             await _lessonRepository.ResetLessonAsync(id);
             return RedirectToPage();
         }
 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostResetAllLessonsAsync()
         {
             await _lessonRepository.ResetAllLessonsAsync();

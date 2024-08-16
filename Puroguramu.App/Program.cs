@@ -19,8 +19,19 @@ using Puroguramu.Infrastructures.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("ConnexionLocal")));
+
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlite(builder.Configuration.GetConnectionString("ConnexionLocal")));
+}
+else
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("ProductionConnection")));
+}
+
 
 builder.Services.AddDefaultIdentity<Student>(options =>
     {
@@ -48,12 +59,16 @@ builder.Services.AddScoped<IExoRepository, ExoRepository>();
 
 
 builder.Services.AddRazorPages();
+// middleware neccesaire pour limiter le taux de requetes
 builder.Services.AddMemoryCache();
 builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
 builder.Services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
 builder.Services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
 builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 builder.Services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+
+builder.Services.AddInMemoryRateLimiting();
+
 
 var app = builder.Build();
 
@@ -75,11 +90,15 @@ using (var scope = app.Services.CreateScope())
 }
 
 
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsProduction())
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
     app.UseHttpsRedirection();
+}
+else
+{
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseIpRateLimiting();

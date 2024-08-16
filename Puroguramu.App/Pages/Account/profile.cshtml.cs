@@ -37,12 +37,14 @@ namespace Puroguramu.App.Pages.Account
                 return NotFound($"Unable to load user.");
 
             Student = studentDto;
+
             return Page();
         }
 
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAsync()
         {
+
             var success = await _studentRepository.UpdateStudentProfileAsync(User, Student, ProfilePictureFile);
             if (!success)
             {

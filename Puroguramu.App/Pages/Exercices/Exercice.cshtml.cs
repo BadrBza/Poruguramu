@@ -69,8 +69,15 @@ namespace Puroguramu.App.Pages
             }
         }
 
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAsync(Guid exerciseId)
         {
+
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
             var exercise = _exercisesRepository.GetExercise(exerciseId);
             if (exercise == null)
             {
@@ -81,6 +88,7 @@ namespace Puroguramu.App.Pages
             ExerciseStatut = exercise.Difficulty.ToString();
             DescriptionExo = exercise.Description;
             IdExo = exerciseId;
+
             Student = await _studentRepository.GetStudentProfileAsync(User);
             if (Student == null)
             {

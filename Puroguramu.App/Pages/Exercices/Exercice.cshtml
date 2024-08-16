@@ -27,27 +27,28 @@
                         <p>Vous avez consulté la solution. Vous ne pouvez plus exécuter cet exercice.</p>
                     </div>
                 }
-        <form method="post">
-            <div class="space-y-6">
-                <div>
-                    <div id="ProposalEditor" class="ace_editor rounded-lg h-96 w-full">@Model.Proposal</div>
-                    <div class="text-center mt-4">
-                        @if (Model.ShowRunButton)
-                        {
-                            <button type="submit" id="runButton"
-                                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
-                                Run
-                            </button>
-                        }
-                      
-                        <a href="/Exercices/Solution/@Model.IdExo" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
-                            Voir la solution
-                            </a>
-                    </div>
-                    <input asp-for="Proposal" type="hidden">
-                </div>
-            </div>
-        </form>
+         <form method="post">
+             @Html.AntiForgeryToken()
+             <div class="space-y-6">
+                 <div>
+                     <div id="ProposalEditor" class="ace_editor rounded-lg h-96 w-full">@Model.Proposal</div>
+                     <div class="text-center mt-4">
+                         @if (Model.ShowRunButton)
+                         {
+                             <button type="submit" id="runButton"
+                                     class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+                                 Run
+                             </button>
+                         }
+
+                         <a href="/Exercices/Solution/@Model.IdExo" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg mt-5">
+                             Voir la solution
+                         </a>
+                     </div>
+                     <input asp-for="Proposal" type="hidden">
+                 </div>
+             </div>
+         </form>
     </section>
       <!-- Lien vers la page de tentatives -->
            <section class="w-2/3 max-w-7xl bg-gray-800 p-6 rounded-lg shadow-lg">

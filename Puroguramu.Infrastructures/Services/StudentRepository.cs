@@ -435,6 +435,32 @@ namespace Puroguramu.Infrastructures.Services
         }
 
 
+        public async Task AddStudentExerciseAsync(StudentExerciseDto studentExerciseDto)
+        {
+            var student = await _context.Students
+                .FirstOrDefaultAsync(s => s.Id == studentExerciseDto.StudentId);
+
+            if (student == null)
+            {
+                throw new InvalidOperationException("Student not found.");
+            }
+
+            var newStudentExercise = new StudentExercise
+            {
+                Id = Guid.NewGuid(),
+                ExoId = studentExerciseDto.ExerciseId,
+                StudentId = studentExerciseDto.StudentId,
+                Status = (ExerciseStatus)studentExerciseDto.Statuts,
+                Code = studentExerciseDto.Code ?? string.Empty,
+                StudentMatricule = student.Matricule
+            };
+
+            _context.StudentExercise.Add(newStudentExercise);
+            await _context.SaveChangesAsync();
+        }
+
+
+
 
     }
 

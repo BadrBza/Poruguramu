@@ -30,5 +30,7 @@ namespace Puroguramu.Domains.Repositories
         Task UpdateStudentExerciseStatusAsync(StudentExerciseDto studentExercise);
         Task SaveStudentAttemptAsync(Guid exerciseId, string studentId, string code, ExerciseStatuts status);
         Task<List<TentativeDto>> GetStudentTentativesAsync(Guid exerciseId, string studentId);
+
+        Task AddStudentExerciseAsync(StudentExerciseDto studentExerciseDto);
     }
 }
