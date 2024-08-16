@@ -94,13 +94,11 @@ if (app.Environment.IsProduction())
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
-    app.UseHttpsRedirection();
 }
 else
 {
     app.UseDeveloperExceptionPage();
 }
-
 app.UseIpRateLimiting();
 app.UseForwardedHeaders(new ForwardedHeadersOptions());
 app.UseReverseProxyLinks();
