@@ -24,12 +24,12 @@ var builder = WebApplication.CreateBuilder(args);
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlite(builder.Configuration.GetConnectionString("ConnexionLocal")));
+        options.UseSqlite(builder.Configuration.GetConnectionString("PuroguramuDatabaseSQLite")));
 }
 else
 {
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("ProductionConnection")));
+        options.UseSqlServer(builder.Configuration.GetConnectionString("PuroguramuDatabaseSQLServer")));
 }
 
 
