@@ -10,7 +10,7 @@ using Puroguramu.Domains.Repositories;
 
 namespace Puroguramu.App.Pages.Dashboard
 {
-    [Authorize(Roles = "Teacher")]
+    [Authorize(Roles = "teacher")]
     public class TeacherDashboardModel : PageModel
     {
         private readonly ILessonRepository _lessonRepository;

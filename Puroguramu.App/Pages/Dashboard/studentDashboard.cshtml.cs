@@ -6,7 +6,7 @@ using Puroguramu.Domains.Repositories;
 
 namespace Puroguramu.App.Pages.Dashboard;
 
-[Authorize(Roles = "Student")]
+[Authorize(Roles = "student")]
 public class studentDashboard : PageModel
 {
     private readonly IStudentRepository _studentRepository;
