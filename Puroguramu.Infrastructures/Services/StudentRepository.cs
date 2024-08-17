@@ -67,7 +67,7 @@ namespace Puroguramu.Infrastructures.Services
             var result = await _userManager.CreateAsync(student, password);
             if (result.Succeeded)
             {
-                string role = studentDto.Matricule.StartsWith("P") ? "Teacher" : "Student";
+                string role = studentDto.Matricule.StartsWith("P") ? "teacher" : "student";
                 await _userManager.AddToRoleAsync(student, role);
                 return role;
             }
@@ -146,7 +146,7 @@ namespace Puroguramu.Infrastructures.Services
 
         public async Task<int> GetStudentsCountAsync()
         {
-            var students = await _userManager.GetUsersInRoleAsync("Student");
+            var students = await _userManager.GetUsersInRoleAsync("student");
             return students.Count;
         }
 
@@ -300,13 +300,13 @@ namespace Puroguramu.Infrastructures.Services
                 if (user != null)
                 {
                     var roles = await _userManager.GetRolesAsync(user);
-                    if (roles.Contains("Student"))
+                    if (roles.Contains("student"))
                     {
-                        return "/Dashboard/StudentDashboard";
+                        return "/student-dashboard";
                     }
-                    else if (roles.Contains("Teacher"))
+                    else if (roles.Contains("teacher"))
                     {
-                        return "/Dashboard/TeacherDashboard";
+                        return "/teacher-dashboard";
                     }
                 }
             }
