@@ -24,12 +24,12 @@ var builder = WebApplication.CreateBuilder(args);
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlite(builder.Configuration.GetConnectionString("PuroguramuDatabaseSQLite")));
+        options.UseSqlite(builder.Configuration.GetConnectionString("ConnexionLocal")));
 }
 else
 {
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("PuroguramuDatabaseSQLServer")));
+        options.UseSqlServer(builder.Configuration.GetConnectionString("ProductionConnection")));
 }
 
 
@@ -94,14 +94,17 @@ if (app.Environment.IsProduction())
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
+    app.UseHttpsRedirection();
 }
 else
 {
     app.UseDeveloperExceptionPage();
 }
+
 app.UseIpRateLimiting();
 app.UseForwardedHeaders(new ForwardedHeadersOptions());
 app.UseReverseProxyLinks();
+
 
 app.UseStaticFiles();
 
