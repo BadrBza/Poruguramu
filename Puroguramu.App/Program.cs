@@ -103,7 +103,6 @@ app.UseIpRateLimiting();
 app.UseForwardedHeaders(new ForwardedHeadersOptions());
 app.UseReverseProxyLinks();
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
