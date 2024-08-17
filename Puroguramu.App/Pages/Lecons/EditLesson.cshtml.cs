@@ -43,7 +43,7 @@ namespace Puroguramu.App.Pages.Lecons
 
             Console.WriteLine("OnPostAsync UpdateLessonAsync");
             await _lessonRepository.UpdateLessonAsync(Lesson);
-            return RedirectToPage("/Dashboard/TeacherDashboard");
+            return RedirectToPage("teacher-dashboard");
         }
 
         [ValidateAntiForgeryToken]
@@ -52,7 +52,7 @@ namespace Puroguramu.App.Pages.Lecons
             Console.WriteLine("Entry OnPostMoveExerciseAsync");
             var moveUp = direction == "up";
             await _exoRepository.MoveExerciseAsync(id, moveUp);
-            return RedirectToPage("/Lecons/EditLesson", new { id = lessonId });
+            return RedirectToPage("edit-lesson", new { id = lessonId });
         }
 
         [ValidateAntiForgeryToken]
@@ -60,14 +60,14 @@ namespace Puroguramu.App.Pages.Lecons
         {
             Console.WriteLine($"Entry OnPostToggleExerciseAsync with id: {id} and lessonId: {lessonId}");
             await _exoRepository.ToggleExerciseAsync(id);
-            return RedirectToPage("/Lecons/EditLesson", new { id = lessonId });
+            return RedirectToPage("edit-lesson", new { id = lessonId });
         }
 
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostDeleteExerciseAsync(Guid id, string lessonId)
         {
             await _exoRepository.DeleteExerciseAsync(id);
-            return RedirectToPage("/Lecons/EditLesson", new { id = lessonId });
+            return RedirectToPage("edit-lesson", new { id = lessonId });
         }
 
         [ValidateAntiForgeryToken]
@@ -77,7 +77,7 @@ namespace Puroguramu.App.Pages.Lecons
             Console.WriteLine("id trouvé = " + student.Id);
             await _lessonRepository.DeleteStudentExerciseDataAsync(id, student.Id.ToString());
             await _lessonRepository.ResetExerciseAsync(id);
-            return RedirectToPage("/Lecons/EditLesson", new { id = lessonId });
+            return RedirectToPage("edit-lesson", new { id = lessonId });
         }
     }
 }

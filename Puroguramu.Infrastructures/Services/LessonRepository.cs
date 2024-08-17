@@ -221,7 +221,7 @@ namespace Puroguramu.Infrastructures.Services
         public async Task<List<LessonDto>> GetLessonsWithStudentProgressAsync()
         {
             // Récupérer les IDs des étudiants ayant le rôle "Student"
-            var studentRole = await _context.Roles.SingleAsync(r => r.Name == "Student");
+            var studentRole = await _context.Roles.SingleAsync(r => r.Name == "student");
             var studentIds = await _context.UserRoles
                 .Where(ur => ur.RoleId == studentRole.Id)
                 .Select(ur => ur.UserId)

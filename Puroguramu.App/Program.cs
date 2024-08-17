@@ -85,6 +85,8 @@ builder.Services.AddRazorPages(options =>
     // Route pour afficher la solution d'un exercice
     options.Conventions.AddPageRoute("/Exercices/Solution", "exercise-solution/{exerciseId:Guid}");
 });
+
+
 // middleware neccesaire pour limiter le taux de requetes
 builder.Services.AddMemoryCache();
 builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
