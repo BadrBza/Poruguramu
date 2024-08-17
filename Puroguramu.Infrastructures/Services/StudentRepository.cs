@@ -302,11 +302,11 @@ namespace Puroguramu.Infrastructures.Services
                     var roles = await _userManager.GetRolesAsync(user);
                     if (roles.Contains("student"))
                     {
-                        return "/student-dashboard";
+                        return "/Dashboard/studentDashboard";
                     }
                     else if (roles.Contains("teacher"))
                     {
-                        return "/teacher-dashboard";
+                        return "/Dashboard/TeacherDashboard";
                     }
                 }
             }

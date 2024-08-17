@@ -94,7 +94,7 @@ namespace Puroguramu.App.Pages.Exercices
 
             await _exoRepository.UpdateExerciseAsync(exercise);
 
-            return RedirectToPage("edit-lesson", new { id = LessonId });
+            return RedirectToPage("/Lecons/EditLesson", new { id = LessonId });
         }
     }
 }

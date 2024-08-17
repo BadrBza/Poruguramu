@@ -51,7 +51,7 @@ namespace Puroguramu.App.Pages.Exercices
                     return Page();
                 }
 
-                return RedirectToPage("edit-lesson", new { id = LessonId });
+                return RedirectToPage("/Lecons/EditLesson", new { id = LessonId });
             }
 
             return Page();

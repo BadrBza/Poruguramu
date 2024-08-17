@@ -56,37 +56,6 @@ builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 builder.Services.AddScoped<IExoRepository, ExoRepository>();
 
 
-builder.Services.AddRazorPages(options =>
-{
-    // Route pour le tableau de bord étudiant
-    options.Conventions.AddPageRoute("/Dashboard/studentDashboard", "student-dashboard");
-
-    // Route pour le tableau de bord enseignant
-    options.Conventions.AddPageRoute("/Dashboard/TeacherDashboard", "teacher-dashboard");
-
-    // Route pour créer une leçon
-    options.Conventions.AddPageRoute("/Lecons/CreateLesson", "create-lesson");
-
-    // Route pour éditer une leçon (avec un paramètre d'identifiant)
-    options.Conventions.AddPageRoute("/Lecons/EditLesson", "edit-lesson/{id:int}");
-
-    // Route pour afficher les détails d'une leçon
-    options.Conventions.AddPageRoute("/Lecons/LessonDetail", "lesson-detail/{id:int}");
-
-    // Route pour créer un exercice
-    options.Conventions.AddPageRoute("/Exercices/CreateExercice", "create-exercise");
-
-    // Route pour éditer un exercice
-    options.Conventions.AddPageRoute("/Exercices/EditExercice", "edit-exercise/{id:int}");
-
-    // Route pour voir les tentatives pour un exercice
-    options.Conventions.AddPageRoute("/Exercices/Tentatives", "exercise-attempts/{exerciseId:Guid}");
-
-    // Route pour afficher la solution d'un exercice
-    options.Conventions.AddPageRoute("/Exercices/Solution", "exercise-solution/{exerciseId:Guid}");
-});
-
-
 // middleware neccesaire pour limiter le taux de requetes
 builder.Services.AddMemoryCache();
 builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));

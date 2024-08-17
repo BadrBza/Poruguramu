@@ -31,12 +31,12 @@
                     {
                     var user = await UserManager.GetUserAsync(User);
                     var roles = await UserManager.GetRolesAsync(user);
-                    @if (roles.Contains("Teacher"))
+                    @if (roles.Contains("teacher"))
                     {
                     <a href="/Dashboard/TeacherDashboard" class="p-1 nav-link text-white hover:text-white">Dashboard</a>
                     <a href="/Lecons/CreateLesson" class="p-1 nav-link text-white hover:text-white">Créer une Leçon</a>
                     }
-                    else if (roles.Contains("Student"))
+                    else if (roles.Contains("student"))
                     {
                         <a href="/Dashboard/studentDashboard" class="p-1 nav-link text-white hover:text-white">Dashboard</a>
                     }
