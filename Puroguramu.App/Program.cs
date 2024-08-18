@@ -86,6 +86,14 @@ using (var scope = app.Services.CreateScope())
     await StudentExerciseSeeder.SeedStudentExercises(context);
 }
 
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizeFolder("/");
+    options.Conventions.AllowAnonymousToPage("/Login");
+    options.Conventions.AllowAnonymousToPage("/Register");
+    options.Conventions.AllowAnonymousToPage("/Index");
+});
+
 
 if (app.Environment.IsProduction())
 {
@@ -97,6 +105,8 @@ else
 {
     app.UseDeveloperExceptionPage();
 }
+
+
 
 //app.UseIpRateLimiting();
 app.UseForwardedHeaders(new ForwardedHeadersOptions());

@@ -24,6 +24,7 @@ public class IndexModel : PageModel
     public async Task<IActionResult> OnGetAsync()
     {
         var redirectUrl = await _studentRepository.GetDashboardRedirectUrlAsync(User);
+
         if (redirectUrl != null)
         {
             return Redirect(redirectUrl);
