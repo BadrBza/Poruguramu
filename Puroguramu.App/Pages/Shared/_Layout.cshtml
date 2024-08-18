@@ -28,8 +28,8 @@
                     var user = await UserManager.GetUserAsync(User);
                     var roles = await UserManager.GetRolesAsync(user);
 
-                    <a href="@(roles.Contains("teacher") ? "/teacher-dashboard" : roles.Contains("student") ? "/student-dashboard" : "/")" class="flex items-center space-x-2 hover:text-white">
-                        <img src="/ressources/logo.png" alt="Logo" class="h-10 w-10">
+                    <a href="@(roles.Contains("teacher") ? "/Dashboard/TeacherDashboard" : roles.Contains("student") ? "/Dashboard/studentDashboard" : "/")" class="flex items-center space-x-2 hover:text-white">
+                        <img src="Puroguramu.App/wwwroot/ressources/logo.png" alt="Logo" class="h-10 w-10">
                         <span class="font-bold text-lg">Puroguramu</span>
                     </a>
                     }

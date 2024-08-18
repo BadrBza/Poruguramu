@@ -18,7 +18,8 @@ using Puroguramu.Infrastructures.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
-
+var app = builder.Build();
+builder.Services.AddRazorPages();
 
 if (builder.Environment.IsDevelopment())
 {
@@ -67,8 +68,6 @@ builder.Services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrateg
 builder.Services.AddInMemoryRateLimiting();
 */
 
-var app = builder.Build();
-
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -99,7 +98,6 @@ if (app.Environment.IsProduction())
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
-    app.UseHttpsRedirection();
 }
 else
 {
@@ -118,7 +116,6 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
 
 app.MapRazorPages();
 
