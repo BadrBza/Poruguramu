@@ -99,6 +99,7 @@ using (var scope = app.Services.CreateScope())
 if (app.Environment.IsProduction())
 {
     app.UseExceptionHandler("/Error");
+    app.UseHttpsRedirection();
     app.UseHsts();
 }
 else
