@@ -134,11 +134,11 @@ namespace Puroguramu.App.Areas.Identity.Pages.Account
                     var userId = await _studentRepository.GetUserIdByEmailAsync(Input.Email);
                     await _studentRepository.SignInAsync(userId, isPersistent: false);
 
-                    if (role == "Teacher")
+                    if (role == "teacher")
                     {
                         return LocalRedirect(Url.Page("/Dashboard/TeacherDashboard"));
                     }
-                    else if (role == "Student")
+                    else if (role == "student")
                     {
                         return LocalRedirect(Url.Page("/Dashboard/StudentDashboard"));
                     }
