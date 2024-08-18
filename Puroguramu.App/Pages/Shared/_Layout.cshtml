@@ -23,37 +23,23 @@
         <nav class="bg-gray-800 text-gray-200 px-4 sm:px-6 py-4 shadow">
             <div class="container mx-auto flex justify-between items-center">
                 <div class="flex items-center space-x-6">
-                    @if (SignInManager.IsSignedIn(User))
-                    {
-                    var user = await UserManager.GetUserAsync(User);
-                    var roles = await UserManager.GetRolesAsync(user);
-
-                    <a href="@(roles.Contains("teacher") ? "/Dashboard/TeacherDashboard" : roles.Contains("student") ? "/Dashboard/studentDashboard" : "/")" class="flex items-center space-x-2 hover:text-white">
-                        <img src="Puroguramu.App/wwwroot/ressources/logo.png" alt="Logo" class="h-10 w-10">
-                        <span class="font-bold text-lg">Puroguramu</span>
-                    </a>
-                    }
-                    else
-                    {
-                    <!-- Default redirection for non-authenticated users -->
                     <a href="/" class="flex items-center space-x-2 hover:text-white">
                         <img src="/ressources/logo.png" alt="Logo" class="h-10 w-10">
                         <span class="font-bold text-lg">Puroguramu</span>
                     </a>
-                    }
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        var user = await UserManager.GetUserAsync(User);
-                        var roles = await UserManager.GetRolesAsync(user);
-                        @if (roles.Contains("teacher"))
-                        {
-                            <a href="/Dashboard/TeacherDashboard" class="p-1 nav-link text-white hover:text-white">Dashboard</a>
-                            <a href="/Lecons/CreateLesson" class="p-1 nav-link text-white hover:text-white">Créer une Leçon</a>
-                        }
-                        else if (roles.Contains("student"))
-                        {
-                            <a href="/Dashboard/studentDashboard" class="p-1 nav-link text-white hover:text-white">Dashboard</a>
-                        }
+                    var user = await UserManager.GetUserAsync(User);
+                    var roles = await UserManager.GetRolesAsync(user);
+                    @if (roles.Contains("teacher"))
+                    {
+                    <a href="/Dashboard/TeacherDashboard" class="p-1 nav-link text-white hover:text-white">Dashboard</a>
+                    <a href="/Lecons/CreateLesson" class="p-1 nav-link text-white hover:text-white">Créer une Leçon</a>
+                    }
+                    else if (roles.Contains("student"))
+                    {
+                        <a href="/Dashboard/studentDashboard" class="p-1 nav-link text-white hover:text-white">Dashboard</a>
+                    }
                     }
                 </div>
 

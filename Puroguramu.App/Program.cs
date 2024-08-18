@@ -18,7 +18,8 @@ using Puroguramu.Infrastructures.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+
+
 builder.Services.AddRazorPages();
 
 if (builder.Environment.IsDevelopment())
@@ -68,6 +69,16 @@ builder.Services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrateg
 builder.Services.AddInMemoryRateLimiting();
 */
 
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizeFolder("/");
+    options.Conventions.AllowAnonymousToPage("/Identity/Account/Login");
+    options.Conventions.AllowAnonymousToPage("/Identity/Account/Register");
+    options.Conventions.AllowAnonymousToPage("/Index");
+});
+
+
+var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -85,13 +96,7 @@ using (var scope = app.Services.CreateScope())
     await StudentExerciseSeeder.SeedStudentExercises(context);
 }
 
-builder.Services.AddRazorPages(options =>
-{
-    options.Conventions.AuthorizeFolder("/");
-    options.Conventions.AllowAnonymousToPage("/Login");
-    options.Conventions.AllowAnonymousToPage("/Register");
-    options.Conventions.AllowAnonymousToPage("/Index");
-});
+
 
 
 if (app.Environment.IsProduction())
