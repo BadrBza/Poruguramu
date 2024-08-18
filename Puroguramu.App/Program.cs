@@ -19,9 +19,6 @@ using Puroguramu.Infrastructures.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-builder.Services.AddRazorPages();
-
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
