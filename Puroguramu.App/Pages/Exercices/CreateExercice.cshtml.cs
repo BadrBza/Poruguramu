@@ -8,6 +8,7 @@ using Puroguramu.Domains.Repositories;
 
 namespace Puroguramu.App.Pages.Exercices
 {
+    [ValidateAntiForgeryToken]
     public class CreateExerciceModel : PageModel
     {
         private readonly IExoRepository _exoRepository;
@@ -29,7 +30,6 @@ namespace Puroguramu.App.Pages.Exercices
             LessonId = lessonId;
         }
 
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAsync()
         {
             if (ModelState.IsValid)

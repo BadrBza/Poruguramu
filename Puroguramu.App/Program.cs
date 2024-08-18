@@ -31,8 +31,6 @@ else
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("ProductionConnection")));
 }
-
-
 builder.Services.AddDefaultIdentity<Student>(options =>
     {
         options.SignIn.RequireConfirmedAccount = false;
@@ -58,7 +56,6 @@ builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 builder.Services.AddScoped<IExoRepository, ExoRepository>();
 
 
-builder.Services.AddRazorPages();
 // middleware neccesaire pour limiter le taux de requetes
 builder.Services.AddMemoryCache();
 builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
