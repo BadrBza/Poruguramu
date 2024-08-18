@@ -20,7 +20,6 @@ using Puroguramu.Infrastructures.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 
-
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -98,7 +97,7 @@ else
     app.UseDeveloperExceptionPage();
 }
 
-app.UseIpRateLimiting();
+//app.UseIpRateLimiting();
 app.UseForwardedHeaders(new ForwardedHeadersOptions());
 app.UseReverseProxyLinks();
 
