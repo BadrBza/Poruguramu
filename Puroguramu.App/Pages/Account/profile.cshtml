@@ -10,15 +10,15 @@
     Layout = "_Layout";
     var user = await UserManager.GetUserAsync(User);
     var roles = await UserManager.GetRolesAsync(user);
-    string dashboardLink = "/Index"; 
+    string dashboardLink = "~/Index"; 
 
-    if (roles.Contains("Teacher"))
+    if (roles.Contains("teacher"))
     {
-        dashboardLink = "/Dashboard/TeacherDashboard";
+        dashboardLink = "~/Dashboard/TeacherDashboard";
     }
-    else if (roles.Contains("Student"))
+    else if (roles.Contains("student"))
     {
-        dashboardLink = "/Dashboard/StudentDashboard";
+        dashboardLink = "~/Dashboard/StudentDashboard";
     }
 }
 

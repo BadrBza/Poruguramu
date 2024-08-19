@@ -37,7 +37,7 @@ namespace Puroguramu.App.Pages.Lecons
             try
             {
                 await _lessonRepository.CreateLessonAsync(Lesson);
-                return RedirectToPage("/Dashboard/TeacherDashboard");
+                return RedirectToPage(Url.Page("/Dashboard/TeacherDashboard"));
             }
             catch (InvalidOperationException ex)
             {

@@ -12,7 +12,7 @@
         <pre class="bg-gray-900 p-6 rounded-lg text-white text-lg leading-relaxed shadow-inner">
             @Model.SolutionText
         </pre>
-        <a href="/Exercices/Exercice/@Model.ExerciseId" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg mt-6 transition-colors duration-300 ease-in-out shadow-lg transform hover:translate-y-1">
+        <a href="@Url.Page("/Exercices/Exercice/@Model.ExerciseId")" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg mt-6 transition-colors duration-300 ease-in-out shadow-lg transform hover:translate-y-1">
             Retour à l'exercice
         </a>
     </section>

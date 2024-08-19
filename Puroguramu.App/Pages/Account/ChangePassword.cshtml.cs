@@ -66,7 +66,7 @@ namespace Puroguramu.App.Pages.Account
             }
 
             StatusMessage = "Votre mot de passe a été changé avec succès.";
-            return RedirectToPage("/Account/ChangePassword");
+            return RedirectToPage("~/Account/ChangePassword");
         }
     }
 }
