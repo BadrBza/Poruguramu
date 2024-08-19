@@ -125,7 +125,7 @@ namespace Puroguramu.App.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        var defaultProfilePicturePath = Path.Combine(_webHostEnvironment.WebRootPath, "ressources", "basic.jpg");
+                        var defaultProfilePicturePath = Path.Combine(_webHostEnvironment.WebRootPath, "~/ressources", "basic.jpg");
                         student.ProfilePicture = await System.IO.File.ReadAllBytesAsync(defaultProfilePicturePath);
                     }
 
