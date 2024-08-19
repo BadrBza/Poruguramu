@@ -34,8 +34,8 @@
                     var roles = await UserManager.GetRolesAsync(user);
                     @if (roles.Contains("teacher"))
                     {
-                        <a href="@Url.Page("~/Dashboard/studentDashboard")" class="p-1 nav-link text-white hover:text-white">Dashboard</a>
-                        <a href="@Url.Page("~/Lecons/CreateLesson")" class="p-1 nav-link text-white hover:text-white">Créer une Leçon</a>
+                        <a href="~/Dashboard/studentDashboard" class="p-1 nav-link text-white hover:text-white">Dashboard</a>
+                        <a href="~/Lecons/CreateLesson" class="p-1 nav-link text-white hover:text-white">Créer une Leçon</a>
                     }
                     else if (roles.Contains("student"))
                     {

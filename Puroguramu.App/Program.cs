@@ -55,7 +55,7 @@ builder.Services.AddScoped<IExoRepository, ExoRepository>();
 
 
 // middleware neccesaire pour limiter le taux de requetes
-/*
+
 builder.Services.AddMemoryCache();
 builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
 builder.Services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
@@ -64,7 +64,7 @@ builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>()
 builder.Services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
 
 builder.Services.AddInMemoryRateLimiting();
-*/
+
 
 builder.Services.AddRazorPages(options =>
 {
@@ -111,7 +111,7 @@ else
 
 
 
-//app.UseIpRateLimiting();
+app.UseIpRateLimiting();
 app.UseForwardedHeaders(new ForwardedHeadersOptions());
 app.UseReverseProxyLinks();
 
