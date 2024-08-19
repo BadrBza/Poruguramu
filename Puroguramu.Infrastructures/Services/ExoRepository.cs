@@ -30,6 +30,10 @@ public class ExoRepository : IExoRepository
             throw new InvalidOperationException("La leçon spécifiée n'existe pas.");
         }
 
+        var maxOrder = await _context.Exercises
+            .Where(e => e.LessonId == lessonId)
+            .MaxAsync(e => (int?)e.Order) ?? 0;
+
         var exercise = new Exo
         {
             Id = Guid.NewGuid(),
@@ -37,7 +41,7 @@ public class ExoRepository : IExoRepository
             Description = string.Empty,
             Difficulty = Difficulty.Easy,
             IsPublished = false,
-            Order = await _context.Exercises.CountAsync(e => e.LessonId == lessonId) + 1,
+            Order = maxOrder + 1,
             LessonId = lessonId,
             Template = "public class Exercice { }", // Template par défaut
             Stub = "",

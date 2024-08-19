@@ -43,7 +43,7 @@ namespace Puroguramu.App.Pages.Lecons
 
             Console.WriteLine("OnPostAsync UpdateLessonAsync");
             await _lessonRepository.UpdateLessonAsync(Lesson);
-            return RedirectToPage("~/Dashboard/TeacherDashboard");
+            return RedirectToPage("/Dashboard/TeacherDashboard");
         }
 
         [ValidateAntiForgeryToken]
