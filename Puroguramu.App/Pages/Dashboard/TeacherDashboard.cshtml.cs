@@ -56,7 +56,7 @@ namespace Puroguramu.App.Pages.Dashboard
         [ValidateAntiForgeryToken]
         public IActionResult OnPostEditLesson(Guid id)
         {
-            return RedirectToPage("~/Lecons/EditLesson", new { id });
+            return RedirectToPage("/Lecons/EditLesson", new { id });
         }
 
         [ValidateAntiForgeryToken]
