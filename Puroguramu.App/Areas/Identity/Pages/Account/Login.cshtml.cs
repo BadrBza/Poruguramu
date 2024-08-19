@@ -72,11 +72,11 @@ namespace Puroguramu.App.Areas.Identity.Pages.Account
                     var role = await _studentRepository.GetUserRoleAsync(Input.Matricule);
                     if (role == "teacher")
                     {
-                        return LocalRedirect(Url.Page("/Dashboard/TeacherDashboard"));
+                        return LocalRedirect("~/Dashboard/TeacherDashboard");
                     }
                     else if (role == "student")
                     {
-                        return LocalRedirect(Url.Page("/Dashboard/StudentDashboard"));
+                        return LocalRedirect("~/Dashboard/StudentDashboard");
                     }
                     return LocalRedirect(returnUrl);
                 }
