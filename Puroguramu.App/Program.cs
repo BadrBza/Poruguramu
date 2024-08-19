@@ -76,6 +76,8 @@ builder.Services.AddRazorPages(options =>
 
 
 var app = builder.Build();
+
+app.UsePathBase("/E200382");
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
