@@ -12,6 +12,8 @@ RUN dotnet build "Puroguramu.App.csproj" -c Release -o /app/build
 FROM build AS publish
 RUN dotnet publish "Puroguramu.App.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
+ENV DOTNET_HOSTBUILDER__RELOADCONFIGONCHANGE=false
+
 FROM base AS final
 EXPOSE 80
 WORKDIR /app
