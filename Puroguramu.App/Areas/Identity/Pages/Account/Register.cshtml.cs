@@ -143,6 +143,7 @@ namespace Puroguramu.App.Areas.Identity.Pages.Account
                         return LocalRedirect("~/Dashboard/StudentDashboard");
                     }
 
+                    Console.WriteLine("url de redirection : " + returnUrl);
                     return LocalRedirect(returnUrl);
                 }
             }
