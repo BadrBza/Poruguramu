@@ -23,7 +23,7 @@ Projet realise en duo.
 1. Se placer a la racine du projet:
 
 ```powershell
-cd "c:\Users\badr\Documents\projet helmo\porugumaru"
+cd "c:\TonChemin"
 ```
 
 2. Restaurer les dependances:
